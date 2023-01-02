@@ -112,11 +112,76 @@
 
 - 时间复杂度：`std::sort` 的时间复杂度为 $O(n\log n)$，维护优先队列的时间复杂度为 $O(n\log n)$，综上所述，时间复杂度为 $O(n\log n)$。
 
+
+### 更多例题
+
+???+note "区间调度"
+    ![](./images/greedy-1.png)
+
+    ![](./images/greedy-2.png)
+
+    题解：在可选的工作中，选择结束时间最早的工作
+    
+    类似题：
+    
+    [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+
+    [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+
+
+???+note "[酒庄](https://vjudge.net/problem/UVA-11054)"
+    ![](./images/greedy-3.png)
+
+
+???+note "[Best Cow Line](http://poj.org/problem?id=3617)"
+    ![](./images/greedy-4.png)
+
+    ![](./images/greedy-5.png)
+
+???+note "[Saruman's Army](http://poj.org/problem?id=3069)"
+    ![](./images/greedy-6.png)
+
+    ![](./images/greedy-7.png)
+
+???+note "[Fence Repair](http://poj.org/problem?id=3253)"
+    ![](./images/greedy-8.png)
+
+    ![](./images/greedy-9.png)
+
+    ![](./images/greedy-10.png)
+
+???+note "[鱼塘钓鱼](http://poj.org/problem?id=1042)"
+    ![](./images/greedy-11.png)
+
+    ![](./images/greedy-12.png)
+
+???+note "[排队打水]"
+    ![](./images/greedy-13.png)
+
+???+note "[删数问题]"
+    ![](./images/greedy-14.png)
+
+    ![](./images/greedy-15.png)
+
+???+note "[导弹拦截]"
+    ![](./images/greedy-16.png)
+
+    ![](./images/greedy-17.png)
+
+    解法2:结果等于LIS的长度
+
 ## 习题
 
 - [Expedition](http://poj.org/problem?id=2431)
-- [Fence Repair](http://poj.org/problem?id=3253)
 - [P1209\[USACO1.3\]修理牛棚 Barn Repair - 洛谷](https://www.luogu.com.cn/problem/P1209)
+- [Cleaning Shifts](http://poj.org/problem?id=2376)
+- [Radar Installation](http://poj.org/problem?id=1328)
+- [Stall Reservations](http://poj.org/problem?id=3190)
+- [Yogurt factory](http://poj.org/problem?id=2393)
+- [Packets](http://poj.org/problem?id=1017)
+- [Allowance](http://poj.org/problem?id=3040)
+- [Stripies](http://poj.org/problem?id=1862)
+- [Protecting the Flowers](http://poj.org/problem?id=3262)
 - [P2123 皇后游戏 - 洛谷](https://www.luogu.com.cn/problem/P2123)
 - [LeetCode 上标签为贪心算法的题目](https://leetcode-cn.com/tag/greedy/)
 
