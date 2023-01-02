@@ -114,6 +114,8 @@
 
 ## 习题
 
+- [Expedition](http://poj.org/problem?id=2431)
+- [Fence Repair](http://poj.org/problem?id=3253)
 - [P1209\[USACO1.3\]修理牛棚 Barn Repair - 洛谷](https://www.luogu.com.cn/problem/P1209)
 - [P2123 皇后游戏 - 洛谷](https://www.luogu.com.cn/problem/P2123)
 - [LeetCode 上标签为贪心算法的题目](https://leetcode-cn.com/tag/greedy/)

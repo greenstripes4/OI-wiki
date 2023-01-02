@@ -373,6 +373,9 @@ STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为�
     --8<-- "docs/ds/code/queue/queue_1.cpp"
     ```
 
+## 习题
+- [Team Queue](https://vjudge.net/problem/UVA-540)
+
 ## 参考资料
 
 1. [std::queue - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/queue)

@@ -214,6 +214,11 @@ cout << st2.top() << endl;
     }
     ```
 
+## 习题
+- [P1449 后缀表达式](https://www.luogu.com.cn/problem/P1449)
+- [P1739 表达式括号匹配](https://www.luogu.com.cn/problem/P1739)
+- [UVA514 车厢调度](https://www.luogu.com.cn/problem/U224112)
+
 ## 参考资料
 
 1. [std::stack - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/stack)

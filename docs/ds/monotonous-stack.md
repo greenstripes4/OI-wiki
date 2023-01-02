@@ -120,3 +120,5 @@
 
 - [洛谷 P5788【模板】单调栈](https://www.luogu.com.cn/problem/P5788)
 - [洛谷 P1901 发射站](https://www.luogu.com.cn/problem/P1901)
+- [Largest Rectangle in a Histogram](http://poj.org/problem?id=2559)
+- [Areas on the Cross-Section Diagram](https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/3/ALDS1_3_D)
