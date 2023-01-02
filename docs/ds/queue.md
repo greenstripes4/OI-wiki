@@ -170,6 +170,122 @@ STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为�
 
 ## 例题
 
+???+note "[机器翻译](https://www.luogu.com.cn/problem/P1540)"
+    **题目描述：**内存中有M个单元，每单元能存放一个单词和译义。每当软件将一个新单词存入内存前，如果当前内存中已存入的单词数不超过M-1，软件会将新单词存入一个未使用的内存单元；若内存中已存入M个单词，软件会清空最早进入内存的那个单词，腾出单元来，存放新单词。
+
+    假设一篇英语文章的长度为N个单词。给定这篇待译文章，翻译软件需要去外存查找多少次词典？假设在翻译开始前，内存中没有任何单词。
+    
+    **输入：** 共2行。每行中两个数之间用一个空格隔开。
+
+    第一行为两个正整数M,N，代表内存容量和文章的长度。
+
+    第二行为N个非负整数，按照文章的顺序，每个数（大小不超过1000）代表一个英文单词。文章中两个单词是同一个单词，当且仅当它们对应的非负整数相同。。
+    
+    **输出：** 一个整数，为软件需要查词典的次数。
+    
+    **输入输出样例：**
+    
+    输入
+    
+    3 7
+    
+    1 2 1 5 4 4 1
+    
+    输出
+    
+    5
+
+队列和栈的主要问题是查找较慢，需要从头到尾一个个查找。在某些应用情况下，可以用优先队列，让优先级最高（比如最大的数）先出队列。由于队列很简单，而且往往是固定大小的，所以在竞赛中一般就用静态数组来实现队列，或者使用STL queue。 
+
+??? note "参考代码"
+
+    === "STL queue"
+        注意代码中检查内存中有没有单词的方法。如果一个一个地搜索，太慢了；用hash不仅很快而且代码简单。
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        int hash[1003]={0};  //用hash检查内存中有没有单词，hash[i]=1表示单词i在内存中
+        queue<int> mem;      //用队列模拟内存
+        int main(){
+            int m,n;
+            scanf("%d%d",&m,&n);
+            int cnt=0;          //查词典的次数
+            while(n--){ 
+            int en;
+            scanf("%d",&en);    //输入一个英文单词
+            if(!hash[en]){      //如果内存中没有这个单词
+                ++cnt; 
+                mem.push(en);   //单词进队列，放到队列尾部
+                hash[en]=1;     //记录内存中有这个单词
+                while(mem.size()>m){         //内存满了
+                    hash[mem.front()] = 0;   //从内存中去掉单词
+                    mem.pop();               //从队头去掉
+                    }
+                }
+            }
+            printf("%d\n",cnt);
+            return 0;
+        }
+        ```
+
+    === "手写循环队列"
+        下面是循环队列的模板。代码中给出了静态分配空间和动态分配空间两种方式。竞赛中用静态分配更好。
+
+        ```cpp
+        #include<bits/stdc++.h>
+        #define MAXQSIZE 1003      //队列大小
+        int hash[MAXQSIZE]={0};    //用hash检查内存中有没有单词
+        struct myqueue{                  
+            int data[MAXQSIZE];    //分配静态空间
+            /* 如果动态分配，就这样写： int *data;    */
+            int front;             //队头，指向队头的元素
+            int rear;              //队尾，指向下一个可以放元素的空位置
+            bool init(){           //初始化
+                /*如果动态分配，就这样写：
+                Q.data = (int *)malloc(MAXQSIZE * sizeof(int)) ; 
+                if(!Q.data) return false; */
+                front = rear = 0;
+                return true;
+            }
+            int size(){            //返回队列长度
+                return (rear - front + MAXQSIZE) % MAXQSIZE;
+            }
+            bool push(int e){      //队尾插入新元素。新的rear指向下一个空的位置
+                if((rear + 1) % MAXQSIZE == front ) return false;    //队列满
+                data[rear] = e;
+                rear = (rear + 1) % MAXQSIZE;
+                return true;
+            }
+            bool pop(int &e){      //删除队头元素，并返回它
+                if(front == rear) return false;   //队列空
+                e = data[front];
+                front = (front + 1) % MAXQSIZE;
+                return true;
+            }
+        }Q;  
+        int main(){
+            Q.init();   //初始化队列
+            int m,n;  scanf("%d%d",&m,&n);
+            int cnt = 0;
+            while(n--){ 
+            int en;  scanf("%d",&en);    //输入一个英文单词
+            if(!hash[en]){               //如果内存中没有这个单词
+                ++cnt;
+                Q.push(en);              //单词进队列，放到队列尾部
+                hash[en]=1;
+                while(Q.size()>m){       //内存满了
+                        int tmp;
+                        Q.pop(tmp);      //删除队头
+                    hash[tmp] = 0;       //从内存中去掉单词    			
+                    }
+                }
+            }
+            printf("%d\n",cnt);
+            return 0;
+        }
+        ```
+
 ???+note "[LOJ6515「雅礼集训 2018 Day10」贪玩蓝月](https://loj.ac/problem/6515)"
     一个双端队列（deque），m 个事件：
     

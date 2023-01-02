@@ -34,7 +34,78 @@
 
 例如举例中取出的即栈中的最小值。
 
-## 应用
+## 例题
+
+??? note "[向右看齐](https://www.luogu.com.cn/problem/P2947)"
+    **题目描述：** N(1≤N≤10^5)头奶牛站成一排，奶牛i的身高是Hi(l≤Hi≤1,000,000)。现在，每只奶牛都在向右看齐。对于奶牛i，如果奶牛j满足$i\lt j$且$Hi\lt Hj$，我们说奶牛i仰望奶牛j。求出每只奶牛离她最近的仰望对象。
+    
+    **输入输出：** 第 1 行输入 N，之后每行输入一个身高 Hi。输出共 N 行，按顺序每行输出一只奶牛的最近仰望对象，如果没有仰望对象，输出 0。
+
+??? note "解题思路"
+    从后往前遍历奶牛，并用一个栈保存从低到高的奶牛，栈顶的奶牛最矮，栈底的最高。具体操作是：遍历到奶牛i时，与栈顶的奶牛比较，如果不比i高，就弹出栈顶，直到栈顶的奶牛比i高，这就是i的仰望对象；然后把i放进栈顶，栈里的奶牛仍然保持从低到高。
+
+    复杂度：每个奶牛只进出栈一次，所以是O(n)的。
+
+??? note "参考代码"
+    === "STL stack"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        int h[100001], ans[100001];
+        int main(){
+            int n;
+            scanf("%d",&n);
+            for (int i=1;i<=n;i++)  scanf("%d",&h[i]);
+            stack<int>st; 
+            for (int i=n;i>=1;i--){
+                while (!st.empty() && h[st.top()] <= h[i])  //栈顶奶牛没我高，弹出它，直到栈顶奶牛更高
+                    st.pop();
+                if (st.empty())       //栈空，没有仰望对象
+                    ans[i]=0; 
+                else                  //栈顶奶牛更高，是仰望对象
+                    ans[i]=st.top();
+                st.push(i);
+            }
+            for (int i=1;i<=n;i++) 
+                printf("%d\n",ans[i]);
+            return 0;
+        }
+        ```
+
+    === "手写栈"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const int maxn = 100000 + 100;
+        struct mystack{
+            int a[maxn];                        //存放栈元素，int型
+            int t = 0;                          //栈顶位置
+            void push(int x){ a[++t] = x;  }    //送入栈
+            int  top()      { return a[t]; }    //返回栈顶元素
+            void pop()      { t--;         }    //弹出栈顶
+            int empty()     { return t==0?1:0;} //返回1表示空
+        }st;
+        int h[maxn], ans[maxn];
+        int main(){
+            int n;
+            scanf("%d",&n);
+            for (int i=1;i<=n;i++)  scanf("%d",&h[i]);
+            for (int i=n;i>=1;i--){
+                while (!st.empty() && h[st.top()] <= h[i])  //栈顶奶牛没我高，弹出它，直到栈顶奶牛更高
+                    st.pop();
+                if (st.empty())       //栈空，没有仰望对象
+                    ans[i]=0; 
+                else                  //栈顶奶牛更高，是仰望对象
+                    ans[i]=st.top();
+                st.push(i);
+            }
+            for (int i=1;i<=n;i++) 
+                printf("%d\n",ans[i]);
+            return 0;
+        }
+        ```
 
 ??? note "[POJ3250 Bad Hair Day](http://poj.org/problem?id=3250)"
     有 $N$ 头牛从左到右排成一排，每头牛有一个高度 $h_i$，设左数第 $i$ 头牛与「它右边第一头高度 $≥h_i$」的牛之间有 $c_i$ 头牛，试求 $\sum_{i=1}^{N} c_i$。
