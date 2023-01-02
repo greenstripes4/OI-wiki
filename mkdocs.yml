@@ -128,9 +128,11 @@ nav:
   - 基础数据结构:
     - 数据结构部分简介: ds/index.md
     - 链表: ds/linked-list.md
-    - 队列: ds/queue.md
+    - 队列:
+      - 简单队列: ds/queue.md
       - 单调队列: ds/monotonous-queue.md
-    - 栈: ds/stack.md
+    - 栈:
+      - 简单栈: ds/stack.md
       - 单调栈: ds/monotonous-stack.md
     - 哈希表: ds/hash.md
     - 并查集:
