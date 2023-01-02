@@ -99,33 +99,33 @@ pos = upper_bound(a, a+n, test) - a;
 ### 例题
 
 ???+note "Two Sum"
-  输入n ( n≤100,000)个整数，找出其中的两个数，它们之和等于整数m(假定肯定有解)。题中所有整数都能用int 表示。
+    输入n ( n≤100,000)个整数，找出其中的两个数，它们之和等于整数m(假定肯定有解)。题中所有整数都能用int 表示。
 
 ???+note "解题思路"
-  下面给出三种方法：
-  1. 暴力搜，用两重循环，枚举所有的取数方法，复杂度O(n2)。超时。
-  2. 二分法。首先对数组从小到大排序，复杂度O(nlogn)；然后，从头到尾处理数组中的每个元素a[i]，在a[i]后面的数中二分查找是否存在一个等于 m - a[i]的数，复杂度也是O(nlogn)。两部分相加，总复杂度仍然是O(nlogn)。
-  3. 尺取法/双指针/two pointers。对于这个特定问题，更好的、标准的算法是：首先对数组从小到大排序；然后，设置两个变量L和R，分别指向头和尾，L初值是0，R初值是n-1，检查a[L]+a[R]，如果大于m，就让R减1，如果小于m，就让L加1，直至a[L]+a[R]=m。排序复杂度O(nlogn)，检查的复杂度O(n)，总复杂度O(nlogn)。检查的代码这样写：
-  ```cpp
-  void find_sum(int a[], int n, int m){ 
-      sort(a, a + n - 1);      //先排序
-      int L = 0, R = n - 1;    //L指向头，R指向尾
-      while (L < R){
-                int sum = a[L] + a[R];
-                if (sum > m)   R--;
-                if (sum < m)   L++;
-                if (sum == m){     
-                cout << a[L] << "    " << a[R] << endl;  //打印一种情况
-                L++;   //可能有多种情况，继续
-                }
-      }
-  }
-  ```
+    下面给出三种方法：
+    1. 暴力搜，用两重循环，枚举所有的取数方法，复杂度O(n2)。超时。
+    2. 二分法。首先对数组从小到大排序，复杂度O(nlogn)；然后，从头到尾处理数组中的每个元素a[i]，在a[i]后面的数中二分查找是否存在一个等于 m - a[i]的数，复杂度也是O(nlogn)。两部分相加，总复杂度仍然是O(nlogn)。
+    3. 尺取法/双指针/two pointers。对于这个特定问题，更好的、标准的算法是：首先对数组从小到大排序；然后，设置两个变量L和R，分别指向头和尾，L初值是0，R初值是n-1，检查a[L]+a[R]，如果大于m，就让R减1，如果小于m，就让L加1，直至a[L]+a[R]=m。排序复杂度O(nlogn)，检查的复杂度O(n)，总复杂度O(nlogn)。检查的代码这样写：
+    ```cpp
+    void find_sum(int a[], int n, int m){ 
+        sort(a, a + n - 1);      //先排序
+        int L = 0, R = n - 1;    //L指向头，R指向尾
+        while (L < R){
+                  int sum = a[L] + a[R];
+                  if (sum > m)   R--;
+                  if (sum < m)   L++;
+                  if (sum == m){     
+                  cout << a[L] << "    " << a[R] << endl;  //打印一种情况
+                  L++;   //可能有多种情况，继续
+                  }
+        }
+    }
+    ```
 
 ???+note
     对于 $n$ 是有符号数的情况，当你可以保证 $n\ge 0$ 时，`n >> 1` 比 `n / 2` 指令数更少。
 
-## 二分法的典型应用有：最小化最大值、最大化最小值。
+## 二分法的典型应用有
 
 ### 最小化最大值
 
@@ -138,84 +138,153 @@ pos = upper_bound(a, a+n, test) - a;
 3. 可行解对于区间满足一定的单调性。换言之，如果 $x$ 是符合条件的，那么有 $x + 1$ 或者 $x - 1$ 也符合条件。（这样下来就满足了上面提到的单调性）
 
 ???+note "序列划分问题"
-  例如，有一个序列{2,2,3,4,5,1}，将其划分成3个连续的子序列S(1)、S(2)、S(3)，每个子序列最少有一个元素，要求使得每个子序列的和的最大值最小。
+    例如，有一个序列{2,2,3,4,5,1}，将其划分成3个连续的子序列S(1)、S(2)、S(3)，每个子序列最少有一个元素，要求使得每个子序列的和的最大值最小。
 
-  下面举例2个分法：
-  
-  分法1：S(1)、S(2)、S(3)分别是(2,2,3)、(4,5)、(1),子序列和分别是7、9、1，最大值是9；
-  
-  分法2：(2,2,3)、(4)、(5,1),子序列和是7、4、6，最大值是7。
-  
-  分法2更好。
+    下面举例2个分法：
+    
+    分法1：S(1)、S(2)、S(3)分别是(2,2,3)、(4,5)、(1),子序列和分别是7、9、1，最大值是9；
+    
+    分法2：(2,2,3)、(4)、(5,1),子序列和是7、4、6，最大值是7。
+    
+    分法2更好。
 
 ???+note "解题思路"
-  在一次划分中，考虑一个x，使x满足：对任意的S(i)，都有S(i)<=x，也就是说，x是所有S(i)中的最大值。题目需要求的就是找到这个最小的x。这就是最大值最小化。
-  
-  如何找到这个x？从小到大一个个地试，就能找到那个最小的x。
-  
-  简单的办法是：枚举每一个x，用贪心法每次从左向右尽量多划分元素，S(i)不能超过x，划分的子序列个数不超过m个。这个方法虽然可行，但是枚举所有的x太浪费时间了。
-  
-  改进的办法是：用二分法在[max, sum]中间查找满足条件的x，其中max是序列中最大元素，sum是所有元素的和。
+    在一次划分中，考虑一个x，使x满足：对任意的S(i)，都有S(i)<=x，也就是说，x是所有S(i)中的最大值。题目需要求的就是找到这个最小的x。这就是最大值最小化。
+    
+    如何找到这个x？从小到大一个个地试，就能找到那个最小的x。
+    
+    简单的办法是：枚举每一个x，用贪心法每次从左向右尽量多划分元素，S(i)不能超过x，划分的子序列个数不超过m个。这个方法虽然可行，但是枚举所有的x太浪费时间了。
+    
+    改进的办法是：用二分法在[max, sum]中间查找满足条件的x，其中max是序列中最大元素，sum是所有元素的和。
 
 ???+note "[通往奥格瑞玛的道路](https://www.luogu.org/problem/P1462)"
-  给定无向图，n个点，m条双向边，每个点有点权fi（这个点的过路费），有边权ci（这条路的血量）。求起点1到终点N的所有可能路径中，在总边权（总血量）不超过给定的b的前提下，所经过的路径中最大点权（这条路径上过路费最大的那个点）的最小值是多少。
+    给定无向图，n个点，m条双向边，每个点有点权fi（这个点的过路费），有边权ci（这条路的血量）。求起点1到终点N的所有可能路径中，在总边权（总血量）不超过给定的b的前提下，所经过的路径中最大点权（这条路径上过路费最大的那个点）的最小值是多少。
 
-  题目数据：n≤10000，m≤50000，fi，ci，B≤1e9。
+    题目数据：n≤10000，m≤50000，fi，ci，B≤1e9。
 
 ???+note "解题思路"
-  对点权fi进行二分，用dijkstra求最短路，检验总边权是否小于b。二分法是最小化最大值问题。
-这一题是二分法和最短路算法的简单结合。
-  1. 对点权（过路费）二分。题目的要求是：从1到N有很多路径，其中的一个可行路径Pi，它有一个点的过路费最大，记为Fi；在所有可行路径中，找到那个有最小F的路径，输出F。解题方案是：先对所有点的fi排序，然后用二分法，找符合要求的最小的fi。二分次数log(fi)=log(1e9) < 30。
-  2. 在检查某个fi时，删除所有大于fi的点，在剩下的点中，求1到N的最短路，看总边权是否小于b，如果满足，这个fi是合适的（如果最短路的边权都大于b，那么其他路径的总边权就更大，肯定不符合要求）。一次Dijkstra求最短路，复杂度是O(mlogn)。
-  总复杂度满足要求。
+    对点权fi进行二分，用dijkstra求最短路，检验总边权是否小于b。二分法是最小化最大值问题。
+    这一题是二分法和最短路算法的简单结合。
+    1. 对点权（过路费）二分。题目的要求是：从1到N有很多路径，其中的一个可行路径Pi，它有一个点的过路费最大，记为Fi；在所有可行路径中，找到那个有最小F的路径，输出F。解题方案是：先对所有点的fi排序，然后用二分法，找符合要求的最小的fi。二分次数log(fi)=log(1e9) < 30。
+    2. 在检查某个fi时，删除所有大于fi的点，在剩下的点中，求1到N的最短路，看总边权是否小于b，如果满足，这个fi是合适的（如果最短路的边权都大于b，那么其他路径的总边权就更大，肯定不符合要求）。一次Dijkstra求最短路，复杂度是O(mlogn)。
+    总复杂度满足要求。
 
 ### 最大化最小值
 当然，最小值最大化是同理的。
 
 ???+note "[进击的奶牛](https://www.luogu.org/problem/P1824)"
-  在一条很长的直线上，指定n个坐标点（x1, ..., xn）。有c头牛，安排每头牛站在其中一个点（牛棚）上。这些牛喜欢打架，所以尽量距离远一些。问最近的两头牛之间距离的最大值可以是多少。
-  
-  这个题目里，所有的牛棚两两之间的距离有个最小值，题目要求使得这个最小值最大化。
+    在一条很长的直线上，指定n个坐标点（x1, ..., xn）。有c头牛，安排每头牛站在其中一个点（牛棚）上。这些牛喜欢打架，所以尽量距离远一些。问最近的两头牛之间距离的最大值可以是多少。
+    
+    这个题目里，所有的牛棚两两之间的距离有个最小值，题目要求使得这个最小值最大化。
 
 ???+note "解题思路"
-  1. 暴力法。从小到大枚举最小距离的值dis，然后检查，如果发现有一次不行，那么上次枚举的就是最大值。如何检查呢？用贪心法：第一头牛放在x1，第二头牛放在xj≥x1+dis的点xi,第三头牛放在xk≥xj+dis的点xk，等等，如果在当前最小距离下，不能放c条牛，那么这个dis就不可取。复杂度O(nc)。
-  2. 二分。分析从小到大检查dis的过程，发现可以用二分的方法找这个dis。这个dis符合二分法：它有上下边界、它是单调递增的。复杂度O(nlogn)。
+    1. 暴力法。从小到大枚举最小距离的值dis，然后检查，如果发现有一次不行，那么上次枚举的就是最大值。如何检查呢？用贪心法：第一头牛放在x1，第二头牛放在xj≥x1+dis的点xi,第三头牛放在xk≥xj+dis的点xk，等等，如果在当前最小距离下，不能放c条牛，那么这个dis就不可取。复杂度O(nc)。
+    2. 二分。分析从小到大检查dis的过程，发现可以用二分的方法找这个dis。这个dis符合二分法：它有上下边界、它是单调递增的。复杂度O(nlogn)。
 
 ???+note "参考代码"
-  ```cpp
-  #include<bits/stdc++.h>
-  using namespace std;
-  int n,c,x[100005];//牛棚数量，牛数量，牛棚坐标
-  bool check(int dis){     //当牛之间距离最小为dis时，检查牛棚够不够
-      int cnt=1, place=0;  //第1头牛，放在第1个牛棚
-      for (int i = 1; i < n; ++i)     //检查后面每个牛棚
-          if (x[i] - x[place] >= dis){ //如果距离dis的位置有牛棚
-              cnt++;      //又放了一头牛
-              place = i;  //更新上一头牛的位置
-          }
-      if (cnt >= c) return true;   //牛棚够
-      else          return false;  //牛棚不够
-  }
-  int main(){
-      scanf("%d%d",&n, &c);
-      for(int i=0;i<n;i++)    scanf("%d",&x[i]);
-      sort(x,x+n);             //对牛棚的坐标排序
-      int left=0, right=x[n-1]-x[0];  //R=1000000也行，因为是log(n)的，很快
-                        //优化：把二分上限设置为1e9/c
-      int ans = 0;
-      while(left < right){
-          int mid = left + (right - left)/2;     //二分
-          if(check(mid)){       //当牛之间距离最小为mid时，牛棚够不够?
-              ans = mid;        //牛棚够，先记录mid
-              left = mid + 1;   //扩大距离
+    ```cpp
+    #include<bits/stdc++.h>
+    using namespace std;
+    int n,c,x[100005];//牛棚数量，牛数量，牛棚坐标
+    bool check(int dis){     //当牛之间距离最小为dis时，检查牛棚够不够
+        int cnt=1, place=0;  //第1头牛，放在第1个牛棚
+        for (int i = 1; i < n; ++i)     //检查后面每个牛棚
+            if (x[i] - x[place] >= dis){ //如果距离dis的位置有牛棚
+                cnt++;      //又放了一头牛
+                place = i;  //更新上一头牛的位置
             }
-          else
-              right = mid;      //牛棚不够，缩小距离
-      }
-      cout << ans;              //打印答案
-      return 0;
-  }
-  ```
+        if (cnt >= c) return true;   //牛棚够
+        else          return false;  //牛棚不够
+    }
+    int main(){
+        scanf("%d%d",&n, &c);
+        for(int i=0;i<n;i++)    scanf("%d",&x[i]);
+        sort(x,x+n);             //对牛棚的坐标排序
+        int left=0, right=x[n-1]-x[0];  //R=1000000也行，因为是log(n)的，很快
+                          //优化：把二分上限设置为1e9/c
+        int ans = 0;
+        while(left < right){
+            int mid = left + (right - left)/2;     //二分
+            if(check(mid)){       //当牛之间距离最小为mid时，牛棚够不够?
+                ans = mid;        //牛棚够，先记录mid
+                left = mid + 1;   //扩大距离
+              }
+            else
+                right = mid;      //牛棚不够，缩小距离
+        }
+        cout << ans;              //打印答案
+        return 0;
+    }
+    ```
+
+### 最大化平均值
+
+???+note ""
+    有n个物品的重量和价值分别是wi和vi，从中选出k个物品使得单位重量价值最大。
+
+    样例输入：
+    
+    3 2
+    
+    2 2
+    
+    5 3
+    
+    2 1
+    
+    样例输出：
+
+    0.75
+
+???+note "解题思路"
+    ![](./images/binary-final-3.png)
+
+???+note "参考代码"
+
+    ```cpp
+    #include<stdio.h>
+    #include<algorithm>
+    using namespace std;
+    #define INF 0x3f3f3f3f
+    bool cmp(double a,double b)
+    {
+        return a>b;
+    }
+    int n,k;
+    double y[20010];
+    int w[20010],v[20010];
+    bool C(double x)
+    {
+        for(int i = 0 ; i < n ; i++)
+        {
+            y[i]=v[i]-x*w[i];
+        }
+        sort(y,y+n,cmp);
+        double sum=0;
+        for(int i = 0 ; i < k ; i++)
+            sum+=y[i];
+            if(sum>=0)
+                return true;///x太小
+                return false///x太大
+    }
+    int main()
+    {
+        scanf("%d%d",&n,&k);
+        for(int i = 0 ; i  < n ; i++)
+            scanf("%d%d",&w[i],&v[i]);
+        double st = 0,en = INF;
+        for(int i=1;i<=100;i++)///精度
+        {
+            double mid = (st+en)/2;
+            if(C(mid))
+                st=mid;
+            else
+                en=mid;
+        }
+        printf("%.2f\n",en);
+
+    }
+    ```
 
 ### 二分答案
 
@@ -311,47 +380,47 @@ for循环的100次，比while的循环次数要多。如果时间要求不是太
 ### 例题
 
 ???+note "[Pie](http://poj.org/problem?id=3122)"
-  主人过生日，m个人来庆生，有n块半径不同的圆形蛋糕，由m+1个人（加上主人）分，每人的蛋糕必须一样重，而且是一整块（不能是几个蛋糕碎块，也就是说，每个人的蛋糕都是从一块圆蛋糕中切下来的完整一块）。问每个人能分到的最大蛋糕是多大。
+    主人过生日，m个人来庆生，有n块半径不同的圆形蛋糕，由m+1个人（加上主人）分，每人的蛋糕必须一样重，而且是一整块（不能是几个蛋糕碎块，也就是说，每个人的蛋糕都是从一块圆蛋糕中切下来的完整一块）。问每个人能分到的最大蛋糕是多大。
 
-  最小值最大化问题。设每人能分到的蛋糕大小是x，用二分法枚举x。
+    最小值最大化问题。设每人能分到的蛋糕大小是x，用二分法枚举x。
 
 ???+note "参考代码"
-  ```cpp
-  #include<stdio.h>
-  #include<math.h>
-  double PI = acos(-1.0);    //3.141592653589793;
-  #define eps 1e-5
-  double area[10010];
-  int n,m;
-  bool check(double mid){ 
-      int sum = 0;
-      for(int i=0;i<n;i++)        //把每个圆蛋糕都按大小mid分开。统计总数
-          sum += (int)(area[i] / mid);
-      if(sum >= m) return true;   //最后看总数够不够m个
-      else         return false;
-  }
-  int main(){
-      int T; scanf("%d",&T);
-      while(T--){
-          scanf("%d%d",&n,&m); m++;
-          double maxx = 0;
-          for(int i=0;i<n;i++){
-              int r; scanf("%d",&r);
-              area[i] = PI*r*r;
-              if(maxx < area[i]) maxx = area[i]; //最大的一块蛋糕
-          }
-          double left = 0, right = maxx;  
-          for(int i = 0; i<100; i++){  
-          //while((right-left) > eps)   {      //for或者while都行
-              double mid = left+(right-left)/2;
-              if(check(mid))   left  = mid;   //每人能分到mid大小的蛋糕
-              else             right = mid;   //不够分到mid大小的蛋糕
-          }
-          printf("%.4f\n",left);    // 打印right也对
-      }
-      return 0;
-  }
-  ```
+    ```cpp
+    #include<stdio.h>
+    #include<math.h>
+    double PI = acos(-1.0);    //3.141592653589793;
+    #define eps 1e-5
+    double area[10010];
+    int n,m;
+    bool check(double mid){ 
+        int sum = 0;
+        for(int i=0;i<n;i++)        //把每个圆蛋糕都按大小mid分开。统计总数
+            sum += (int)(area[i] / mid);
+        if(sum >= m) return true;   //最后看总数够不够m个
+        else         return false;
+    }
+    int main(){
+        int T; scanf("%d",&T);
+        while(T--){
+            scanf("%d%d",&n,&m); m++;
+            double maxx = 0;
+            for(int i=0;i<n;i++){
+                int r; scanf("%d",&r);
+                area[i] = PI*r*r;
+                if(maxx < area[i]) maxx = area[i]; //最大的一块蛋糕
+            }
+            double left = 0, right = maxx;  
+            for(int i = 0; i<100; i++){  
+            //while((right-left) > eps)   {      //for或者while都行
+                double mid = left+(right-left)/2;
+                if(check(mid))   left  = mid;   //每人能分到mid大小的蛋糕
+                else             right = mid;   //不够分到mid大小的蛋糕
+            }
+            printf("%.4f\n",left);    // 打印right也对
+        }
+        return 0;
+    }
+    ```
 
 ## 三分法
 
@@ -447,65 +516,65 @@ while (r - l > eps) {
     本题要求求 $N$ 次函数在 $[l, r]$ 取最大值时自变量的值，显然可以使用三分法。
 
 ??? note "参考代码"
-  === "三等分"
+    === "三等分"
 
-    ```cpp
-    #include<bits/stdc++.h>
-    using namespace std;
-    const double eps = 1e-6;
-    int n;
-    double a[15];
-    double f(double x){       //计算函数值
-        double s=0;
-        for(int i=n;i>=0;i--) //注意函数求值的写法
-            s = s*x + a[i];
-        return s;
-    }
-    int main(){
-        double L,R;
-        scanf("%d%lf%lf",&n,&L,&R);
-        for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
-        while(R-L > eps){  // for(int i = 0; i<100; i++){   //用for也行
-            double k =(R-L)/3.0;
-            double mid1 = L+k, mid2 = R-k;
-            if(f(mid1) > f(mid2)) 
-                  R = mid2;
-            else   L = mid1;
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const double eps = 1e-6;
+        int n;
+        double a[15];
+        double f(double x){       //计算函数值
+            double s=0;
+            for(int i=n;i>=0;i--) //注意函数求值的写法
+                s = s*x + a[i];
+            return s;
         }
-        printf("%.5f\n",L);
-        return 0;
-    }
-    ```
-  === "近似三等分"
+        int main(){
+            double L,R;
+            scanf("%d%lf%lf",&n,&L,&R);
+            for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
+            while(R-L > eps){  // for(int i = 0; i<100; i++){   //用for也行
+                double k =(R-L)/3.0;
+                double mid1 = L+k, mid2 = R-k;
+                if(f(mid1) > f(mid2)) 
+                      R = mid2;
+                else   L = mid1;
+            }
+            printf("%.5f\n",L);
+            return 0;
+        }
+        ```
+    === "近似三等分"
 
-    ```cpp
-    #include<bits/stdc++.h>
-    using namespace std;
-    const double eps = 1e-6;
-    int n; double a[15];
-    double f(double x){
-        double s=0;
-        for(int i=n;i>=0;i--) s=s*x+a[i];
-        return s;
-    }
-    int main(){
-        double L,R;
-        scanf("%d%lf%lf",&n,&L,&R);
-        for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
-        while(R-L > eps){   // for(int i = 0; i<100; i++){   //用for也行
-            double mid = L+(R-L)/2; 
-            if(f(mid - eps) > f(mid))
-                R = mid;
-            else L = mid;
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const double eps = 1e-6;
+        int n; double a[15];
+        double f(double x){
+            double s=0;
+            for(int i=n;i>=0;i--) s=s*x+a[i];
+            return s;
         }
-        printf("%.5f\n",L);
-        return 0;
-    }
-    ```
-  === "OIWiki版本"
-    ```cpp
-    --8<-- "docs/basic/code/binary/binary_1.cpp"
-    ```
+        int main(){
+            double L,R;
+            scanf("%d%lf%lf",&n,&L,&R);
+            for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
+            while(R-L > eps){   // for(int i = 0; i<100; i++){   //用for也行
+                double mid = L+(R-L)/2; 
+                if(f(mid - eps) > f(mid))
+                    R = mid;
+                else L = mid;
+            }
+            printf("%.5f\n",L);
+            return 0;
+        }
+        ```
+    === "OIWiki版本"
+        ```cpp
+        --8<-- "docs/basic/code/binary/binary_1.cpp"
+        ```
 
 ### 习题
 

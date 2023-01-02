@@ -133,81 +133,81 @@ void build_heap_2() {
 ## 例题
 
 ??? note "[模板堆](https://www.luogu.com.cn/problem/P3378)"
-  初始小根堆为空，我们需要支持以下3种操作：
+    初始小根堆为空，我们需要支持以下3种操作：
 
-  操作1： 1 x 表示将x插入到堆中
+    操作1： 1 x 表示将x插入到堆中
 
-  操作2： 2 输出该小根堆内的最小数
+    操作2： 2 输出该小根堆内的最小数
 
-  操作3： 3 删除该小根堆内的最小数
+    操作3： 3 删除该小根堆内的最小数
 
 ??? note "参考代码"
-  === "STL priority_queue"
+    === "STL priority_queue"
 
-    ```cpp
-    #include<bits/stdc++.h>
-    using namespace std;
-    priority_queue<int ,vector<int>,greater<int> >q;  //定义堆
-    int main(){
-        int n;  scanf("%d",&n);
-        while(n--) {
-            int op;   scanf("%d",&op);
-            if(op==1) {
-                int x;   scanf("%d",&x);
-                q.push(x);
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        priority_queue<int ,vector<int>,greater<int> >q;  //定义堆
+        int main(){
+            int n;  scanf("%d",&n);
+            while(n--) {
+                int op;   scanf("%d",&op);
+                if(op==1) {
+                    int x;   scanf("%d",&x);
+                    q.push(x);
+                }
+                else if(op==2)
+                    printf("%d\n",q.top());
+                else  q.pop();
             }
-            else if(op==2)
-                printf("%d\n",q.top());
-            else  q.pop();
+            return 0;
         }
-        return 0;
-    }
-    ```
-  === "手写堆"
+        ```
+    === "手写堆"
 
-    ```cpp
-    #include<bits/stdc++.h>
-    using namespace std;
-    const int maxn = 1e6 + 5;
-    int heap[maxn], len=0;             //len记录当前二叉树的长度
-    void push(int x) {                 //上浮，插入新元素
-        heap[++len] = x;
-        int i = len;
-        while (i > 1 && heap[i] < heap[i/2]){
-            swap(heap[i], heap[i/2]);
-        i = i/2;
-      }
-    }
-    void pop() {                         //下沉，删除堆头，调整堆
-        heap[1] = heap[len--];           //根结点替换为最后一个结点，然后结点数量减1
-        int i = 1;
-        while ( 2*i <= len) {            //至少有左儿子
-            int son = 2*i;               //左儿子
-        if (son < len && heap[son + 1] < heap[son])   
-                                        //son<len表示有右儿子，选儿子中较小的
-          son++;                   //右儿子更小
-            if (heap[son] < heap[i]){    //与小的儿子交换
-                swap(heap[son], heap[i]);
-          i = son;                 //下沉到儿子处
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const int maxn = 1e6 + 5;
+        int heap[maxn], len=0;             //len记录当前二叉树的长度
+        void push(int x) {                 //上浮，插入新元素
+            heap[++len] = x;
+            int i = len;
+            while (i > 1 && heap[i] < heap[i/2]){
+                swap(heap[i], heap[i/2]);
+            i = i/2;
+          }
         }
-        else break;                  //如果不比儿子小，就停止下沉
+        void pop() {                         //下沉，删除堆头，调整堆
+            heap[1] = heap[len--];           //根结点替换为最后一个结点，然后结点数量减1
+            int i = 1;
+            while ( 2*i <= len) {            //至少有左儿子
+                int son = 2*i;               //左儿子
+            if (son < len && heap[son + 1] < heap[son])   
+                                            //son<len表示有右儿子，选儿子中较小的
+              son++;                   //右儿子更小
+                if (heap[son] < heap[i]){    //与小的儿子交换
+                    swap(heap[son], heap[i]);
+              i = son;                 //下沉到儿子处
+            }
+            else break;                  //如果不比儿子小，就停止下沉
+            }
         }
-    }
-    int main() {
-        int n;   scanf("%d",&n);
-        while(n--){
-            int op;	scanf("%d",&op);
-            if (op == 1) {
-          int x;  scanf("%d",&x);
-                push(x);                  //加入堆
+        int main() {
+            int n;   scanf("%d",&n);
+            while(n--){
+                int op;	scanf("%d",&op);
+                if (op == 1) {
+              int x;  scanf("%d",&x);
+                    push(x);                  //加入堆
+            }
+                else if (op == 2)  
+              printf("%d\n", heap[1]);  //打印堆头
+                else pop();                   //删除堆头
+            }
+            return 0;
         }
-            else if (op == 2)  
-          printf("%d\n", heap[1]);  //打印堆头
-            else pop();                   //删除堆头
-        }
-        return 0;
-    }
-    ```
+        ```
 
 
 ### 对顶堆
