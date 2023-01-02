@@ -147,7 +147,7 @@ cout << st2.top() << endl;
 
 ???+note "参考代码"
 
-    ==="STL stack"
+    === "STL stack"
 
         ```cpp
         #include<bits/stdc++.h>
@@ -177,7 +177,7 @@ cout << st2.top() << endl;
         }
         ```
 
-    ==="手写栈"
+    === "手写栈"
 
         ```cpp
         #include<bits/stdc++.h>
