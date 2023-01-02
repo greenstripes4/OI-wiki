@@ -40,3 +40,17 @@ a.erase(std::unique(a.begin(), a.end()), a.end());
 for (int i = 0; i < n; ++i)
   b[i] = std::lower_bound(a.begin(), a.end(), b[i]) - a.begin();
 ```
+
+## 例题
+
+???+note "区域的个数"
+    ![](./images/discrete-1.png)
+
+???+note "解题思路"
+    ![](./images/discrete-2.png)
+    ![](./images/discrete-3.png)
+
+???+note "参考代码"
+    ![](./images/discrete-4.png)
+    ![](./images/discrete-5.png)
+    ![](./images/discrete-6.png)

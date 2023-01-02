@@ -100,10 +100,31 @@ author: frank-xjh
                 ans = ans + 1
             met[a[i] + MAXN] = True
         ```
+???+note "[Face The Right Way](http://poj.org/problem?id=3276)"
+    ![](./images/enum-1.png)
+
+???+note "解题思路"
+    ![](./images/enum-2.png)
+    ![](./images/enum-3.png)
+
+???+note "[Fliptile](http://poj.org/problem?id=3279)"
+    ![](./images/enum-4.png)
+
+???+note "解题思路"
+    ![](./images/enum-5.png)
+    ![](./images/enum-6.png)
+    ![](./images/enum-7.png)
+    ![](./images/enum-8.png)
+    ![](./images/enum-9.png)
+    ![](./images/enum-10.png)
 
 ## 习题
 
 - [2811: 熄灯问题 - OpenJudge](http://bailian.openjudge.cn/practice/2811/)
+- [Smallest Difference](http://poj.org/problem?id=2718)
+- [Backward Digit Sums](http://poj.org/problem?id=3187)
+- [Hopscotch](http://poj.org/problem?id=3050)
+- [天平](https://vjudge.net/problem/UVA-1354) 
 
 ## 脚注
 

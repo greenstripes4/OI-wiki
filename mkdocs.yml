@@ -173,12 +173,12 @@ nav:
     - 搜索部分简介: search/index.md
     - DFS（搜索）: search/dfs.md
     - BFS（搜索）: search/bfs.md
+    - 回溯法: search/backtracking.md
     - 双向搜索: search/bidirectional.md
+    - 迭代加深搜索: search/iterative.md
     - 启发式搜索: search/heuristic.md
     - A*: search/astar.md
-    - 迭代加深搜索: search/iterative.md
     - IDA*: search/idastar.md
-    - 回溯法: search/backtracking.md
     - Dancing Links: search/dlx.md
     - Alpha-Beta 剪枝: search/alpha-beta.md
     - 优化: search/opt.md
