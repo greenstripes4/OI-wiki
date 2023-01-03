@@ -138,6 +138,7 @@ nav:
     - 并查集:
       - 并查集: ds/dsu.md
       - 并查集复杂度: ds/dsu-complexity.md
+      - 并查集应用: ds/dsu-app.md
     - 堆:
       - 堆简介: ds/heap.md
       - 二叉堆: ds/binary-heap.md
@@ -147,6 +148,7 @@ nav:
     - 算法基础简介: basic/index.md
     - 复杂度: basic/complexity.md
     - 枚举: basic/enumerate.md
+    - 双指针: basic/two-pointer.md
     - 模拟: basic/simulate.md
     - 递归 & 分治: basic/divide-and-conquer.md
     - 贪心: basic/greedy.md
@@ -205,7 +207,9 @@ nav:
   - 高级数据结构:
     - ST 表: ds/sparse-table.md
     - 树状数组: ds/fenwick.md
-    - 线段树: ds/seg.md
+    - 线段树:
+      - 基础线段树: ds/seg.md
+      - 线段树与离线询问: ds/segment-tree-offline.md
     - 块状数据结构:
       - 分块思想: ds/decompose.md
       - 块状数组: ds/block-array.md
@@ -478,7 +482,6 @@ nav:
   - 杂项:
     - 杂项简介: misc/index.md
     - 离散化: misc/discrete.md
-    - 双指针: misc/two-pointer.md
     - 离线算法:
       - 离线算法简介: misc/offline.md
       - CDQ 分治: misc/cdq-divide.md
@@ -510,9 +513,7 @@ nav:
     - 珂朵莉树: misc/odt.md
   - 专题:
     - RMQ: topic/rmq.md
-    - 并查集应用: topic/dsu-app.md
     - 括号序列: topic/bracket.md
-    - 线段树与离线询问: topic/segment-tree-offline.md
 
 # Theme
 theme:
