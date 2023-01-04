@@ -389,6 +389,7 @@ int main(){
     最大值和严格次大值的关系
     
     这个算法的复杂度是多少？做一次查询最大值操作“1 L R”或查询区间和操作“2 L R”，显然是O(logn)的，下面讨论做一次修改区间最值时的复杂度。
+    
     1. 极端情况1：x比所有元素都大。不用做任何修改，复杂度O(1)。这体现了最大值ma的作用。
     2. 极端情况2：x比所有元素都小，区间是全局，L=1，R = n。此时需要更新所有结点的ma = x，复杂度O(nlogn)，然后置所有结点的se = -1。看起来在这种极端情况下复杂度很高，但是如果再做一次更小x的全局修改，由于se = -1，不再需要递归子结点，复杂度O(1)。这体现了严格次大值se的作用。
     3. 一般情况。一次区间修改搜到的结点，根据前面对se的讨论，平均是O(logn)的。
@@ -1018,18 +1019,22 @@ int main(){
 - [Balanced Lineup](http://poj.org/problem?id=3264)
 
 区间最值：
+
 - [Matrix](https://darkbzoj.tk/problem/4695)
 - [前进四](http://uoj.ac/problem/515)
 
 历史最值：
+
 - [CPU监控](https://darkbzoj.tk/problem/3064)
 
 区间合并：
+
 - [Memory Control](https://vjudge.net/problem/HDU-2871)
 - [约会安排](https://vjudge.net/problem/HDU-4553)
 - [Help with Intervals](http://poj.org/problem?id=3225)
 
-扫描线：poj 1177, 2482，2464；hdu 1542, 3642，1255，3265 ，3255
+扫描线：
+
 - [Atlantis](https://vjudge.net/problem/HDU-1542)
 - [Get The Treasury](https://vjudge.net/problem/HDU-3642)
 - [覆盖的面积](https://vjudge.net/problem/HDU-1255)
@@ -1039,11 +1044,13 @@ int main(){
 - [Stars in Your Window](http://poj.org/problem?id=2482)
 - [Brownie Points II](http://poj.org/problem?id=2464)
 
-二维：poj 1195，2155
+二维：
+
 - [Mobile phones](http://poj.org/problem?id=1195)
 - [Matrix](http://poj.org/problem?id=2155)
 
-综合题：hdu 3974，4718，5756。
+综合题：
+
 - [Assign the task](https://vjudge.net/problem/HDU-3974)
 - [The LCIS on the Tree](https://vjudge.net/problem/HDU-4718)
 - [Boss Bo](https://vjudge.net/problem/HDU-5756)

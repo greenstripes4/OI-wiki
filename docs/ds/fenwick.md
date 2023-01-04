@@ -973,3 +973,7 @@ $1000$ 对应的十进制是 $8$，所以 $c_{88}$ 一共管理 $8$ 个 $a$ 数�
 - [树状数组 3：区间修改，区间查询](https://loj.ac/problem/132)
 - [二维树状数组 1：单点修改，区间查询](https://loj.ac/problem/133)
 - [二维树状数组 3：区间修改，区间查询](https://loj.ac/problem/135)
+- [MooFest](http://poj.org/problem?id=1990)
+- [Inner Vertices](http://poj.org/problem?id=3109)
+- [Matrix](http://poj.org/problem?id=2155)
+- [Who Gets the Most Candies?](http://poj.org/problem?id=2886)
