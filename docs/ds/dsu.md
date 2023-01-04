@@ -599,7 +599,7 @@ int find_set(int x){
 
 [最小生成树算法](../graph/mst.md) 中的 Kruskal 和 [最近公共祖先](../graph/lca.md) 中的 Tarjan 算法是基于并查集的算法。
 
-相关专题见 [并查集应用](../topic/dsu-app.md)。
+相关专题见 [并查集应用](./dsu-app.md)。
 
 ## 参考资料与拓展阅读
 
