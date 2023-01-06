@@ -92,8 +92,8 @@ void change(int L,int R,int d){
        for( int i=st[q];i<=R;i++)   a[i]+=d;   //整块后面的碎片。计算n/t次
        sum[q]+=d*(R-st[q]+1);
     }
- }
- ```
+}
+```
 
 （2）区间查询：输出区间\[L, R\]内每个数的和。
 
@@ -117,8 +117,8 @@ long long ask(int L,int R) {
        ans += add[q]*(R-st[q]+1);
     }
     return ans;
- }
- ```
+}
+```
 
 分块算法的实现简单粗暴，没有复杂数据结构和复杂逻辑，很容易编码。
 
