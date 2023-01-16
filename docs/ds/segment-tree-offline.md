@@ -2,6 +2,107 @@
 
 线段树与离线询问结合的问题在 OI 领域也有出现。
 
+### 例题
+
+???+note "[HH的项链](https://www.luogu.com.cn/problem/P1972)"
+    给定一个静态数列，进行多个区间查询，求各个区间上不同的数的个数
+
+这个题用树状数组，线段树等等都可以做，不过用树状数组写起来更方便。
+
+此题首先应考虑到这样一个结论：
+
+对于若干个询问的区间\[l,r\]，如果他们的r都相等的话，那么数列中出现的同一个数字，一定是只关心出现在最右边的那一个的，例如：
+
+数列是：1 3 4 5 1
+
+那么，对于r=5的所有的询问来说，第一个位置上的1完全没有意义，因为r已经在第五个1的右边，对于任何查询的\[L,5\]区间来说，如果第一个1被算了，那么他完全可以用第五个1来替代。
+
+因此，我们可以对所有查询的区间按照r来排序，然后再来维护一个树状数组，这个树状数组是用来干什么的呢？看下面的例子：
+
+1 2 1 3
+
+对于第一个1，insert(1,1)；表示第一个位置出现了一个不一样的数字，此时树状数组所表示的每个位置上的数字（不是它本身的值而是它对应的每个位置上的数字）是：1 0 0 0
+
+对于第二个2，insert(2,1)；此时树状数组表示的每个数字是1 1 0 0
+
+对于第三个1，因为之前出现过1了，因此首先把那个1所在的位置删掉insert(1,-1),然后在把它加进来insert(3,1)。此时每个数字是0 1 1 0
+
+如果此时有一个询问\[2,3\]，那么直接求sum(3)-sum(2-1)=2就是答案。
+
+???+note "参考代码"
+
+    ```cpp
+    #include<bits/stdc++.h>
+    using namespace std;
+    int a[1000010];
+    struct Node{
+        int L,R,post,date;
+    }dian[1000010];
+    bool cmp(Node p,Node q){
+        return p.R<q.R;
+    }
+    bool cm(Node p,Node q){
+        return p.post<q.post;
+    }
+    int vis[1000010];
+    int n,m;
+    int b[1000010],c[1000010];
+    int lowbit(int x){
+        return x&(-x);
+    }
+    void updata(int i,int k){//在i位置加上k
+        while(i <= n){
+            c[i] += k;
+            i += lowbit(i);
+        }
+    }
+    int getsum(int i){//求A[1 - i]的和
+        int res = 0;
+        while(i > 0){
+            res += c[i];
+            i -= lowbit(i);
+        }
+        return res;
+    }
+    int main(){
+        scanf("%d",&n);
+        for(int i=1;i<=n;i++){
+            scanf("%d",&a[i]);
+        }
+        scanf("%d",&m);
+        for(int i=1;i<=m;i++){
+            scanf("%d%d",&dian[i].L,&dian[i].R);
+            dian[i].post=i;
+        }
+        sort(dian+1,dian+1+m,cmp);
+        int now=1;
+        for(int i=1;i<=n;i++){
+            if(vis[a[i]]){
+                updata(vis[a[i]],-1);
+            }
+            vis[a[i]]=i;
+            updata(i,1);
+            while(dian[now].R==i){
+                dian[now].date=getsum(dian[now].R)-getsum(dian[now].L-1);
+                now++;
+            }
+        }
+        sort(dian+1,dian+1+m,cm);
+        for(int i=1;i<=m;i++) printf("%d\n",dian[i].date);
+        return 0;
+    } 
+    ```
+
+### 习题
+- [Turing Tree](https://vjudge.net/problem/HDU-3333)
+- [DQuery](https://vjudge.net/problem/SPOJ-DQUERY)
+
+* * *
+
+下面为OIWiki内容
+
+* * *
+
 假设一个数据结构，允许以 $O(T(n))$ 的时间复杂度添加元素。本文描述一种允许以 $O(T(n)\log n)$ 的时间复杂度进行离线删除的技术。
 
 ### 算法
