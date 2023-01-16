@@ -104,7 +104,7 @@ author: du33169
 
 ### 应用
 
-???+ question "给一个正权无向图，找一个最小权值和的环。"
+???+ question "[给一个正权无向图，找一个最小权值和的环](https://vjudge.net/problem/HDU-1599)"
     首先这一定是一个简单环。
     
     想一想这个环是怎么构成的。
@@ -116,6 +116,65 @@ author: du33169
     在 Floyd 的过程中枚举 $u$，计算这个和的最小值即可。
     
     时间复杂度为 $O(n^3)$。
+
+???+note "参考代码"
+
+    ```cpp
+    #include<iostream>
+    #include<cstring>
+    #include<algorithm>
+    #define maxn 10005
+    #define inf 1<<29
+    using namespace std;
+
+    int e[maxn][maxn],dis[maxn][maxn];
+
+    void init(int n) {
+        for(int i = 0; i <= n; i++) {
+            for(int j = 0; j <= n; j++) {
+                if(i == j)
+                    e[i][j] = dis[i][j] = 0;
+                else
+                    e[i][j] = dis[i][j] = inf;
+            }
+        }
+    }
+
+    int Floyd(int n) {
+        int mincircle = inf;
+        for(int k = 0; k <= n; k++) {
+            for(int i = 0; i < k; i++) {
+                for(int j = i+1; j < k; j++) {
+                    mincircle = min(mincircle,e[i][k]+e[k][j]+dis[i][j]);   //最小环公式;
+                }
+            }
+            for(int i = 0; i <= n; i++) {
+                for(int j = 0; j <= n; j++) {
+                    dis[i][j] = min(dis[i][j],dis[i][k]+dis[k][j]); //正常Floyd;
+                }
+            }
+        }
+        return mincircle;
+    }
+
+    int main() {
+        int n,m,u,v,w,ans;
+        while(cin>>n>>m) {
+            init(n);
+            for(int i = 0; i < m; i++) {
+                cin>>u>>v>>w;
+                e[u][v] = dis[u][v] = w;
+                e[v][u] = dis[v][u] = w;
+            }
+            ans = Floyd(n);
+            if(ans == inf)
+                cout<<"No Solution!"<<endl;
+            else
+                cout<<ans<<endl;
+        }
+        return 0;
+    }
+    ```
 
 ???+question "已知一个有向图中任意两点之间是否有连边，要求判断任意两点是否连通。"
     该问题即是求 **图的传递闭包**。
@@ -569,6 +628,16 @@ $w(s,p_1)+w(p_1,p_2)+ \dots +w(p_k,t)+h_s-h_t$
 开一个 `pre` 数组，在更新距离的时候记录下来后面的点是如何转移过去的，算法结束前再递归地输出路径即可。
 
 比如 Floyd 就要记录 `pre[i][j] = k;`，Bellman-Ford 和 Dijkstra 一般记录 `pre[v] = u`。
+
+## 习题
+
+- [Convenient Location](https://vjudge.net/problem/Aizu-0189#author=baobaobear)
+- [Six Degrees of Cowvin Bacon](http://poj.org/problem?id=2139)
+- [Wormholes](http://poj.org/problem?id=3259)
+- [Silver Cow Party](http://poj.org/problem?id=3268)
+- [Road Construction](https://vjudge.net/problem/Aizu-2249)
+- [Mr. Rito Post Office](https://vjudge.net/problem/Aizu-2200)
+- [Roadblocks](http://poj.org/problem?id=3255)
 
 ## 参考资料与注释
 

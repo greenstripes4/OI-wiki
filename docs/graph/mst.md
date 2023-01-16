@@ -214,6 +214,11 @@ $$
 
 - [「HAOI2006」聪明的猴子](https://www.luogu.com.cn/problem/P2504)
 - [「SCOI2005」繁忙的都市](https://loj.ac/problem/2149)
+- [Agri-Net](http://poj.org/problem?id=1258)
+- [Bad Cowtractors](http://poj.org/problem?id=2377)
+- [Out of Hay](http://poj.org/problem?id=2395)
+- [Save your cats](https://vjudge.net/problem/Aizu-2224)
+- [Conscription](http://poj.org/problem?id=3723)
 
 ## 最小生成树的唯一性
 
