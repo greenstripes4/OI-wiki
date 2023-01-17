@@ -186,9 +186,11 @@ bool toposort() {
 
 ## 习题
 
-[CF 1385E](https://codeforces.com/problemset/problem/1385/E)：需要通过拓扑排序构造。
-
-[Luogu P1347](https://www.luogu.com.cn/problem/P1347): 拓扑排序模板。
+- [CF 1385E](https://codeforces.com/problemset/problem/1385/E)：需要通过拓扑排序构造。
+- [Luogu P1347](https://www.luogu.com.cn/problem/P1347): 拓扑排序模板。
+- [杂务](https://www.luogu.com.cn/problem/P1113)
+- [车站分级](https://www.luogu.com.cn/problem/P1983)
+- [神经网络](https://www.luogu.com.cn/problem/P1038)
 
 ## 参考
 

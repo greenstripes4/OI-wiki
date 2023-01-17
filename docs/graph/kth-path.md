@@ -301,4 +301,6 @@ int main() {
 
 ## 习题
 
-[「SDOI2010」魔法猪学院](https://www.luogu.com.cn/problem/P2483)
+- [Remmarguts' Date](http://poj.org/problem?id=2449)
+- [「SCOI2007」k短路](https://www.luogu.com.cn/problem/P4467)
+- [「SDOI2010」魔法猪学院](https://www.luogu.com.cn/problem/P2483)

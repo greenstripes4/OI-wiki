@@ -259,10 +259,19 @@ nav:
     - 霍夫曼树: ds/huffman-tree.md
   - 图论:
     - 图论部分简介: graph/index.md
-    - 图论相关概念: graph/concept.md
-    - 图的存储: graph/save.md
-    - DFS(图论): graph/dfs.md
-    - BFS(图论): graph/bfs.md
+    - 图论入门:
+      - 图论相关概念: graph/concept.md
+      - 图的存储: graph/save.md
+      - DFS(图论): graph/dfs.md
+      - BFS(图论): graph/bfs.md
+      - 有向无环图: graph/dag.md
+      - 拓扑排序: graph/topo.md
+    - 最短路:
+      - 最短路基础: graph/shortest-path.md
+      - k 短路: graph/kth-path.md
+      - 差分约束: graph/diff-constraints.md
+      - 最小环: graph/min-circle.md
+      - 同余最短路: graph/mod-shortest-path.md
     - 树上问题:
       - 树基础: graph/tree-basic.md
       - 树的直径: graph/tree-diameter.md
@@ -276,44 +285,37 @@ nav:
       - AHU 算法: graph/tree-ahu.md
       - 树哈希: graph/tree-hash.md
       - 树上随机游走: graph/tree-random-walk.md
-    - 矩阵树定理: graph/matrix-tree.md
-    - 有向无环图: graph/dag.md
-    - 拓扑排序: graph/topo.md
     - 最小生成树: graph/mst.md
-    - 斯坦纳树: graph/steiner-tree.md
-    - 最小树形图: graph/dmst.md
-    - 最小直径生成树: graph/mdst.md
-    - 最短路: graph/shortest-path.md
-    - 拆点: graph/node.md
-    - 差分约束: graph/diff-constraints.md
-    - k 短路: graph/kth-path.md
-    - 同余最短路: graph/mod-shortest-path.md
-    - 连通性相关:
-      - 强连通分量: graph/scc.md
-      - 双连通分量: graph/bcc.md
-      - 割点和桥: graph/cut.md
-      - 圆方树: graph/block-forest.md
-    - 2-SAT: graph/2-sat.md
-    - 欧拉图: graph/euler.md
-    - 哈密顿图: graph/hamilton.md
-    - 二分图: graph/bi-graph.md
-    - 最小环: graph/min-circle.md
-    - 平面图: graph/planar.md
-    - 图的着色: graph/color.md
+    - 图的匹配:
+      - 图匹配: graph/graph-matching/graph-match.md
+      - 增广路: graph/graph-matching/augment.md
+      - 二分图: graph/bi-graph.md
+      - 二分图最大匹配: graph/graph-matching/bigraph-match.md
+      - 二分图最大权匹配: graph/graph-matching/bigraph-weight-match.md
+      - 一般图最大匹配: graph/graph-matching/general-match.md
+      - 一般图最大权匹配: graph/graph-matching/general-weight-match.md
     - 网络流:
       - 网络流简介: graph/flow.md
       - 最大流: graph/flow/max-flow.md
       - 最小割: graph/flow/min-cut.md
       - 费用流: graph/flow/min-cost.md
       - 上下界网络流: graph/flow/bound.md
+    - 连通性相关:
+      - 强连通分量: graph/scc.md
+      - 双连通分量: graph/bcc.md
+      - 割点和桥: graph/cut.md
+      - 圆方树: graph/block-forest.md
+    - 矩阵树定理: graph/matrix-tree.md
+    - 斯坦纳树: graph/steiner-tree.md
+    - 最小树形图: graph/dmst.md
+    - 最小直径生成树: graph/mdst.md
+    - 拆点: graph/node.md
+    - 2-SAT: graph/2-sat.md
+    - 欧拉图: graph/euler.md
+    - 哈密顿图: graph/hamilton.md
+    - 平面图: graph/planar.md
+    - 图的着色: graph/color.md
     - Stoer-Wagner 算法: graph/stoer-wagner.md
-    - 图的匹配:
-      - 图匹配: graph/graph-matching/graph-match.md
-      - 增广路: graph/graph-matching/augment.md
-      - 二分图最大匹配: graph/graph-matching/bigraph-match.md
-      - 二分图最大权匹配: graph/graph-matching/bigraph-weight-match.md
-      - 一般图最大匹配: graph/graph-matching/general-match.md
-      - 一般图最大权匹配: graph/graph-matching/general-weight-match.md
     - Prufer 序列: graph/prufer.md
     - LGV 引理: graph/lgv.md
     - 弦图: graph/chord.md
@@ -484,6 +486,7 @@ nav:
     - 离散化: misc/discrete.md
     - 离线算法:
       - 离线算法简介: misc/offline.md
+      - 线段树与离线询问: ds/segment-tree-offline.md
       - 二维偏序: misc/2dpartialorder.md
       - CDQ 分治: misc/cdq-divide.md
       - 整体二分: misc/parallel-binsearch.md

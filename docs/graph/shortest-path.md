@@ -117,6 +117,8 @@ author: du33169
     
     时间复杂度为 $O(n^3)$。
 
+[最小环](./min-circle.md) 中也提供了暴力解法和Dijkstra解法。
+
 ???+note "参考代码"
 
     ```cpp
