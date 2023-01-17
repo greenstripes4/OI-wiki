@@ -6,7 +6,7 @@
 
 提到状态压缩DP时，常常用Hamilton问题作为引子。
 
-???+note "[最短Hamilton路径](https://www.acwing.com/problem/content/description/93/)
+???+note "[最短Hamilton路径](https://www.acwing.com/problem/content/description/93/)"
     **题目描述：** 给定一个有权无向图，包括n个点，标记为0 ~ n-1，以及连接n个点的边，求从起点0到终点n-1的最短路径。要求必须经过所有点，而且只经过一次。1 ≤ n ≤ 20。
     
     **输入格式：** 第一行输入整数n。接下来n行每行n个整数，其中第i行第j个整数表示点i到j的距离（记为a[i, j]）。0 ≤ a\[i, j\] ≤ 10^7^
