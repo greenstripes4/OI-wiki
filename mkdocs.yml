@@ -285,7 +285,12 @@ nav:
       - AHU 算法: graph/tree-ahu.md
       - 树哈希: graph/tree-hash.md
       - 树上随机游走: graph/tree-random-walk.md
-    - 最小生成树: graph/mst.md
+    - 生成树:
+      - 最小生成树: graph/mst.md
+      - 矩阵树定理: graph/matrix-tree.md
+      - 最小树形图: graph/dmst.md
+      - 最小直径生成树: graph/mdst.md
+      - 斯坦纳树: graph/steiner-tree.md
     - 图的匹配:
       - 图匹配: graph/graph-matching/graph-match.md
       - 增广路: graph/graph-matching/augment.md
@@ -299,23 +304,19 @@ nav:
       - 最大流: graph/flow/max-flow.md
       - 最小割: graph/flow/min-cut.md
       - 费用流: graph/flow/min-cost.md
+      - 拆点: graph/node.md
       - 上下界网络流: graph/flow/bound.md
+      - Stoer-Wagner 算法: graph/stoer-wagner.md
     - 连通性相关:
       - 强连通分量: graph/scc.md
       - 双连通分量: graph/bcc.md
       - 割点和桥: graph/cut.md
       - 圆方树: graph/block-forest.md
-    - 矩阵树定理: graph/matrix-tree.md
-    - 斯坦纳树: graph/steiner-tree.md
-    - 最小树形图: graph/dmst.md
-    - 最小直径生成树: graph/mdst.md
-    - 拆点: graph/node.md
-    - 2-SAT: graph/2-sat.md
+      - 2-SAT: graph/2-sat.md
     - 欧拉图: graph/euler.md
     - 哈密顿图: graph/hamilton.md
     - 平面图: graph/planar.md
     - 图的着色: graph/color.md
-    - Stoer-Wagner 算法: graph/stoer-wagner.md
     - Prufer 序列: graph/prufer.md
     - LGV 引理: graph/lgv.md
     - 弦图: graph/chord.md
