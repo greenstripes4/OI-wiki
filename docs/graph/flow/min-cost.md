@@ -297,6 +297,10 @@ Primal-Dual 原始对偶算法的思路与 [Johnson 全源最短路径算法](..
     }
     ```
 
+![](./images/min-cost-1.png)
+
+![](./images/min-cost-2.png)
+
 ## 习题
 
 - [「Luogu 3381」【模板】最小费用最大流](https://www.luogu.com.cn/problem/P3381)
@@ -305,6 +309,13 @@ Primal-Dual 原始对偶算法的思路与 [Johnson 全源最短路径算法](..
 - [「SCOI 2007」修车](https://www.luogu.com.cn/problem/P2053)
 - [「HAOI 2010」订货](https://www.luogu.com.cn/problem/P2517)
 - [「NOI 2012」美食节](https://loj.ac/problem/2674)
+- ["Shortest" pair of paths](http://poj.org/problem?id=3068)
+- [Going Home](http://poj.org/problem?id=2195)
+- [Farm Tour](http://poj.org/problem?id=2135)
+- [Kaka's Matrix Travels](http://poj.org/problem?id=3422)
+- [Evacuation Plan](http://poj.org/problem?id=2175)
+- [The Windy's](http://poj.org/problem?id=3686)
+- [How to Create a Good Game](https://vjudge.net/problem/Aizu-2230)
 
 ## 参考资料与注释
 

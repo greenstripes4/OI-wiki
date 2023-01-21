@@ -2,6 +2,10 @@ author: Anguei, sshwy, Xeonacid, Ir1d, MonkeyOliver, hsfzLZH1
 
 拆点是一种图论建模思想，常用于 [网络流](./flow.md)，用来处理 **点权或者点的流量限制** 的问题，也常用于 **分层图**。
 
+![](./images/node-1.png)
+
+![](./images/node-2.png)
+
 ## 结点有流量限制的最大流
 
 如果把结点转化成边，那么这个问题就可以套板子解决了。
@@ -15,6 +19,10 @@ author: Anguei, sshwy, Xeonacid, Ir1d, MonkeyOliver, hsfzLZH1
 拆点之后的图是这个样子：
 
 ![](./images/node-split.svg)
+
+![](./images/node-3.png)
+
+![](./images/node-4.png)
 
 ## 分层图最短路
 
@@ -81,3 +89,9 @@ $\text{dis}_{i, j} = \min\{\min\{\text{dis}_{from, j - 1}\}, \min\{\text{dis}_{f
       println(ans);
     }
     ```
+
+![](./images/node-5.png)
+
+## 习题
+
+- [Dining](http://poj.org/problem?id=3281)
