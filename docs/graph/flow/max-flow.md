@@ -886,6 +886,12 @@ HLPP 推送的条件是 $h(u)=h(v)+1$，而如果在算法的某一时刻，$h(u
 
 其中 pic13 到 pic14 执行了 Relabel(4)，并进行了 GAP 优化。
 
+## 习题
+
+- [Transferring Sylla](http://poj.org/problem?id=3713)
+- [Firing](http://poj.org/problem?id=2987)
+- [Intervals](http://poj.org/problem?id=3680)
+
 ## 脚注
 
 [^ref1]: Cherkassky B V, Goldberg A V. On implementing push-relabel method for the maximum flow problem\[C]//International Conference on Integer Programming and Combinatorial Optimization. Springer, Berlin, Heidelberg, 1995: 157-171.

@@ -153,3 +153,6 @@ void dfs(int u) {
 - [「Luogu 1361」小 M 的作物](https://www.luogu.com.cn/problem/P1361)
 - [「SHOI 2007」善意的投票](https://www.luogu.com.cn/problem/P2057)
 - [太空飞行计划问题](https://www.luogu.com.cn/problem/P2762)
+- [Minimum Cut](http://poj.org/problem?id=2914)
+- [Hard Life](http://poj.org/problem?id=3155)
+- [Dual Core CPU](http://poj.org/problem?id=3469)
