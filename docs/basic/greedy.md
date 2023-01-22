@@ -185,6 +185,102 @@
 - [P2123 皇后游戏 - 洛谷](https://www.luogu.com.cn/problem/P2123)
 - [LeetCode 上标签为贪心算法的题目](https://leetcode-cn.com/tag/greedy/)
 
+??? note "[Cow Acrobats](http://poj.org/problem?id=3045)"
+    农夫的N只牛(1<=n<=50,000)决定练习特技表演。 特技表演如下:站在对方的头顶上，形成一个垂直的高度。 每头牛都有重量(1 <= W_i <= 10,000)和力量(1 <= S_i <= 1,000,000,000)。奶牛崩溃的风险等同于她身上所有的奶牛的重量(当然不包括她自己)减去她的力量。你的任务是确定奶牛的顺序，从而使得所有牛的风险中最大的一个尽量小。
+    农夫的N只牛(1<=n<=50,000)决定练习特技表演。 特技表演如下:站在对方的头顶上，形成一个垂直的高度。 每头牛都有重量(1 <= W_i <= 10,000)和力量(1 <= S_i <= 1,000,000,000)。奶牛崩溃的风险等同于她身上所有的奶牛的重量(当然不包括她自己)减去她的力量。你的任务是确定奶牛的顺序，从而使得所有牛的风险中最大的一个尽量小。
+    
+    ??? tip
+        将每头牛按照 w+s 从小到大排序，这样就得到正确的答案啦哈哈哈哈哈哈。
+
+        **证明：**
+        
+        设最优解为 real_ans，自己方案的解为 ans。
+
+        要证：ans=real_ans
+    
+        只需证：
+
+        $ans\leq real\_ans$
+    
+        $ans\ge real\_ans$
+
+        证明如下：
+
+        1、由题意可知，必然有 $real\_ans\leq ans$ 。
+
+        2、假设最优解不是按我们的算法来做的，则至少有一对牛是交换了位置的。已知第 k 头牛的特征为 $(w_k,s_k)$，第 k+1 头牛的特征为 $(w_{k+1},s_{k+1})$，且她们的风险分别为，$ris_k,ris_{k+1}$，则：
+
+        位置 k 交换前 $ris_k=\sum_{i=1}^{k-1}w_i-s_k$ 交换后 $ris_k=\sum_{i=1}^{k-1}w_i+w_{k+1}-s_k$
+​
+        位置 k+1 交换前 $ris_{k+1}=\sum_{i=1}^kw_i-s_{k+1}$ 交换后 $ris_{k+1}=\sum_{i=1}^{k-1}w_i-s_{k+1}$
+ 
+        同时减去 $\sum_{i=1}^{k-1}w_i$
+
+        可得：
+
+        位置 k 交换前 $-s_k$ 交换后 $w_{k+1}-s_k$
+        
+        位置 k+1 交换前 $w_k-s_{k+1}$ 交换后 $-s_{k+1}$
+
+        由于 $s,w\ge1$ ，所以有：
+        
+        $w_{k+1}-s_k>-s_k$ $w_{k}-s_{k+1}>-s_{k+1}$
+
+        所以，我们只要比较 $w_{k+1}-s_k$ 与 $w_k-s_{k+1}$ 的大小关系即可。
+    
+        两边同时加上 $s_k+s_{k+1}$ 得：
+        
+        $w_{k+1}+s_{k+1}$ 与 $w_k+s_k$ 。
+        
+        因为我们的贪心算法是按照 w+s 从小到大排序的。
+        
+        所以， $w_{k+1}+s_{k+1}\ge w_k+s_k$ 。
+        
+        所以，交换前的解要小于交换后的解，即 $ans\leq real\_ans$ 。
+
+        证毕。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <bits/stdc++.h>
+        #define sc scanf
+        #define pf printf
+        using namespace std;
+        const int N = 5e4 + 10;
+        const int INF = 0x3f3f3f3f;
+
+        struct Node
+        {
+            int w, s;
+            bool operator<(const Node &x) const
+            {
+                return w + s < x.w + x.s;
+            }
+        }cow[N];
+
+        int main()
+        {
+            int n;
+            sc("%d", &n);
+            for(int i = 0; i < n; i++) {
+                int w, s;
+                sc("%d %d", &w, &s);
+                cow[i] = {w, s};
+            }
+            sort(cow, cow + n);
+            
+            int ans = -INF, sum = 0;
+            for(int i = 0; i < n; i++) {
+                ans = max(ans, sum - cow[i].s);
+                sum += cow[i].w;
+            }
+            pf("%d\n", ans);
+            
+            return 0;
+        }
+        ```
+
 ## 参考资料与注释
 
 [^ref1]: [贪心算法 - 维基百科，自由的百科全书](https://zh.wikipedia.org/wiki/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95)
