@@ -327,6 +327,267 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
 
 ## 习题
 - [力扣的DFS题](https://leetcode-cn.com/tag/depth-first-search/)
-- [Red and Black](http://poj.org/problem?id=1979)
-- [Ball](https://vjudge.net/problem/Aizu-0033#author=baobaobear)
-- [Curling 2.0](http://poj.org/problem?id=3009)
+
+??? note "[Red and Black](http://poj.org/problem?id=1979)"
+    有一个长方形的房间，上面铺着正方形的瓷砖。每块瓷砖的颜色不是红色就是黑色。
+    
+    一个男人站在一块黑色的瓷砖上。从一个瓦片，他可以移动到四个相邻瓦片中的一个。但是他不能在红瓦上移动，他只能在黑瓦上移动。
+
+    编写一个程序，通过重复上面描述的动作来计算他可以到达的黑色方块的数量。
+
+    ??? tip
+        判断起点，向四周深度搜索，简单。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <algorithm>
+        #include <cmath>
+        using namespace std;
+        char a[35][35];
+        int n,m;
+        int res=0;
+        int dx[4]={1,-1,0,0};
+        int dy[4]={0,0,1,-1};
+        void dfs(int x,int y)
+        {
+            res++;
+            a[x][y]='#';
+            for(int i=0;i<4;i++){
+                int nx=x+dx[i],ny=y+dy[i];
+                if(nx>=0&&nx<n&&ny>=0&&ny<m&&a[nx][ny]=='.'){
+                    dfs(nx,ny);
+                }
+            }
+            return ;
+        }
+        void solve()
+        {
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    if(a[i][j]=='@'){
+                        dfs(i,j);
+                    }
+                }
+            }
+        }
+        int main()
+        {
+            while(cin>>m>>n&&n!=0&&m!=0){
+
+                res=0;
+                for(int i=0;i<n;i++){
+                    for(int j=0;j<m;j++){
+                        cin>>a[i][j];
+                    }
+                }
+                solve();
+                cout<<res<<endl;
+            }
+            return 0;
+        }
+        ```
+??? note "[Ball](https://vjudge.net/problem/Aizu-0033#author=baobaobear)"
+    ![](./image/../images/0033-1.png)
+
+    如图所示，容器中间有一枢轴，下方分为两路。容器上方开口，从1到10连续编号的小球从容器开口A放入。通过调整枢轴E的方向，可以使小球经过D而落入左侧B筒或者右侧C筒。现给出从A放入小球的顺序，请你判断能否最终小球落入B和C时，号码大的球总是位于号码小的球的上侧。如果可能则在一行中输出”YES”，否则输出 “NO”
+
+    ??? tip
+        解法1： 深搜。用vis数组做标记，1的代表第一个数组，0的代表第二个数组。通过dfs生成第一个递增的数组，然后检查余下数字组成的第二个数组。
+
+        ```cpp
+        #include <cstdio>
+        #include <cstring>
+        #include <cstdlib>
+        #include <algorithm>
+        #include <iostream>
+        #include <cmath>
+        #include <vector>
+        #include <map>
+        #include <stack>
+        using namespace std;
+        const int maxn = 10001;
+        int a[maxn];
+        int vis[maxn];
+        void dfs(int pre , int cur)
+        {
+            if(cur < 10 && a[pre] < a[cur])
+            {
+                vis[cur] = 1;
+                dfs(cur , cur + 1);
+            }
+            else if(cur < 10 && a[pre] > a[cur]){
+                dfs(pre , cur + 1);
+            }
+        }
+        
+        int main()
+        {
+            int n;
+            cin >> n;
+            while(n --){
+                for(int i = 0 ; i < 10 ; i ++){
+                    cin >> a[i];
+                }
+                bool flag = false;
+                for(int i = 0 ; i < 10 ; i ++){
+                    memset(vis , 0 , sizeof(vis));
+                    vis[i] = 1;
+                    dfs(i , i + 1);
+                    int pre = 0;
+                    for(int j = 0 ; j < 10 ; j ++){
+                        if(vis[j] == 0){
+                            if(pre > a[j]){
+                                flag = true;
+                                break;
+                            }
+                            else pre = a[j];
+                        }
+                    }
+                    if(!flag){
+                        cout << "YES" << endl;
+                        break;
+                    }
+                }
+                if(flag) cout << "NO" << endl;
+        
+            }
+        }
+        ```
+
+        解法2：贪心，每次找到符合条件且是两边最上层的数最大的那个方向加进去
+
+        ```java
+        import java.util.Scanner;
+        public class Main{
+            public static void main(String[] args) {
+                Scanner sc = new Scanner(System.in);
+                int n = sc.nextInt();
+                int arr[] = new int[10];
+                while(n--!=0) {
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = sc.nextInt();
+                    }
+                    int a=0,b=0;
+                    int res = 1;
+                    for (int i = 0; i < arr.length; i++) {
+                        int ans = 0;
+                        if(a<arr[i] && ((a>=b)||b>=arr[i])) {
+                            a = arr[i];
+                            ans=1;
+                            continue;
+                        }
+                        if(b<arr[i] && ((b>=a)||a>=arr[i])) {
+                            b = arr[i];
+                            ans=1;
+                            continue;
+                        }
+                        if(ans==0) {
+                            res=0;break;
+                        }
+                    }
+                    if(res==1)
+                        System.out.println("YES");
+                    else
+                        System.out.println("NO");
+                    
+                }
+                
+            }
+        
+        }
+        ```
+    
+??? note "[Curling 2.0](http://poj.org/problem?id=3009)"
+    给你一个w * h的矩形格子，其中有包含一个数字“2”和一个数字“3”，剩下的格子由“0”和“1”组成，目的是计算从“2”走到“3”的最短步数，“1”代表障碍物，“0”代表可以通行。“2”可以往周围四个方向走，如果往某一个方向走，那么停下来的条件是，当这个方向上存在障碍物“1”，且会停在这个障碍物的前一个格子，并会击碎这个障碍物;如果选择的方向上没有障碍物“1”也没有终点“3”，那么就会一直运动下去，直到出界。如果遇到“3”，那么就算一种到达终点的方法。每选择往一个方向运动，就算一步。如果不能到达或者到达的步数大于10,那么就算失败，输出-1.
+
+    ![](./images/3009-1.gif)
+
+    拿题目给的图再说明下吧～
+
+    图a:球可以往上和右运动，往上运动直到遇到障碍物才会停下，如果没有障碍物就会出界;往右运动，走一个格子后就会遇到障碍物，此时球停在第二行第三列，且第二行第四列的障碍物被击碎，变为空白格，即“0”。不能往下运动，因为与球相邻的就存在障碍物“1”,球至少运动一个格子才会击碎阻碍它的障碍物。
+
+    图b:球如果往右运动的话，会停在第二行第二列的位置，且第二行第三列的障碍物会被击碎变为空白格。
+
+    图c：球可以往上，左，右运动，往上和左会出界，往右会停在第二行第三列的位置，且第二行第四列的障碍物会被击碎。
+
+    ??? tip
+        dfs+回溯的变形 把每次走一步变成每次走一大行即可
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cmath>
+        #include <cstdio>
+        #include <cstring>
+        #include <cstdlib>
+        #include <stack>
+        #include <queue>
+        #include <vector>
+        #include <algorithm>
+        #include <string>
+
+        typedef long long LL;
+        using namespace std;
+        const int MAXN = 20;
+        int map[MAXN + 3][MAXN + 3];
+        int stepX[] = {-1, 1, 0, 0};//四个方向：上、下、左、右
+        int stepY[] = {0, 0, -1, 1};
+        int ans;//最短步数
+        int w, h;//w 为宽度(y) ，h为高度(x)，注意下
+        int stX, stY, edX, edY;//开始时“2”的位置和“3”的位置坐标
+
+        int check(int x, int y) {//返回 非2 代表可以往这个方向走 返回 非1 代表会停下来
+            if(map[x][y] == 0 || map[x][y] == 2 ) return 1;
+            else if(map[x][y] == -1 || map[x][y] == 1) return 2;//出界或者有障碍物
+            else return 3;
+        }
+
+        void backtrack(int x, int y, int t) {
+            if(x == edX && y == edY || t > 10) {//到达终点或者深度大于10
+                ans = (t < ans ? t : ans);//更新最短步数
+            }
+            else {
+                for(int i = 0; i < 4; i++) {//往四个方向试探
+                    int tx = x, ty = y;
+                    if(check(tx + stepX[i], y + stepY[i]) != 2) { //可以往当前方向运动
+                        while(check(tx + stepX[i], ty + stepY[i]) == 1) { //没有障碍物 或 未到达终点的话就一直运动下去
+                            tx += stepX[i], ty += stepY[i];
+                        }
+                        if(map[tx + stepX[i]][ty + stepY[i]] == 1) {//遇到障碍物停止运动
+                            map[tx + stepX[i]][ty + stepY[i]] = 0;//击碎障碍物
+                            t++;             //步数加1
+                            backtrack(tx, ty, t);//继续从障碍物前一个格子开始走
+                            --t;        //回溯时恢复现场
+                            map[tx + stepX[i]][ty + stepY[i]] = 1;
+                        }
+                        else if(map[tx + stepX[i]][ty + stepY[i]] == 3) {//遇到终点停止运动
+                            t++;
+                            backtrack(tx + stepX[i], ty + stepY[i], t);
+                            --t;
+                        }
+                    }
+                }
+            }
+        }
+
+        int main() {
+            while(scanf("%d%d", &w, &h), w || h ) {
+                memset(map, -1, sizeof(map));
+                stX = stY = edX = edY = -1;
+                for(int i = 1; i <= h; i++) {
+                    for(int j = 1; j <= w; j++) {
+                        scanf("%d", &map[i][j]);
+                        if(map[i][j] == 2) stX = i, stY = j; //起点
+                        else if(map[i][j] == 3) edX = i, edY = j;//终点
+                    }
+                }
+                ans = MAXN;
+                backtrack(stX, stY, 0);
+                printf("%d\n", ans > 10 ? -1 : ans);
+            }
+            return 0;
+        }
+        ```
