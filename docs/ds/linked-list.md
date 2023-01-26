@@ -317,184 +317,186 @@
     
     3 6 9 2 7 1 8 5 10 4
 
-下面给出动态链表、静态链表、STL链表等5种实现方案。其中有单向链表，也有双向链表。在竞赛中，为加快编码速度，一般用静态链表或者STL list。
-本文给出的5种代码，逻辑和流程完全一样，看懂一个，其他的完全类似，可以把注意力放在不同的实现方案上，便于学习。
+    ??? tip
+        下面给出动态链表、静态链表、STL链表等5种实现方案。其中有单向链表，也有双向链表。在竞赛中，为加快编码速度，一般用静态链表或者STL list。
 
-???+note "参考代码"
-    === "动态链表"
-        教科书都会讲动态链表，它需要临时分配链表节点、使用完毕后释放链表节点。这样做，优点是能及时释放空间，不使用多余内存。缺点是很容易出错。下面代码实现了动态单向链表。
+        本文给出的5种代码，逻辑和流程完全一样，看懂一个，其他的完全类似，可以把注意力放在不同的实现方案上，便于学习。
 
-        ```cpp
-        #include <bits/stdc++.h>
-        struct node{          //链表结构
-            int data;
-            node *next;
-        };
-        int main(){
-            int n,m;
-            scanf("%d %d",&n,&m);
-            node *head,*p,*now,*prev;   //定义变量
-            head = new node; head->data = 1; head->next=NULL; //分配第一个节点，数据置为1        
-            now = head;                 //当前指针是头
-            for(int i=2;i<=n;i++){
-                p = new node;  p->data = i; p->next = NULL;  //p是新节点
-                now->next = p;        //把申请的新节点连到前面的链表上
-                now = p;              //尾指针后移一个
-            }    
-            now->next = head;            //尾指针指向头：循环链表建立完成
-            //以上是建立链表，下面是本题的逻辑和流程。后面4种代码，逻辑流程完全一致。
-            now = head, prev=head;      //从第1个开始数
-            while((n--) >1 ){ 
-                for(int i=1;i<m;i++){       //数到m，停下
-                    prev = now;             //记录上一个位置，用于下面跳过第m个节点
-                    now = now->next; 
+    ??? note "参考代码"
+        === "动态链表"
+            教科书都会讲动态链表，它需要临时分配链表节点、使用完毕后释放链表节点。这样做，优点是能及时释放空间，不使用多余内存。缺点是很容易出错。下面代码实现了动态单向链表。
+
+            ```cpp
+            #include <bits/stdc++.h>
+            struct node{          //链表结构
+                int data;
+                node *next;
+            };
+            int main(){
+                int n,m;
+                scanf("%d %d",&n,&m);
+                node *head,*p,*now,*prev;   //定义变量
+                head = new node; head->data = 1; head->next=NULL; //分配第一个节点，数据置为1        
+                now = head;                 //当前指针是头
+                for(int i=2;i<=n;i++){
+                    p = new node;  p->data = i; p->next = NULL;  //p是新节点
+                    now->next = p;        //把申请的新节点连到前面的链表上
+                    now = p;              //尾指针后移一个
+                }    
+                now->next = head;            //尾指针指向头：循环链表建立完成
+                //以上是建立链表，下面是本题的逻辑和流程。后面4种代码，逻辑流程完全一致。
+                now = head, prev=head;      //从第1个开始数
+                while((n--) >1 ){ 
+                    for(int i=1;i<m;i++){       //数到m，停下
+                        prev = now;             //记录上一个位置，用于下面跳过第m个节点
+                        now = now->next; 
+                    }
+                    printf("%d ", now->data);       //输出第m节点，带空格
+                    prev->next = now->next;         //跳过这个节点
+                    delete now;                     //释放节点
+                    now = prev->next;               //新的一轮        
                 }
-                printf("%d ", now->data);       //输出第m节点，带空格
-                prev->next = now->next;         //跳过这个节点
-                delete now;                     //释放节点
-                now = prev->next;               //新的一轮        
+                printf("%d", now->data);            //打印最后一个，后面不带空格
+                delete now;                         //释放最后一个节点
+                return 0;
             }
-            printf("%d", now->data);            //打印最后一个，后面不带空格
-            delete now;                         //释放最后一个节点
-            return 0;
-        }
-        ```
-        
-    === "用结构体实现单向静态链表"
-        上面的动态链表，需要分配和释放空间，虽然对空间的使用很节省，但是容易出错。在竞赛中，对内存管理要求不严格，为加快编码速度，一般就静态分配，省去了动态分配和释放的麻烦。这种静态链表，使用预先分配的大数组来存储链表。
+            ```
+            
+        === "用结构体实现单向静态链表"
+            上面的动态链表，需要分配和释放空间，虽然对空间的使用很节省，但是容易出错。在竞赛中，对内存管理要求不严格，为加快编码速度，一般就静态分配，省去了动态分配和释放的麻烦。这种静态链表，使用预先分配的大数组来存储链表。
 
-        静态链表有两种做法，一是定义一个链表结构，和动态链表的结构差不多；一种是使用一维数组，直接在数组上进行链表操作。
+            静态链表有两种做法，一是定义一个链表结构，和动态链表的结构差不多；一种是使用一维数组，直接在数组上进行链表操作。
 
-        ```cpp
-        #include <bits/stdc++.h>
-        const int maxn = 105;        //定义静态链表的空间大小
-        struct node{                 //单向链表
-            int id;
-            //int data;   //如有必要，定义一个有意义的数据
-            int nextid;
-        }nodes[maxn];
-        int main(){
-            int n, m;
-            scanf("%d%d", &n, &m);
-            nodes[0].nextid = 1;
-            for(int i = 1; i <= n; i++){
-                nodes[i].id = i;
-                nodes[i].nextid = i + 1;
-            }
-            nodes[n].nextid = 1;                     //循环链表：尾指向头
-            int now = 1, prev = 1;                   //从第1个开始
-            while((n--) >1){
-                for(int i = 1; i < m; i++){          //数到m，停下
-                    prev = now;  
-                    now = nodes[now].nextid;
+            ```cpp
+            #include <bits/stdc++.h>
+            const int maxn = 105;        //定义静态链表的空间大小
+            struct node{                 //单向链表
+                int id;
+                //int data;   //如有必要，定义一个有意义的数据
+                int nextid;
+            }nodes[maxn];
+            int main(){
+                int n, m;
+                scanf("%d%d", &n, &m);
+                nodes[0].nextid = 1;
+                for(int i = 1; i <= n; i++){
+                    nodes[i].id = i;
+                    nodes[i].nextid = i + 1;
                 }
-                printf("%d ", nodes[now].id);        //带空格
-                nodes[prev].nextid = nodes[now].nextid;  //跳过节点now，即删除now
-                now = nodes[prev].nextid;            //新的now
-            }    
-            printf("%d", nodes[now].nextid);         //打印最后一个，后面不带空格
-            return 0; 
-        }
-        ```
-
-    === "用结构体实现双向静态链表"
-
-        ```cpp
-        #include <bits/stdc++.h>
-        const int maxn = 105;
-        struct node{      //双向链表
-            int id;       //节点编号
-            //int data;   //如有必要，定义一个有意义的数据
-            int preid;    //前一个节点
-            int nextid;   //后一个节点
-        }nodes[maxn];
-        int main(){
-            int n, m;
-            scanf("%d%d", &n, &m);
-            nodes[0].nextid = 1;
-            for(int i = 1; i <= n; i++){  //建立链表
-                nodes[i].id = i;
-                nodes[i].preid = i-1;     //前节点
-                nodes[i].nextid = i+1;    //后节点
+                nodes[n].nextid = 1;                     //循环链表：尾指向头
+                int now = 1, prev = 1;                   //从第1个开始
+                while((n--) >1){
+                    for(int i = 1; i < m; i++){          //数到m，停下
+                        prev = now;  
+                        now = nodes[now].nextid;
+                    }
+                    printf("%d ", nodes[now].id);        //带空格
+                    nodes[prev].nextid = nodes[now].nextid;  //跳过节点now，即删除now
+                    now = nodes[prev].nextid;            //新的now
+                }    
+                printf("%d", nodes[now].nextid);         //打印最后一个，后面不带空格
+                return 0; 
             }
-            nodes[n].nextid = 1;          //循环链表：尾指向头
-            nodes[1].preid = n;           //循环链表：头指向尾
-            int now = 1;                  //从第1个开始
-            while((n--) >1){
-                for(int i = 1; i < m; i++)     //数到m，停下
-                    now = nodes[now].nextid;
-                printf("%d ", nodes[now].id);  //打印，后面带空格
-                int prev = nodes[now].preid;   
-                int next = nodes[now].nextid;
-                nodes[prev].nextid = nodes[now].nextid;  //删除now
-                nodes[next].preid = nodes[now].preid;   
-                now = next;                    //新的开始
-            }    
-            printf("%d", nodes[now].nextid);   //打印最后一个，后面不带空格
-            return 0; 
-        }
-        ```
+            ```
 
-    === "用数组实现单向静态链表"
-        这是最简单的实现方法。定义一个一维数组nodes[]，nodes[i]的i是节点的值，nodes[i]的值是下一个节点。
-        
-        从上面描述可以看出，它的使用环境也很有限，因为它的节点只能存一个数据，就是i。
+        === "用结构体实现双向静态链表"
 
-        ```cpp
-        #include<bits/stdc++.h>
-        int nodes[150];
-        int main(){   
-            int n, m;
-            scanf("%d%d", &n, &m); 
-            for(int i=1;i<=n-1;i++)          //nodes[i]的值就是下一个节点
-                nodes[i]=i+1;
-            nodes[n]=1;                      //循环链表：尾指向头
-            int now = 1, prev = 1;           //从第1个开始
-            while((n--) >1){
-                for(int i = 1; i < m; i++){   //数到m，停下
-                    prev = now;  
-                    now = nodes[now];         //下一个
+            ```cpp
+            #include <bits/stdc++.h>
+            const int maxn = 105;
+            struct node{      //双向链表
+                int id;       //节点编号
+                //int data;   //如有必要，定义一个有意义的数据
+                int preid;    //前一个节点
+                int nextid;   //后一个节点
+            }nodes[maxn];
+            int main(){
+                int n, m;
+                scanf("%d%d", &n, &m);
+                nodes[0].nextid = 1;
+                for(int i = 1; i <= n; i++){  //建立链表
+                    nodes[i].id = i;
+                    nodes[i].preid = i-1;     //前节点
+                    nodes[i].nextid = i+1;    //后节点
                 }
-                printf("%d ", now);  //带空格
-                nodes[prev] = nodes[now];     //跳过节点now，即删除now
-                now = nodes[prev];            //新的now
-            }    
-            printf("%d", now);                //打印最后一个，不带空格
-            return 0;
-        }
-        ```
-
-    === "STL List"
-        竞赛或工程中，常常使用C++ STL list。list 是双向链表，它的内存空间可以是不连续的，通过指针来进行数据的访问，它能高效率地在任意地方删除和插入，插入和删除操作是常数时间的。
-        
-        请读者自己熟悉list的初始化、添加、遍历、插入、删除、查找、排序、释放 [参考](https://blog.csdn.net/zhouzhenhe2008/article/details/77428743)。
-
-        ```cpp
-        #include <bits/stdc++.h>
-        using namespace std;
-        int main(){
-            int n, m;
-            cin>>n>>m;
-            list<int>node;
-            for(int i=1;i<=n;i++)         //建立链表
-                node.push_back(i);     
-            list<int>::iterator it = node.begin();
-            while(node.size()>1){         //list的大小由STL自己管理
-                for(int i=1;i<m;i++){     //数到m
-                    it++; 
-                    if(it == node.end()) //循环链表，end()是list末端下一位置
-                        it = node.begin();                                              
-                }
-                cout << *it <<"";
-                list<int>::iterator next = ++it;
-                if(next==node.end())  next=node.begin();  //循环链表
-                node.erase(--it);         //删除这个节点，node.size()自动减1
-                it = next;
+                nodes[n].nextid = 1;          //循环链表：尾指向头
+                nodes[1].preid = n;           //循环链表：头指向尾
+                int now = 1;                  //从第1个开始
+                while((n--) >1){
+                    for(int i = 1; i < m; i++)     //数到m，停下
+                        now = nodes[now].nextid;
+                    printf("%d ", nodes[now].id);  //打印，后面带空格
+                    int prev = nodes[now].preid;   
+                    int next = nodes[now].nextid;
+                    nodes[prev].nextid = nodes[now].nextid;  //删除now
+                    nodes[next].preid = nodes[now].preid;   
+                    now = next;                    //新的开始
+                }    
+                printf("%d", nodes[now].nextid);   //打印最后一个，后面不带空格
+                return 0; 
             }
-            cout << *it;
-            return 0;
-        }
-        ```
+            ```
+
+        === "用数组实现单向静态链表"
+            这是最简单的实现方法。定义一个一维数组nodes[]，nodes[i]的i是节点的值，nodes[i]的值是下一个节点。
+            
+            从上面描述可以看出，它的使用环境也很有限，因为它的节点只能存一个数据，就是i。
+
+            ```cpp
+            #include<bits/stdc++.h>
+            int nodes[150];
+            int main(){   
+                int n, m;
+                scanf("%d%d", &n, &m); 
+                for(int i=1;i<=n-1;i++)          //nodes[i]的值就是下一个节点
+                    nodes[i]=i+1;
+                nodes[n]=1;                      //循环链表：尾指向头
+                int now = 1, prev = 1;           //从第1个开始
+                while((n--) >1){
+                    for(int i = 1; i < m; i++){   //数到m，停下
+                        prev = now;  
+                        now = nodes[now];         //下一个
+                    }
+                    printf("%d ", now);  //带空格
+                    nodes[prev] = nodes[now];     //跳过节点now，即删除now
+                    now = nodes[prev];            //新的now
+                }    
+                printf("%d", now);                //打印最后一个，不带空格
+                return 0;
+            }
+            ```
+
+        === "STL List"
+            竞赛或工程中，常常使用C++ STL list。list 是双向链表，它的内存空间可以是不连续的，通过指针来进行数据的访问，它能高效率地在任意地方删除和插入，插入和删除操作是常数时间的。
+            
+            请读者自己熟悉list的初始化、添加、遍历、插入、删除、查找、排序、释放 [参考](https://blog.csdn.net/zhouzhenhe2008/article/details/77428743)。
+
+            ```cpp
+            #include <bits/stdc++.h>
+            using namespace std;
+            int main(){
+                int n, m;
+                cin>>n>>m;
+                list<int>node;
+                for(int i=1;i<=n;i++)         //建立链表
+                    node.push_back(i);     
+                list<int>::iterator it = node.begin();
+                while(node.size()>1){         //list的大小由STL自己管理
+                    for(int i=1;i<m;i++){     //数到m
+                        it++; 
+                        if(it == node.end()) //循环链表，end()是list末端下一位置
+                            it = node.begin();                                              
+                    }
+                    cout << *it <<"";
+                    list<int>::iterator next = ++it;
+                    if(next==node.end())  next=node.begin();  //循环链表
+                    node.erase(--it);         //删除这个节点，node.size()自动减1
+                    it = next;
+                }
+                cout << *it;
+                return 0;
+            }
+            ```
 
 ## 习题
 - [线性表题单 - 洛谷](https://www.luogu.com.cn/training/113)
