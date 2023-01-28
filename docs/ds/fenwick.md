@@ -62,7 +62,7 @@ author: HeRaNO, Zhoier, Ir1d, Xeonacid, wangdehu, ouuan, ranwen, ananbaobeichicu
 
 那如果我告诉你三个数 $A$，$B$，$C$，$A = a[1 \ldots 4]$ 的和，$B = a[5 \ldots 6]$ 的总和，$C = a[7 \ldots 7]$ 的总和（其实就是 $a[7]$ 自己）。你会怎么算？你一定会回答：$A + B + C$，只需要求 $3$ 个数的和。
 
-这就是树状数组能快速求解信息的原因：我们总能将一段前缀 $[1, n]$ 拆成 **不多于 $\boldsymbol{\log n}$ 段区间**，使得这 $\log n$ 段区间的信息是 **已知的**。
+这就是树状数组能快速求解信息的原因：我们总能将一段前缀 $[1, n]$ 拆成 **不多于 $\mathbf{\log n}$ 段区间**，使得这 $\log n$ 段区间的信息是 **已知的**。
 
 于是，我们只需合并这 $\log n$ 段区间的信息，就可以得到答案。相比于原来直接合并 $n$ 个信息，效率有了很大的提高。
 
@@ -117,7 +117,7 @@ $c$ 数组就是用来储存原始数组 $a$ 某段区间的和的，也就是�
 
 我们记 $x$ 二进制最低位 `1` 以及后面的 `0` 组成的数为 $\operatorname{lowbit}(x)$，那么 $c[x]$ 管辖的区间就是 $[x-\operatorname{lowbit}(x)+1, x]$。
 
-**这里注意：$\boldsymbol{\operatorname{lowbit}}$ 指的不是最低位 `1` 所在的位数 $\boldsymbol{k}$，而是这个 `1` 和后面所有 `0` 组成的 $\boldsymbol{2^k}$。**
+**这里注意：$\mathbf{\operatorname{lowbit}}$ 指的不是最低位 `1` 所在的位数 $\mathbf{k}$，而是这个 `1` 和后面所有 `0` 组成的 $\mathbf{2^k}$。**
 
 怎么计算 `lowbit`？根据位运算知识，可以得到 `lowbit(x) = x & -x`。
 
@@ -221,7 +221,7 @@ $c$ 数组就是用来储存原始数组 $a$ 某段区间的和的，也就是�
 - 对于任意正整数 $x$，总能将 $x$ 表示成 $s \times 2^{k + 1} + 2^k$ 的形式，其中 $\operatorname{lowbit}(x) = 2^k$。
 - 下面「$c[x]$ 和 $c[y]$ 不交」指 $c[x]$ 的管辖范围和 $c[y]$ 的管辖范围不相交，即 $[l(x), x]$ 和 $[l(y), y]$ 不相交。「$c[x]$ 包含于 $c[y]$」等表述同理。
 
-**性质 $\boldsymbol{1}$：对于 $\boldsymbol{x \le y}$，要么有 $\boldsymbol{c[x]}$ 和 $\boldsymbol{c[y]}$ 不交，要么有 $\boldsymbol{c[x]}$ 包含于 $\boldsymbol{c[y]}$。**
+**性质 $\mathbf{1}$：对于 $\mathbf{x \le y}$，要么有 $\mathbf{c[x]}$ 和 $\mathbf{c[y]}$ 不交，要么有 $\mathbf{c[x]}$ 包含于 $\mathbf{c[y]}$。**
 
 ??? note "证明"
     证明：假设 $c[x]$ 和 $c[y]$ 相交，即 $[l(x), x]$ 和 $[l(y), y]$ 相交，则一定有 $l(y) \le x \le y$。
@@ -234,7 +234,7 @@ $c$ 数组就是用来储存原始数组 $a$ 某段区间的和的，也就是�
     
     所以，如果 $c[x]$ 和 $c[y]$ 相交，那么 $c[x]$ 的管辖范围一定完全包含于 $c[y]$。
 
-**性质 $\boldsymbol{2}$：在 $\boldsymbol{c[x]}$ 真包含于 $\boldsymbol{c[x + \operatorname{lowbit}(x)]}$。**
+**性质 $\mathbf{2}$：在 $\mathbf{c[x]}$ 真包含于 $\mathbf{c[x + \operatorname{lowbit}(x)]}$。**
 
 ??? note "证明"
     证明：设 $y = x + \operatorname{lowbit}(x)$，$x = s \times 2^{k + 1} + 2^k$，则 $y = (s + 1) \times 2^{k +1}$，$l(x) = s \times 2^{k + 1} + 1$。
@@ -243,7 +243,7 @@ $c$ 数组就是用来储存原始数组 $a$ 某段区间的和的，也就是�
     
     所以，$c[x]$ 真包含于 $c[x + \operatorname{lowbit}(x)]$。
 
-**性质 $3$：对于任意 $\boldsymbol{x < y < x + \operatorname{lowbit}(x)}$，有 $\boldsymbol{c[x]}$ 和 $\boldsymbol{c[y]}$ 不交。**
+**性质 $3$：对于任意 $\mathbf{x < y < x + \operatorname{lowbit}(x)}$，有 $\mathbf{c[x]}$ 和 $\mathbf{c[y]}$ 不交。**
 
 ??? note "证明"
     证明：设 $x = s \times 2^{k + 1} + 2^k$，则 $y = s \times 2^{k + 1} + 2^k + b$，其中 $1 \le b < 2^k$。
@@ -289,11 +289,11 @@ $c$ 数组就是用来储存原始数组 $a$ 某段区间的和的，也就是�
     
     考虑 $u$ 的儿子 $v$，有 $v + \operatorname{lowbit}(v) = u$，即 $v = u - 2^t$ 且 $\operatorname{lowbit}(v) = 2^t$。设 $u = s \times 2^{k + 1} + 2^k$。
     
-    **考虑 $\boldsymbol{0 \le t < k}$**，$u$ 的第 $t$ 位及后方均为 $0$，所以 $v = u - 2^t$ 的第 $t$ 位变为 $1$，后面仍为 $0$，**满足** $\operatorname{lowbit}(v) = 2^t$。
+    **考虑 $\mathbf{0 \le t < k}$**，$u$ 的第 $t$ 位及后方均为 $0$，所以 $v = u - 2^t$ 的第 $t$ 位变为 $1$，后面仍为 $0$，**满足** $\operatorname{lowbit}(v) = 2^t$。
     
-    **考虑 $\boldsymbol{t = k}$**，则 $v = u - 2^k$，$v$ 的第 $k$ 位变为 $0$，**不满足** $\operatorname{lowbit}(v) = 2^t$。
+    **考虑 $\mathbf{t = k}$**，则 $v = u - 2^k$，$v$ 的第 $k$ 位变为 $0$，**不满足** $\operatorname{lowbit}(v) = 2^t$。
     
-    **考虑 $\boldsymbol{t > k}$**，则 $v = u - 2^t$，$v$ 的第 $k$ 位是 $1$，所以 $\operatorname{lowbit}(v) = 2^k$，**不满足** $\operatorname{lowbit}(v) = 2^t$。
+    **考虑 $\mathbf{t > k}$**，则 $v = u - 2^t$，$v$ 的第 $k$ 位是 $1$，所以 $\operatorname{lowbit}(v) = 2^k$，**不满足** $\operatorname{lowbit}(v) = 2^t$。
 
 -   $u$ 的所有儿子对应 $c$ 的管辖区间恰好拼接成 $[l(u), u - 1]$。
     - 举例：假设 $k = 3$，$u$ 的二进制编号为 `...1000`，则 $u$ 有三个儿子，二进制编号分别为 `...0111`、`...0110`、`...0100`。

@@ -12,13 +12,13 @@
 
 内积的概念 **对于任意维数的向量都适用**。
 
-已知两个向量 $\boldsymbol a,\boldsymbol b$，它们的夹角为 $\theta$，那么：
+已知两个向量 $\mathbf a,\mathbf b$，它们的夹角为 $\theta$，那么：
 
 $$
-\boldsymbol a \cdot \boldsymbol b=|\boldsymbol a||\boldsymbol b|\cos \theta
+\mathbf a \cdot \mathbf b=|\mathbf a||\mathbf b|\cos \theta
 $$
 
-就是这两个向量的 **内积**，也叫 **点积** 或 **数量积**。其中称 $|\boldsymbol a|\cos \theta$ 为 $\boldsymbol a$ 在 $\boldsymbol b$ 方向上的投影。内积的几何意义即为：内积 $\boldsymbol a \cdot \boldsymbol b$ 等于 $\boldsymbol a$ 的模与 $\boldsymbol b$ 在 $\boldsymbol a$ 方向上的投影的乘积。
+就是这两个向量的 **内积**，也叫 **点积** 或 **数量积**。其中称 $|\mathbf a|\cos \theta$ 为 $\mathbf a$ 在 $\mathbf b$ 方向上的投影。内积的几何意义即为：内积 $\mathbf a \cdot \mathbf b$ 等于 $\mathbf a$ 的模与 $\mathbf b$ 在 $\mathbf a$ 方向上的投影的乘积。
 
 可以发现，这种运算得到的结果是一个标量，并不属于向量的线性运算。
 
@@ -27,7 +27,7 @@ $$
 内积满足交换律，即：
 
 $$
-\boldsymbol a \cdot \boldsymbol b=\boldsymbol b \cdot \boldsymbol a
+\mathbf a \cdot \mathbf b=\mathbf b \cdot \mathbf a
 $$
 
 互相垂直的两个向量的内积，结果为 $0$。向量与零向量内积，结果为 $0$。
@@ -36,23 +36,23 @@ $$
 
 #### 判定两向量垂直
 
-$\boldsymbol a \perp \boldsymbol b$ $\iff$ $\boldsymbol a\cdot \boldsymbol b=0$
+$\mathbf a \perp \mathbf b$ $\iff$ $\mathbf a\cdot \mathbf b=0$
 
 #### 判定两向量共线
 
-$\boldsymbol a = \lambda \boldsymbol b$ $\iff$ $|\boldsymbol a\cdot \boldsymbol b|=|\boldsymbol a||\boldsymbol b|$
+$\mathbf a = \lambda \mathbf b$ $\iff$ $|\mathbf a\cdot \mathbf b|=|\mathbf a||\mathbf b|$
 
 #### 数量积的坐标运算
 
-若 $\boldsymbol a=(m,n),\boldsymbol b=(p,q),$ 则 $\boldsymbol a\cdot \boldsymbol b=mp+nq$
+若 $\mathbf a=(m,n),\mathbf b=(p,q),$ 则 $\mathbf a\cdot \mathbf b=mp+nq$
 
 #### 向量的模
 
-$|\boldsymbol a|=\sqrt {m^2+n^2}$
+$|\mathbf a|=\sqrt {m^2+n^2}$
 
 #### 两向量的夹角
 
-$\cos \theta=\cfrac{\boldsymbol a\cdot\boldsymbol b}{|\boldsymbol a||\boldsymbol b|}$
+$\cos \theta=\cfrac{\mathbf a\cdot\mathbf b}{|\mathbf a||\mathbf b|}$
 
 ## 二阶与三阶行列式
 
@@ -89,12 +89,12 @@ $$
 
 在线性代数中，所有的向量都会用粗体表示，并且由于麻烦，并且线性代数中大多为向量与矩阵的运算，很难造成歧义，在手写时可以省略向量记号不写。
 
-定义向量 $\boldsymbol a,\boldsymbol b$ 的外积为一个向量，记为 $\boldsymbol a\times \boldsymbol b$，其模与方向定义如下：
+定义向量 $\mathbf a,\mathbf b$ 的外积为一个向量，记为 $\mathbf a\times \mathbf b$，其模与方向定义如下：
 
-1. $|\boldsymbol a\times \boldsymbol b|=|\boldsymbol a||\boldsymbol b|\sin \langle \boldsymbol a,\boldsymbol b\rangle$；
-2. $\boldsymbol a\times \boldsymbol b$ 与 $\boldsymbol a,\boldsymbol b$ 都垂直，且 $\boldsymbol a,\boldsymbol b,\boldsymbol a\times \boldsymbol b$ 符合右手法则。
+1. $|\mathbf a\times \mathbf b|=|\mathbf a||\mathbf b|\sin \langle \mathbf a,\mathbf b\rangle$；
+2. $\mathbf a\times \mathbf b$ 与 $\mathbf a,\mathbf b$ 都垂直，且 $\mathbf a,\mathbf b,\mathbf a\times \mathbf b$ 符合右手法则。
 
-注意到外积的模，联想到三角形面积计算公式 $S=\frac{1}{2}ab\sin C$，可以发现外积的几何意义是：**$|\boldsymbol a\times \boldsymbol b|$ 是以 $\boldsymbol a,\boldsymbol b$ 为邻边的平行四边形的面积**。
+注意到外积的模，联想到三角形面积计算公式 $S=\frac{1}{2}ab\sin C$，可以发现外积的几何意义是：**$|\mathbf a\times \mathbf b|$ 是以 $\mathbf a,\mathbf b$ 为邻边的平行四边形的面积**。
 
 两个向量 $a=(x_1,y_1,z_1)$，$b=(x_2,y_2,z_2)$ 外积的结果是一个向量 $c$。记作 $c = a \times b$。
 
@@ -112,12 +112,12 @@ $$
 
 对于二维向量，无法计算外积，但是仍然可以计算两向量张成的平行四边形面积：
 
-记 $\boldsymbol a=(m,n),\boldsymbol b=(p,q)$，将平面直角坐标系扩充为空间直角坐标系，原平面位于新坐标系的 xOy 平面，原本的坐标 $(m,n)$ 和 $(p,q)$ 变为 $(m,n,0)$ 和 $(p,q,0)$，那么两个向量的外积为 $(0,0,mq-np)$，因此平行四边形面积为 $mq-np$，可以视为二阶行列式运算的结果。此时，根据右手法则和竖坐标符号，可以推断出 $\boldsymbol b$ 相对于 $\boldsymbol a$ 的方向，若在逆时针方向竖坐标为正值，反之为负值，简记为 **顺负逆正**。
+记 $\mathbf a=(m,n),\mathbf b=(p,q)$，将平面直角坐标系扩充为空间直角坐标系，原平面位于新坐标系的 xOy 平面，原本的坐标 $(m,n)$ 和 $(p,q)$ 变为 $(m,n,0)$ 和 $(p,q,0)$，那么两个向量的外积为 $(0,0,mq-np)$，因此平行四边形面积为 $mq-np$，可以视为二阶行列式运算的结果。此时，根据右手法则和竖坐标符号，可以推断出 $\mathbf b$ 相对于 $\mathbf a$ 的方向，若在逆时针方向竖坐标为正值，反之为负值，简记为 **顺负逆正**。
 
 外积满足 **反交换律**，即：
 
 $$
-\boldsymbol a \times \boldsymbol b=-\boldsymbol b \times \boldsymbol a
+\mathbf a \times \mathbf b=-\mathbf b \times \mathbf a
 $$
 
 共线的两个三维向量的外积，结果为 $0$。三维向量与自身外积，结果为 $0$。三维向量与零向量外积，结果为 $0$。
@@ -125,17 +125,17 @@ $$
 根据上文的两个定义：
 
 $$
-|\boldsymbol a\times \boldsymbol b|=|\boldsymbol a||\boldsymbol b|\sin \langle \boldsymbol a,\boldsymbol b\rangle
+|\mathbf a\times \mathbf b|=|\mathbf a||\mathbf b|\sin \langle \mathbf a,\mathbf b\rangle
 $$
 
 $$
-\boldsymbol a \cdot \boldsymbol b=|\boldsymbol a||\boldsymbol b|\cos \theta
+\mathbf a \cdot \mathbf b=|\mathbf a||\mathbf b|\cos \theta
 $$
 
 可以写出恒等式：
 
 $$
-{(\boldsymbol a\times \boldsymbol b)}^2={\boldsymbol a}^2{\boldsymbol b}^2-{(\boldsymbol a \cdot \boldsymbol b)}^2
+{(\mathbf a\times \mathbf b)}^2={\mathbf a}^2{\mathbf b}^2-{(\mathbf a \cdot \mathbf b)}^2
 $$
 
 ## 混合积
