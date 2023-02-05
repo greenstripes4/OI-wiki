@@ -8,32 +8,32 @@ foo@bar:~$sudo apt install vim
 foo@bar:~$wget http://dl.hustoj.com/install-ubuntu22.04.sh
 ```
 
-#delete docker install commands at the end of script
+delete docker install commands at the end of script
 
 ```console
 foo@bar:~$sudo bash install-ubuntu22.04.sh
 ```
 
-#Remember your database account for HUST Online Judge:
+Remember your database account for HUST Online Judge:
 
 ```console
 foo@bar:~$sudo vi /home/judge/src/install/Dockerfile, 
 ```
 
-#comment out python, keep python3，
+comment out python, keep python3，
 
-#comment out fp-compiler
+comment out fp-compiler
 
-#change openjdk-16-jdk to openjdk-11-jdk
+change openjdk-16-jdk to openjdk-11-jdk
 
 ```console
 foo@bar:~$sudo bash docker.sh
 foo@bar:~$sudo vi /home/judge/etc/judge.conf
 ```
 
-#enable OJ_USE_DOCKER=1
+OJ_USE_DOCKER=1
 
-#enable OJ_PYTHON_FREE=1
+OJ_PYTHON_FREE=1
 
 OJ_TIME_LIMIT_TO_TOTAL=0
 
@@ -48,7 +48,7 @@ static  $OJ_NAME="GoldenShadow";  //name on the top left
 
 static  $OJ_ADMIN="yuanruizhao@inscighteducation.org";
 
-#static  $OJ_REGISTER=false; //disable new user register
+**comment out** static  $OJ_REGISTER=false; //disable new user register
 
 static  $OJ_NEED_LOGIN=true; //require login to access info
 
