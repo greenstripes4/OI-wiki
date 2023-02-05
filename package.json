@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OI-wiki/OI-wiki.git"
+    "url": "git+https://github.com/greenstripes4/OI-wiki.git"
   },
   "keywords": [
     "OI",
@@ -26,9 +26,9 @@
   "author": "OI Wiki Team",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/OI-wiki/OI-wiki/issues"
+    "url": "https://github.com/greenstripes4/OI-wiki/issues"
   },
-  "homepage": "https://github.com/OI-wiki/OI-wiki#readme",
+  "homepage": "https://github.com/greenstripes4/OI-wiki#readme",
   "dependencies": {
     "@swc/core": "^1.2.210",
     "chalk": "^4.1.0",

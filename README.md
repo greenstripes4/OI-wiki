@@ -125,16 +125,3 @@ python2 -m SimpleHTTPServer
 ## 鸣谢
 
 本项目受 [CTF Wiki](https://ctf-wiki.org/) 的启发，在编写过程中参考了诸多资料，在此一并致谢。
-
-非常感谢一起完善 **OI Wiki** 的 [小伙伴们](https://github.com/OI-wiki/OI-wiki/graphs/contributors) 和为 **OI Wiki** 捐赠的 [朋友们](https://oi-wiki.org/intro/thanks/)！
-
-<a href="https://github.com/OI-wiki/OI-wiki/graphs/contributors"><img src="https://opencollective.com/oi-wiki/contributors.svg?width=890&button=false" /></a>
-
-特别感谢 [24OI](https://github.com/24OI) 的朋友们的大力支持！
-
-<!-- <img src='https://i.loli.net/2018/12/07/5c0a6e4c31b30.png' alt='QVQNetWork' width=233>
-鸣谢 QVQNetwork 赞助的服务器。 -->
-
-感谢 北大算协 和 Hulu 的支持！
-
-![](https://assets.pcmag.com/media/images/560767-hulu.png?width=333&height=245)

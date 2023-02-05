@@ -7,7 +7,7 @@ strict: false
 
 # Repository
 repo_name: 'OI-wiki/OI-wiki'
-repo_url: 'https://github.com/OI-wiki/OI-wiki'
+repo_url: 'https://github.com/greenstripes4/OI-wiki'
 edit_uri: 'https://oi-wiki.org/edit-landing/?ref='
 
 # Copyright
@@ -17,13 +17,10 @@ copyright: 'Copyright &copy; 2016 - 2023 OI Wiki Team'
 nav:
   - 简介:
     - Getting Started: index.md
-    - 关于本项目: intro/about.md
     - 如何参与: intro/htc.md
     - 格式手册: intro/format.md
     - F.A.Q.: intro/faq.md
     - 用 Docker 部署 OI Wiki: intro/docker-deploy.md
-    - 镜像站列表: intro/mirrors.md
-    - 致谢: intro/thanks.md
   - 比赛相关:
     - 比赛相关简介: contest/index.md
     - 赛事:
@@ -42,6 +39,7 @@ nav:
     - 出题: contest/problemsetting.md
   - 工具软件:
     - 工具软件简介: tools/index.md
+    - 设置HustOJ: tools/hustoj.md
     - 代码编辑工具:
       - Vim: tools/editor/vim.md
       - Emacs: tools/editor/emacs.md
