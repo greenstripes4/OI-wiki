@@ -425,6 +425,149 @@ $$
 
 - 最后，可以将代码添加到文档中了。请直接在文档中用添加代码块的格式，并将代码块内部直接写成 `--8<-- "你的代码路径"` 的格式就可以了。
 
+## Markdown Cheat Sheet
+
+### Arithmetic
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Addition | $a+b$ | `$a+b$` |
+| Subtraction | $a-b$ | `$a-b$` |
+| Various Forms of Multiplication | $a \times b$ <br> $a \ast b$ <br> $a \cdot b$ | `$a \times b$` <br> `$a \ast b$` <br> `$a \cdot b$`|
+| Various Forms of Division | $a \colon b$ <br> $a / b$ <br> $a \div b$ <br> $\frac{a}{b}$ | `$a \colon b$` <br> `$a / b$` <br> `$a \div b$` <br> `$\frac{a}{b}$` |
+| Remainder / Modulo | $5\mod 2=1$ | `$5\mod 2=1$` |
+| Negative Value | $-a$ | `$-a$` |
+| Plus or Minus, Minus or Plus | $\pm a$ <br> $\mp a$ | `$\pm a$` <br> `$\mp a$` |
+| Squared, Cubed, nth-Power | $a^2$ <br> $a^3$ <br> $a^n$ | `$a^2$` <br> `$a^3$`  <br> `$a^n$` |
+| Square Root, Cube Root, nth-Root | $\sqrt{a}$ <br> $\sqrt[3]{a}$ <br> $\sqrt[n]{a}$ | `$\sqrt{a}$` <br> `$\sqrt[3]{a}$` <br> `$\sqrt[n]{a}$` |
+
+### Equality
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Equals | $3=1+2$ | `$3=1+2$` |
+| Not Equals | $3\neq4$ | `$3\neq4$` |
+| Identical / Equivalent To | $a \equiv b$ | `$a \equiv b$` |
+| Proportional To | $a \propto b$ | `$a \propto b$` |
+| Approximately Equal To | $\sin(0.01) \approx 0.01$ | `$\sin(0.01) \approx 0.01$` |
+
+### Comparison
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| a Less Than b <br> a Greater Than b | $a<b$ <br> $a>b$ | `$a<b$` <br> `$a>b$` |
+| a Less Than or Equal To b <br> a Greater Than or Equal To b | $a \leq b$ <br> $a \geq b$ | `$a \leq b$` <br> `$a \geq b$` |
+| a Much Smaller Than b <br> a Much Larger Than b | $a \ll b$ <br> $a \gg b$ | `$a \ll b$` <br> `$a \gg b$` |
+
+### Algebra
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Factorial | $5!=5 \times 4 \times 3 \times 2 \times 1$ | `$5!=5 \times 4 \times 3 \times 2 \times 1$` |
+| Absolute Value | $\|-5\|=5$ | `$\|-5\|=5$` |
+| Function Of | $f(x)=2x^2$ | `$f(x)=2x^2$` |
+| Change or Difference | $\Delta x = x_1 - x_0$ | `$\Delta x = x_1 - x_0$` |
+| Pi | $\pi = 3.14159...$ | `$\pi = 3.14159...$` |
+| Sum | $\displaystyle\sum_{k=3}^5 k^2=3^2 + 4^2 + 5^2 =50$ | `$\displaystyle\sum_{k=3}^5 k^2=3^2 + 4^2 + 5^2 =50$` |
+| Series Product | $\displaystyle\prod_{x=2}^4 x^2 = 2^2 \times 3^2 \times 4^2 = 576$ | `$\displaystyle\prod_{x=2}^4 x^2 = 2^2 \times 3^2 \times 4^2 = 576$` |
+| Brackets & Parentheses | $[\ldots] (\ldots)$ | `$[\ldots] (\ldots)$` |
+
+### 
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Angles | $\angle$ | `$\angle$` |
+| Degree, Arc Min, Arc Sec | $30\degree45\rq30\rq\rq$ | `$30\degree45\rq30\rq\rq$` |
+| Radians | $360\degree = 2\pi rad$ | `$360\degree = 2\pi rad$` |
+
+### Probability & Statistics
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Probability of Event A | $P(A)$ or $\Pr(A)$ | `$P(A)$ or $\Pr(A)$` |
+| Intersection Prob. of A & B | $P(A \cap B)$ | `$P(A \cap B)$` |
+| Union Prob. of A or B | $P(A \cup B)$ | `$P(A \cup B)$` |
+| Conditional Prob. of A Given B | $P(A\|B)$ | `$P(A\|B)$` |
+| Median | $\tilde{x}$ | `$\tilde{x}$` |
+| Population Mean | $\mu , \overline{x} , \langle x \rangle$ | `$\mu , \overline{x} , \langle x \rangle$` |
+| Standard Deviation | $\sigma$ | `$\sigma$` |
+| Varience | $\sigma^2$ | `$\sigma^2$` |
+
+### Linear Algebra: Vectors
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Vectors | $\mathbf{v}\overline{v}\vec{v}$ | `$\mathbf{v}\overline{v}\vec{v}$` |
+| Row Vector | $v=\begin{pmatrix}1&2&3\end{pmatrix}$ | `$v=\begin{pmatrix}1&2&3\end{pmatrix}$` |
+| Column Vector | $w=\begin{pmatrix}4\cr5\cr6\cr\end{pmatrix}$ | `$w=\begin{pmatrix}4\cr5\cr6\cr\end{pmatrix}$` |
+| Dot Product | $\mathbf{v} \cdot \mathbf{w}$<br>$(v,w)$<br>$\left<v \| w\right>$ | `$\mathbf{v} \cdot \mathbf{w}$<br>$(v,w)$<br>$\left<v \| w\right>$` |
+| Cross Product | $v \times w$ | `$v \times w$` |
+| Length of v | $\|v\|$ | `$\|v\|$` |
+| Norm of v | $\|\|v\|\|$ | `$\|\|v\|\|$` |
+
+### Linear Algebra: Matrices
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Matrix, 2 By 3 | $A=\begin{bmatrix}1&2&3\cr4&5&6\end{bmatrix}$ | `$A=\begin{bmatrix}1&2&3\cr4&5&6\end{bmatrix}$` |
+| Product | $A \cdot B$ | `$A \cdot B$` |
+| Hadamard Product | $A \circ B$ | `$A \circ B$` |
+| Kronecker Product | $A \otimes B$ | `$A \otimes B$` |
+| Transposed Matrix | $A^T$ | `$A^T$` |
+| Hermitian Matrix or <br> Conjugate Transpose | $A^\dag$ <br> $A^\ast$ | `$A^\dag$` <br> `$A^\ast$` |
+| Inverse Matrix | $A^{-1}$ | `$A^{-1}$` |
+| Determinant | $\|A\|$ | `$\|A\|$` |
+| Norm | $\|\|A\|\|$ | `$\|\|A\|\|$` |
+
+### Calculus
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Example Function | $y = \frac{x^2}{4}$ | `$y = \frac{x^2}{4}$` |
+| Integration (Limits: 1 to 4) | $A = \int_1^4 \frac{x^2}{x} dx$ | `$A = \int_1^4 \frac{x^2}{x} dx$` |
+| First Derivative With Respect To x | $\frac{df}{dx}$ | `$\frac{df}{dx}$` |
+| Partial Derivative With Respect To x | $\frac{\partial f}{\partial x}$ | `$\frac{\partial f}{\partial x}$` |
+| First and Second Derivative of Function | $f\rq$ <br> $f\rq\rq$ | `$f\rq$` <br> `$f\rq\rq$` |
+| First and Second Derivative With Respect To Time | $\dot f$ <br> $\ddot f$ | `$\dot f$` <br> `$\ddot f$` |
+
+### Complex Numbers
+
+| Notation | Example | Inline |
+| ----------------- | --------------- | ---------------------------------------- |
+| Imaginary Unit i | $z=3+2i$ | `$z=3+2i$` |
+| Real Part Of Complex Number | $\Re(z)=3$ <br> $\operatorname{Re}(z)=3$ | `$\Re(z)=3$` <br> `$\operatorname{Re}(z)=3$` |
+| Imaginary Part Of Complex Number | $\Im(z)=2$ <br> $\operatorname{Im}(z)=2$ | `$\Im(z)=2$` <br> `$\operatorname{Im}(z)=2$` |
+| Complex Conjugate | $\bar{z}=z^*=3-2i$ | `$\bar{z}=z^*=3-2i$` |
+
+### Greek Alphabet
+
+| Letter | Lower | Inline | Upper | Inline |
+| ----------------- | --------------- | ---------------------------------------- | --------------- |  --------------- | 
+| Alpha | $\alpha$ | `$\alpha$` | $\Alpha$ | `$\Alpha$` |
+| Beta | $\beta$ | `$\beta$` | $\Beta$ | `$\Beta$` |
+| Gamma | $\gamma$ | `$\gamma$` | $\Gamma$ | `$\Gamma$` |
+| Delta | $\delta$ | `$\delta$` | $\Delta$ | `$\Delta$` |
+| Epsilon | $\epsilon$ | `$\epsilon$` | $\Epsilon$ | `$\Epsilon$` |
+| Zeta | $\zeta$ | `$\zeta$` | $\Zeta$ | `$\Zeta$` |
+| Eta | $\eta$ | `$\eta$` | $\Eta$ | `$\Eta$` |
+| Theta | $\theta$ | `$\theta$` | $\Theta$ | `$\Theta$` |
+| Iota | $\iota$ | `$\iota$` | $\Iota$ | `$\Iota$` |
+| Kappa | $\kappa$ | `$\kappa$` | $\Kappa$ | `$\Kappa$` |
+| Lambda | $\lambda$ | `$\lambda$` | $\Lambda$ | `$\Lambda$` |
+| Mu | $\mu$ | `$\mu$` | $\Mu$ | `$\Mu$` |
+| Nu | $\nu$ | `$\nu$` | $\Nu$ | `$\Nu$` |
+| Xi | $\xi$ | `$\xi$` | $\Xi$ | `$\Xi$` |
+| Omicron | $\omicron$ | `$\omicron$` | $\Omicron$ | `$\Omicron$` |
+| Pi | $\pi$ | `$\pi$` | $\Pi$ | `$\Pi$` |
+| Rho | $\rho$ | `$\rho$` | $\Rho$ | `$\Rho$` |
+| Rho | $\sigma$ | `$\sigma$` | $\Sigma$ | `$\Sigma$` |
+| Tau | $\tau$ | `$\tau$` | $\Tau$ | `$\Tau$` |
+| Upsilon | $\upsilon$ | `$\upsilon$` | $\Upsilon$ | `$\Upsilon$` |
+| Phi | $\phi$ | `$\phi$` | $\Phi$ | `$\Phi$` |
+| Chi | $\chi$ | `$\chi$` | $\Chi$ | `$\Chi$` |
+| Psi | $\psi$ | `$\psi$` | $\Psi$ | `$\Psi$` |
+| Omega | $\omega$ | `$\omega$` | $\Omega$ | `$\Omega$` |
+
 ## 图解
 
 可能上述要求把握起来有些困难，接下来我们给出一些图片来具体分析哪种格式应该使用，哪种不该使用：
