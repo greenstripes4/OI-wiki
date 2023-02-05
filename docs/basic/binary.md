@@ -104,28 +104,28 @@ pos = upper_bound(a, a+n, test) - a;
 ???+note "Two Sum"
     输入n ( n≤100,000)个整数，找出其中的两个数，它们之和等于整数m(假定肯定有解)。题中所有整数都能用int 表示。
 
-???+note "解题思路"
-    下面给出三种方法：
+    ??? tip
+        下面给出三种方法：
 
-    1. 暴力搜，用两重循环，枚举所有的取数方法，复杂度O(n2)。超时。
-    2. 二分法。首先对数组从小到大排序，复杂度O(nlogn)；然后，从头到尾处理数组中的每个元素a[i]，在a[i]后面的数中二分查找是否存在一个等于 m - a[i]的数，复杂度也是O(nlogn)。两部分相加，总复杂度仍然是O(nlogn)。
-    3. 尺取法/双指针/two pointers。对于这个特定问题，更好的、标准的算法是：首先对数组从小到大排序；然后，设置两个变量L和R，分别指向头和尾，L初值是0，R初值是n-1，检查a[L]+a[R]，如果大于m，就让R减1，如果小于m，就让L加1，直至a[L]+a[R]=m。排序复杂度O(nlogn)，检查的复杂度O(n)，总复杂度O(nlogn)。检查的代码这样写：
+        1. 暴力搜，用两重循环，枚举所有的取数方法，复杂度 $O(n^2)$ 。超时。
+        2. 二分法。首先对数组从小到大排序，复杂度O(nlogn)；然后，从头到尾处理数组中的每个元素$a[i]$，在a[i]后面的数中二分查找是否存在一个等于 $m - a[i]$的数，复杂度也是$O(nlogn)$。两部分相加，总复杂度仍然是$O(nlogn)$。
+        3. 尺取法/双指针/two pointers。对于这个特定问题，更好的、标准的算法是：首先对数组从小到大排序；然后，设置两个变量L和R，分别指向头和尾，L初值是0，R初值是n-1，检查$a[L]+a[R]$，如果大于m，就让R减1，如果小于m，就让L加1，直至$a[L]+a[R]=m$。排序复杂度$O(nlogn)$，检查的复杂度$O(n)$，总复杂度$O(nlogn)$。检查的代码这样写：
 
-    ```cpp
-    void find_sum(int a[], int n, int m){ 
-        sort(a, a + n - 1);      //先排序
-        int L = 0, R = n - 1;    //L指向头，R指向尾
-        while (L < R){
-                  int sum = a[L] + a[R];
-                  if (sum > m)   R--;
-                  if (sum < m)   L++;
-                  if (sum == m){     
-                  cout << a[L] << "    " << a[R] << endl;  //打印一种情况
-                  L++;   //可能有多种情况，继续
-                  }
+        ```cpp
+        void find_sum(int a[], int n, int m){ 
+            sort(a, a + n - 1);      //先排序
+            int L = 0, R = n - 1;    //L指向头，R指向尾
+            while (L < R){
+                        int sum = a[L] + a[R];
+                        if (sum > m)   R--;
+                        if (sum < m)   L++;
+                        if (sum == m){     
+                        cout << a[L] << "    " << a[R] << endl;  //打印一种情况
+                        L++;   //可能有多种情况，继续
+                        }
+            }
         }
-    }
-    ```
+        ```
 
 ???+note
     对于 $n$ 是有符号数的情况，当你可以保证 $n\ge 0$ 时，`n >> 1` 比 `n / 2` 指令数更少。
@@ -153,29 +153,29 @@ pos = upper_bound(a, a+n, test) - a;
     
     分法2更好。
 
-???+note "解题思路"
-    在一次划分中，考虑一个x，使x满足：对任意的S(i)，都有S(i)<=x，也就是说，x是所有S(i)中的最大值。题目需要求的就是找到这个最小的x。这就是最大值最小化。
-    
-    如何找到这个x？从小到大一个个地试，就能找到那个最小的x。
-    
-    简单的办法是：枚举每一个x，用贪心法每次从左向右尽量多划分元素，S(i)不能超过x，划分的子序列个数不超过m个。这个方法虽然可行，但是枚举所有的x太浪费时间了。
-    
-    改进的办法是：用二分法在[max, sum]中间查找满足条件的x，其中max是序列中最大元素，sum是所有元素的和。
+    ??? tip
+        在一次划分中，考虑一个x，使x满足：对任意的S(i)，都有S(i)<=x，也就是说，x是所有S(i)中的最大值。题目需要求的就是找到这个最小的x。这就是最大值最小化。
+        
+        如何找到这个x？从小到大一个个地试，就能找到那个最小的x。
+        
+        简单的办法是：枚举每一个x，用贪心法每次从左向右尽量多划分元素，S(i)不能超过x，划分的子序列个数不超过m个。这个方法虽然可行，但是枚举所有的x太浪费时间了。
+        
+        改进的办法是：用二分法在[max, sum]中间查找满足条件的x，其中max是序列中最大元素，sum是所有元素的和。
 
 ???+note "[通往奥格瑞玛的道路](https://www.luogu.org/problem/P1462)"
-    给定无向图，n个点，m条双向边，每个点有点权fi（这个点的过路费），有边权ci（这条路的血量）。求起点1到终点N的所有可能路径中，在总边权（总血量）不超过给定的b的前提下，所经过的路径中最大点权（这条路径上过路费最大的那个点）的最小值是多少。
+    给定无向图，n个点，m条双向边，每个点有点权 $f_i$（这个点的过路费），有边权 $c_i$（这条路的血量）。求起点1到终点N的所有可能路径中，在总边权（总血量）不超过给定的b的前提下，所经过的路径中最大点权（这条路径上过路费最大的那个点）的最小值是多少。
 
     题目数据：n≤10000，m≤50000，fi，ci，B≤1e9。
 
-???+note "解题思路"
-    对点权fi进行二分，用dijkstra求最短路，检验总边权是否小于b。二分法是最小化最大值问题。
+    ??? tip
+        对点权$f_i$进行二分，用dijkstra求最短路，检验总边权是否小于b。二分法是最小化最大值问题。
 
-    这一题是二分法和最短路算法的简单结合。
+        这一题是二分法和最短路算法的简单结合。
 
-    1. 对点权（过路费）二分。题目的要求是：从1到N有很多路径，其中的一个可行路径Pi，它有一个点的过路费最大，记为Fi；在所有可行路径中，找到那个有最小F的路径，输出F。解题方案是：先对所有点的fi排序，然后用二分法，找符合要求的最小的fi。二分次数log(fi)=log(1e9) < 30。
-    2. 在检查某个fi时，删除所有大于fi的点，在剩下的点中，求1到N的最短路，看总边权是否小于b，如果满足，这个fi是合适的（如果最短路的边权都大于b，那么其他路径的总边权就更大，肯定不符合要求）。一次Dijkstra求最短路，复杂度是O(mlogn)。
+        1. 对点权（过路费）二分。题目的要求是：从1到N有很多路径，其中的一个可行路径Pi，它有一个点的过路费最大，记为Fi；在所有可行路径中，找到那个有最小F的路径，输出F。解题方案是：先对所有点的$f_i$排序，然后用二分法，找符合要求的最小的$f_i$。二分次数 $log(fi)=log(1e9) \le 30$。
+        2. 在检查某个$f_i$时，删除所有大于$f_i$的点，在剩下的点中，求1到N的最短路，看总边权是否小于b，如果满足，这个$f_i$是合适的（如果最短路的边权都大于b，那么其他路径的总边权就更大，肯定不符合要求）。一次Dijkstra求最短路，复杂度是$O(mlogn)$。
 
-    总复杂度满足要求。
+        总复杂度满足要求。
 
 ### 最大化最小值
 当然，最小值最大化是同理的。
@@ -185,51 +185,52 @@ pos = upper_bound(a, a+n, test) - a;
     
     这个题目里，所有的牛棚两两之间的距离有个最小值，题目要求使得这个最小值最大化。
 
-???+note "解题思路"
+    ??? tip
 
-    1. 暴力法。从小到大枚举最小距离的值dis，然后检查，如果发现有一次不行，那么上次枚举的就是最大值。如何检查呢？用贪心法：第一头牛放在x1，第二头牛放在xj≥x1+dis的点xi,第三头牛放在xk≥xj+dis的点xk，等等，如果在当前最小距离下，不能放c条牛，那么这个dis就不可取。复杂度O(nc)。
-    2. 二分。分析从小到大检查dis的过程，发现可以用二分的方法找这个dis。这个dis符合二分法：它有上下边界、它是单调递增的。复杂度O(nlogn)。
+        1. 暴力法。从小到大枚举最小距离的值dis，然后检查，如果发现有一次不行，那么上次枚举的就是最大值。如何检查呢？用贪心法：第一头牛放在$x_1$，第二头牛放在$x_j \geq x_1 + dis$的点$x_i$,第三头牛放在$x_k \geq x_j + dis$的点$x_k$，等等，如果在当前最小距离下，不能放c条牛，那么这个dis就不可取。复杂度$O(nc)$。
+        2. 二分。分析从小到大检查dis的过程，发现可以用二分的方法找这个dis。这个dis符合二分法：它有上下边界、它是单调递增的。复杂度$O(nlogn)$。
 
-???+note "参考代码"
-    ```cpp
-    #include<bits/stdc++.h>
-    using namespace std;
-    int n,c,x[100005];//牛棚数量，牛数量，牛棚坐标
-    bool check(int dis){     //当牛之间距离最小为dis时，检查牛棚够不够
-        int cnt=1, place=0;  //第1头牛，放在第1个牛棚
-        for (int i = 1; i < n; ++i)     //检查后面每个牛棚
-            if (x[i] - x[place] >= dis){ //如果距离dis的位置有牛棚
-                cnt++;      //又放了一头牛
-                place = i;  //更新上一头牛的位置
-            }
-        if (cnt >= c) return true;   //牛棚够
-        else          return false;  //牛棚不够
-    }
-    int main(){
-        scanf("%d%d",&n, &c);
-        for(int i=0;i<n;i++)    scanf("%d",&x[i]);
-        sort(x,x+n);             //对牛棚的坐标排序
-        int left=0, right=x[n-1]-x[0];  //R=1000000也行，因为是log(n)的，很快
-                          //优化：把二分上限设置为1e9/c
-        int ans = 0;
-        while(left < right){
-            int mid = left + (right - left)/2;     //二分
-            if(check(mid)){       //当牛之间距离最小为mid时，牛棚够不够?
-                ans = mid;        //牛棚够，先记录mid
-                left = mid + 1;   //扩大距离
-              }
-            else
-                right = mid;      //牛棚不够，缩小距离
+    ??? note "参考代码"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        int n,c,x[100005];//牛棚数量，牛数量，牛棚坐标
+        bool check(int dis){     //当牛之间距离最小为dis时，检查牛棚够不够
+            int cnt=1, place=0;  //第1头牛，放在第1个牛棚
+            for (int i = 1; i < n; ++i)     //检查后面每个牛棚
+                if (x[i] - x[place] >= dis){ //如果距离dis的位置有牛棚
+                    cnt++;      //又放了一头牛
+                    place = i;  //更新上一头牛的位置
+                }
+            if (cnt >= c) return true;   //牛棚够
+            else          return false;  //牛棚不够
         }
-        cout << ans;              //打印答案
-        return 0;
-    }
-    ```
+        int main(){
+            scanf("%d%d",&n, &c);
+            for(int i=0;i<n;i++)    scanf("%d",&x[i]);
+            sort(x,x+n);             //对牛棚的坐标排序
+            int left=0, right=x[n-1]-x[0];  //R=1000000也行，因为是log(n)的，很快
+                            //优化：把二分上限设置为1e9/c
+            int ans = 0;
+            while(left < right){
+                int mid = left + (right - left)/2;     //二分
+                if(check(mid)){       //当牛之间距离最小为mid时，牛棚够不够?
+                    ans = mid;        //牛棚够，先记录mid
+                    left = mid + 1;   //扩大距离
+                }
+                else
+                    right = mid;      //牛棚不够，缩小距离
+            }
+            cout << ans;              //打印答案
+            return 0;
+        }
+        ```
 
 ### 最大化平均值
 
 ???+note ""
-    有n个物品的重量和价值分别是wi和vi，从中选出k个物品使得单位重量价值最大。
+    有n个物品的重量和价值分别是$w_i$和$v_i$，从中选出k个物品使得单位重量价值最大。
 
     样例输入：
     
@@ -245,55 +246,55 @@ pos = upper_bound(a, a+n, test) - a;
 
     0.75
 
-???+note "解题思路"
-    ![](./images/binary-final-3.png)
+    ??? tip
+        ![](./images/binary-final-3.png)
 
-???+note "参考代码"
+    ??? note "参考代码"
 
-    ```cpp
-    #include<stdio.h>
-    #include<algorithm>
-    using namespace std;
-    #define INF 0x3f3f3f3f
-    bool cmp(double a,double b)
-    {
-        return a>b;
-    }
-    int n,k;
-    double y[20010];
-    int w[20010],v[20010];
-    bool C(double x)
-    {
-        for(int i = 0 ; i < n ; i++)
+        ```cpp
+        #include<stdio.h>
+        #include<algorithm>
+        using namespace std;
+        #define INF 0x3f3f3f3f
+        bool cmp(double a,double b)
         {
-            y[i]=v[i]-x*w[i];
+            return a>b;
         }
-        sort(y,y+n,cmp);
-        double sum=0;
-        for(int i = 0 ; i < k ; i++)
-            sum+=y[i];
-            if(sum>=0)
-                return true;///x太小
-                return false///x太大
-    }
-    int main()
-    {
-        scanf("%d%d",&n,&k);
-        for(int i = 0 ; i  < n ; i++)
-            scanf("%d%d",&w[i],&v[i]);
-        double st = 0,en = INF;
-        for(int i=1;i<=100;i++)///精度
+        int n,k;
+        double y[20010];
+        int w[20010],v[20010];
+        bool C(double x)
         {
-            double mid = (st+en)/2;
-            if(C(mid))
-                st=mid;
-            else
-                en=mid;
+            for(int i = 0 ; i < n ; i++)
+            {
+                y[i]=v[i]-x*w[i];
+            }
+            sort(y,y+n,cmp);
+            double sum=0;
+            for(int i = 0 ; i < k ; i++)
+                sum+=y[i];
+                if(sum>=0)
+                    return true;///x太小
+                    return false///x太大
         }
-        printf("%.2f\n",en);
+        int main()
+        {
+            scanf("%d%d",&n,&k);
+            for(int i = 0 ; i  < n ; i++)
+                scanf("%d%d",&w[i],&v[i]);
+            double st = 0,en = INF;
+            for(int i=1;i<=100;i++)///精度
+            {
+                double mid = (st+en)/2;
+                if(C(mid))
+                    st=mid;
+                else
+                    en=mid;
+            }
+            printf("%.2f\n",en);
 
-    }
-    ```
+        }
+        ```
 
 ### 二分答案
 
@@ -308,59 +309,60 @@ pos = upper_bound(a, a+n, test) - a;
     
     米尔科非常关注生态保护，所以他不会砍掉过多的木材。这正是他尽可能高地设定伐木机锯片的原因。你的任务是帮助米尔科找到伐木机锯片的最大的整数高度 $H$，使得他能得到木材至少为 $M$ 米。即，如果再升高 $1$ 米锯片，则他将得不到 $M$ 米木材。
 
-??? note "解题思路"
-    我们可以在 $1$ 到 $10^9$ 中枚举答案，但是这种朴素写法肯定拿不到满分，因为从 $1$ 枚举到 $10^9$ 太耗时间。我们可以在 $[1,~10^9]$ 的区间上进行二分作为答案，然后检查各个答案的可行性（一般使用贪心法）。**这就是二分答案。**
+    ??? tip
+        我们可以在 $1$ 到 $10^9$ 中枚举答案，但是这种朴素写法肯定拿不到满分，因为从 $1$ 枚举到 $10^9$ 太耗时间。我们可以在 $[1,~10^9]$ 的区间上进行二分作为答案，然后检查各个答案的可行性（一般使用贪心法）。**这就是二分答案。**
 
-??? note "参考代码"
-    ```cpp
-    int a[1000005];
-    int n, m;
-    
-    bool check(int k) {  // 检查可行性，k 为锯片高度
-      long long sum = 0;
-      for (int i = 1; i <= n; i++)       // 检查每一棵树
-        if (a[i] > k)                    // 如果树高于锯片高度
-          sum += (long long)(a[i] - k);  // 累加树木长度
-      return sum >= m;                   // 如果满足最少长度代表可行
-    }
-    
-    int find() {
-      int l = 1, r = 1e9 + 1;   // 因为是左闭右开的，所以 10^9 要加 1
-      while (l + 1 < r) {       // 如果两点不相邻
-        int mid = (l + r) / 2;  // 取中间值
-        if (check(mid))         // 如果可行
-          l = mid;              // 升高锯片高度
-        else
-          r = mid;  // 否则降低锯片高度
-      }
-      return l;  // 返回左边值
-    }
-    
-    int main() {
-      cin >> n >> m;
-      for (int i = 1; i <= n; i++) cin >> a[i];
-      cout << find();
-      return 0;
-    }
-    ```
-    
-    看完了上面的代码，你肯定会有两个疑问：
-    
-    1.  为何搜索区间是左闭右开的？
-    
-        因为搜到最后，会这样（以合法的最大值为例）：
-    
-        ![](./images/binary-final-1.png)
-    
-        然后会
-    
-        ![](./images/binary-final-2.png)
-    
-        合法的最小值恰恰相反。
-    
-    2.  为何返回左边值？
-    
-        同上。
+    ??? note "参考代码"
+
+        ```cpp
+        int a[1000005];
+        int n, m;
+        
+        bool check(int k) {  // 检查可行性，k 为锯片高度
+        long long sum = 0;
+        for (int i = 1; i <= n; i++)       // 检查每一棵树
+            if (a[i] > k)                    // 如果树高于锯片高度
+            sum += (long long)(a[i] - k);  // 累加树木长度
+        return sum >= m;                   // 如果满足最少长度代表可行
+        }
+        
+        int find() {
+        int l = 1, r = 1e9 + 1;   // 因为是左闭右开的，所以 10^9 要加 1
+        while (l + 1 < r) {       // 如果两点不相邻
+            int mid = (l + r) / 2;  // 取中间值
+            if (check(mid))         // 如果可行
+            l = mid;              // 升高锯片高度
+            else
+            r = mid;  // 否则降低锯片高度
+        }
+        return l;  // 返回左边值
+        }
+        
+        int main() {
+        cin >> n >> m;
+        for (int i = 1; i <= n; i++) cin >> a[i];
+        cout << find();
+        return 0;
+        }
+        ```
+        
+        看完了上面的代码，你肯定会有两个疑问：
+        
+        1.  为何搜索区间是左闭右开的？
+        
+            因为搜到最后，会这样（以合法的最大值为例）：
+        
+            ![](./images/binary-final-1.png)
+        
+            然后会
+        
+            ![](./images/binary-final-2.png)
+        
+            合法的最小值恰恰相反。
+        
+        2.  为何返回左边值？
+        
+            同上。
 
 ## 实数二分
 实数域上的二分，比整数二分简单。
@@ -393,43 +395,44 @@ for循环的100次，比while的循环次数要多。如果时间要求不是太
 
     最小值最大化问题。设每人能分到的蛋糕大小是x，用二分法枚举x。
 
-???+note "参考代码"
-    ```cpp
-    #include<stdio.h>
-    #include<math.h>
-    double PI = acos(-1.0);    //3.141592653589793;
-    #define eps 1e-5
-    double area[10010];
-    int n,m;
-    bool check(double mid){ 
-        int sum = 0;
-        for(int i=0;i<n;i++)        //把每个圆蛋糕都按大小mid分开。统计总数
-            sum += (int)(area[i] / mid);
-        if(sum >= m) return true;   //最后看总数够不够m个
-        else         return false;
-    }
-    int main(){
-        int T; scanf("%d",&T);
-        while(T--){
-            scanf("%d%d",&n,&m); m++;
-            double maxx = 0;
-            for(int i=0;i<n;i++){
-                int r; scanf("%d",&r);
-                area[i] = PI*r*r;
-                if(maxx < area[i]) maxx = area[i]; //最大的一块蛋糕
-            }
-            double left = 0, right = maxx;  
-            for(int i = 0; i<100; i++){  
-            //while((right-left) > eps)   {      //for或者while都行
-                double mid = left+(right-left)/2;
-                if(check(mid))   left  = mid;   //每人能分到mid大小的蛋糕
-                else             right = mid;   //不够分到mid大小的蛋糕
-            }
-            printf("%.4f\n",left);    // 打印right也对
+    ??? note "参考代码"
+
+        ```cpp
+        #include<stdio.h>
+        #include<math.h>
+        double PI = acos(-1.0);    //3.141592653589793;
+        #define eps 1e-5
+        double area[10010];
+        int n,m;
+        bool check(double mid){ 
+            int sum = 0;
+            for(int i=0;i<n;i++)        //把每个圆蛋糕都按大小mid分开。统计总数
+                sum += (int)(area[i] / mid);
+            if(sum >= m) return true;   //最后看总数够不够m个
+            else         return false;
         }
-        return 0;
-    }
-    ```
+        int main(){
+            int T; scanf("%d",&T);
+            while(T--){
+                scanf("%d%d",&n,&m); m++;
+                double maxx = 0;
+                for(int i=0;i<n;i++){
+                    int r; scanf("%d",&r);
+                    area[i] = PI*r*r;
+                    if(maxx < area[i]) maxx = area[i]; //最大的一块蛋糕
+                }
+                double left = 0, right = maxx;  
+                for(int i = 0; i<100; i++){  
+                //while((right-left) > eps)   {      //for或者while都行
+                    double mid = left+(right-left)/2;
+                    if(check(mid))   left  = mid;   //每人能分到mid大小的蛋糕
+                    else             right = mid;   //不够分到mid大小的蛋糕
+                }
+                printf("%.4f\n",left);    // 打印right也对
+            }
+            return 0;
+        }
+        ```
 
 ## 三分法
 
@@ -449,18 +452,17 @@ for循环的100次，比while的循环次数要多。如果时间要求不是太
 在[l, r]上任取2个点，mid1和mid2，把函数分成三段。有以下情况：
 
 1. 若f(mid1) < f(mid2)，极值点v一定在mid1的右侧。此时，mid1和mid2要么都在v的左侧，要么分别在v的两侧。如下图所示。
-![](./images/binary3.jpg)
+    ![](./images/binary3.jpg)
 
-情况（1）：极值点v在mid1右侧
+    情况（1）：极值点v在mid1右侧
 
-下一步，令l = mid1，区间从[l, r]缩小为[mid1, r]，然后再继续把它分成三段。
-
+    下一步，令l = mid1，区间从[l, r]缩小为[mid1, r]，然后再继续把它分成三段。
 2. 同理，若f(mid1) > f(mid2)，极值点v一定在mid2的左侧。如下图所示。下一步，令 r = mid2，区间从[l, r]缩小为[l, mid2]。
-![](./images/binary4.jpg)
+    ![](./images/binary4.jpg)
 
-情况（2）：极值点v在mid1右侧
+    情况（2）：极值点v在mid1右侧
 
-不断缩小区间，就能使得区间[l, r]不断逼近v，从而得到近似值。
+    不断缩小区间，就能使得区间[l, r]不断逼近v，从而得到近似值。
 
 如何取mid1和mid2？有2种基本方法：
 
@@ -530,85 +532,85 @@ while (r - l > eps) {
 ???+note "[洛谷 P3382 - 【模板】三分法](https://www.luogu.com.cn/problem/P3382)"
     给定一个 $N$ 次函数和范围 $[l, r]$，求出使函数在 $[l, x]$ 上单调递增且在 $[x, r]$ 上单调递减的唯一的 $x$ 的值。
 
-??? note "解题思路"
-    本题要求求 $N$ 次函数在 $[l, r]$ 取最大值时自变量的值，显然可以使用三分法。
+    ??? tip
+        本题要求求 $N$ 次函数在 $[l, r]$ 取最大值时自变量的值，显然可以使用三分法。
 
-??? note "参考代码"
-    === "三等分"
+    ??? note "参考代码"
+        === "三等分"
 
-        ```cpp
-        #include<bits/stdc++.h>
-        using namespace std;
-        const double eps = 1e-6;
-        int n;
-        double a[15];
-        double f(double x){       //计算函数值
-            double s=0;
-            for(int i=n;i>=0;i--) //注意函数求值的写法
-                s = s*x + a[i];
-            return s;
-        }
-        int main(){
-            double L,R;
-            scanf("%d%lf%lf",&n,&L,&R);
-            for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
-            while(R-L > eps){  // for(int i = 0; i<100; i++){   //用for也行
-                double k =(R-L)/3.0;
-                double mid1 = L+k, mid2 = R-k;
-                if(f(mid1) > f(mid2)) 
-                      R = mid2;
-                else   L = mid1;
+            ```cpp
+            #include<bits/stdc++.h>
+            using namespace std;
+            const double eps = 1e-6;
+            int n;
+            double a[15];
+            double f(double x){       //计算函数值
+                double s=0;
+                for(int i=n;i>=0;i--) //注意函数求值的写法
+                    s = s*x + a[i];
+                return s;
             }
-            printf("%.5f\n",L);
-            return 0;
-        }
-        ```
-    === "近似三等分"
-
-        ```cpp
-        #include<bits/stdc++.h>
-        using namespace std;
-        const double eps = 1e-6;
-        int n; double a[15];
-        double f(double x){
-            double s=0;
-            for(int i=n;i>=0;i--) s=s*x+a[i];
-            return s;
-        }
-        int main(){
-            double L,R;
-            scanf("%d%lf%lf",&n,&L,&R);
-            for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
-            while(R-L > eps){   // for(int i = 0; i<100; i++){   //用for也行
-                double mid = L+(R-L)/2; 
-                if(f(mid - eps) > f(mid))
-                    R = mid;
-                else L = mid;
+            int main(){
+                double L,R;
+                scanf("%d%lf%lf",&n,&L,&R);
+                for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
+                while(R-L > eps){  // for(int i = 0; i<100; i++){   //用for也行
+                    double k =(R-L)/3.0;
+                    double mid1 = L+k, mid2 = R-k;
+                    if(f(mid1) > f(mid2)) 
+                        R = mid2;
+                    else   L = mid1;
+                }
+                printf("%.5f\n",L);
+                return 0;
             }
-            printf("%.5f\n",L);
-            return 0;
-        }
-        ```
-    === "OIWiki版本"
-        ```cpp
-        --8<-- "docs/basic/code/binary/binary_1.cpp"
-        ```
+            ```
+        === "近似三等分"
+
+            ```cpp
+            #include<bits/stdc++.h>
+            using namespace std;
+            const double eps = 1e-6;
+            int n; double a[15];
+            double f(double x){
+                double s=0;
+                for(int i=n;i>=0;i--) s=s*x+a[i];
+                return s;
+            }
+            int main(){
+                double L,R;
+                scanf("%d%lf%lf",&n,&L,&R);
+                for(int i=n;i>=0;i--) scanf("%lf",&a[i]);
+                while(R-L > eps){   // for(int i = 0; i<100; i++){   //用for也行
+                    double mid = L+(R-L)/2; 
+                    if(f(mid - eps) > f(mid))
+                        R = mid;
+                    else L = mid;
+                }
+                printf("%.5f\n",L);
+                return 0;
+            }
+            ```
+        === "OIWiki版本"
+            ```cpp
+            --8<-- "docs/basic/code/binary/binary_1.cpp"
+            ```
 
 ### 习题
 
 ??? note "[Uva 1476 - Error Curves](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=447&page=show_problem&problem=4222)"
-    给你n条开口向上的二次曲线Si（a>0），定义F（x） = max（Si（x）），求F（x）的最小值。
+    给你n条开口向上的二次曲线$S_i (a \ge 0)$，定义$F(x) = max(S_i(x))$，求$F(x)$的最小值。
 
     ??? tip
-        分析：三分。F（x）是一个单峰函数，先单调递减后单调递增，利用三分求最小值。
+        分析：三分。$F(x)$是一个单峰函数，先单调递减后单调递增，利用三分求最小值。
 
         ![](./images/1476-1.png)
             
-        首先，证明两个二次函数构造的F2（x）为单峰函数；
+        首先，证明两个二次函数构造的$F_2(x)$为单峰函数；
 
         （如果不成立，则存在两个连续的波谷，交点处一个函数递增另一个递减，矛盾，不会取递减函数）
 
-        然后，用数学归纳法证明，Fi（x）为单峰函数，则Fi+1 = max（Fi（x），Si+1（x））也是单峰函数；
+        然后，用数学归纳法证明，$F_i(x)$为单峰函数，则$F_{i+1} = max(F_i(x)，Si+1(x))$也是单峰函数；
 
         （如果存在两个（或更多）连续的波谷，交点处一个函数递增另一个递减，矛盾，所以只有一个波谷）
 
@@ -742,8 +744,9 @@ while (r - l > eps) {
             return 0;
         }
         ```
+
 ??? note "[UOJ 162 -【清华集训 2015】灯泡测试](https://uoj.ac/problem/162)"
-相比 Wildleopard 的家，他的弟弟 Mildleopard 比较穷。他的房子是狭窄的，而且在他的房间里仅有一个灯泡。每天晚上，他徘徊在自己狭小的房子里，思考如何赚更多的钱。有一天，他发现他的影子的长度随着他在灯泡和墙壁之间走动时会发生变化。一个突然的想法出现在他的脑海里，他想知道在房间里他的影子的最大长度。
+    相比 Wildleopard 的家，他的弟弟 Mildleopard 比较穷。他的房子是狭窄的，而且在他的房间里仅有一个灯泡。每天晚上，他徘徊在自己狭小的房子里，思考如何赚更多的钱。有一天，他发现他的影子的长度随着他在灯泡和墙壁之间走动时会发生变化。一个突然的想法出现在他的脑海里，他想知道在房间里他的影子的最大长度。
 
 
     ??? tip
@@ -911,7 +914,7 @@ while (r - l > eps) {
 
         化简最后得 $x=(b+a)*s/(b+3a)$
 
-        最后时间即 x/b+(s-x)/a
+        最后时间即 $x/b+(s-x)/a$
 
         要是二分的话，就是二分x，根据是第一个人还是第二个人先到来决定是增大还是减小x。
 
@@ -1051,14 +1054,14 @@ while (r - l > eps) {
         ```
 
 ??? note "[Drying](http://poj.org/problem?id=3104)"
-    n件衣服要烘干，第i件衣服的水分为a[i]，烘干机每次只能放进一件衣服，每分钟能烘干的水分为k，同时每分钟没有放在洗衣机的衣服的水分会自然蒸发1，求最短需要多少时间把衣服全部烘干。
+    n件衣服要烘干，第i件衣服的水分为$a[i]$，烘干机每次只能放进一件衣服，每分钟能烘干的水分为k，同时每分钟没有放在洗衣机的衣服的水分会自然蒸发1，求最短需要多少时间把衣服全部烘干。
 
     ??? tip
         我们二分的是题目所求也就是最少用的时间，写到二分里就是mid。那么我们如何判断mid是否符合要求来缩小范围呢？
 
-        先来想想简单的部分：如果所有的a\[i\]都小于mid，那么肯定是可行的，都不需要用洗衣机，放在那风干时间也不会超过mid。
+        先来想想简单的部分：如果所有的$a[i]$都小于mid，那么肯定是可行的，都不需要用洗衣机，放在那风干时间也不会超过mid。
 
-        但是如果有的a\[i\]大于mid呢？我们知道如果这些衣服都不放洗衣机的话，也会自动减少水分，这是自然发生的，不管你有没有用洗衣机，然后设给i件衣服用了t时间的洗衣机，那么mid时间后，自然风干后剩下的水就是 $a[i]-(mid-t)$ (因为在洗衣机里不能风干),
+        但是如果有的$a[i]$大于mid呢？我们知道如果这些衣服都不放洗衣机的话，也会自动减少水分，这是自然发生的，不管你有没有用洗衣机，然后设给i件衣服用了t时间的洗衣机，那么mid时间后，自然风干后剩下的水就是 $a[i]-(mid-t)$ (因为在洗衣机里不能风干),
 
         这些水没有别的办法只能用洗衣机了，所以，我们只需要看这这些 $a[i]>mid$ 的衣服用的洗衣机时间的总和有没有超过mid，如果超过了，肯定是不满足的。
 
@@ -1131,14 +1134,14 @@ while (r - l > eps) {
         ```
 
 ??? note "[Dropping tests](http://poj.org/problem?id=2976)"
-    有N个物品的重量和价值分别为Wi和Vi，从中选取K个物品使得单位重量的价值最大。也就是使得K个物品的ΣVi /ΣWi最大
+    有N个物品的重量和价值分别为$W_i$和$V_i$，从中选取K个物品使得单位重量的价值最大。也就是使得K个物品的$\sum V_i / \sum W_i$最大
 
     ??? tip
         使用二分搜索解决这类问题：
 
-        ΣVi /ΣWi >= x也就是Σ(Vi-x*Wi)>=0。X越大，式子左边越小，一直逼到=0的边界！
+        $\sum V_i / \sum W_i \geq x$ 也就是 $\sum (V_i - x \times W_i) \geq 0$ 。X越大，式子左边越小，一直逼到=0的边界！
 
-        贪心思想去找最大的可行解x即可：对Vi-X*Wi排序，选取前K个看是否>=0！
+        贪心思想去找最大的可行解x即可：对 $V_i - X \times W_i$ 排序，选取前K个看是否>=0！
 
     ??? note "参考代码"
 
@@ -1196,10 +1199,10 @@ while (r - l > eps) {
         ```
     
 ??? note "[K Best](http://poj.org/problem?id=3111)"
-    Demy有n颗钻石，每颗钻石都有价值和质量，现在要带走其中的k颗钻石，要使得单位价值最大，即Σv/Σw的值最大。
+    Demy有n颗钻石，每颗钻石都有价值和质量，现在要带走其中的k颗钻石，要使得单位价值最大，即$\sum v / \sum w$的值最大。
 
     ??? tip
-        这个题很明显就是要最大化平均值，然而采用贪心的方法每次取单位价值最大的钻石，是显然不行的。所以应该采用二分搜索的方法，那么二分什么值最后才能得到答案呢？不妨这样想，S（x）表示最终的平均价值，那么就相当于找到一组（v,w）组合使得Σv/Σw≥S(x)，移项得到不等式Σ（v-S(x)*w）≥0，这样一来就很容易发现直接二分S(x)即可，每次得到一个S(x)计算v-S(x)*w，之后排序，取前k个计算是否大于等于0，知道二分到一个S(x)使得不等式的值为0就是答案。
+        这个题很明显就是要最大化平均值，然而采用贪心的方法每次取单位价值最大的钻石，是显然不行的。所以应该采用二分搜索的方法，那么二分什么值最后才能得到答案呢？不妨这样想，$S(x)$ 表示最终的平均价值，那么就相当于找到一组（v,w）组合使得 $\sum v / \sum w \geq S(x)$，移项得到不等式 $\sum (v - S(x) \times w) \geq 0$，这样一来就很容易发现直接二分S(x)即可，每次得到一个S(x)计算$v - S(x) \times w$，之后排序，取前k个计算是否大于等于0，知道二分到一个S(x)使得不等式的值为0就是答案。
 
     ??? note "参考代码"
 
@@ -1292,11 +1295,11 @@ while (r - l > eps) {
         
         所以：二分的判断条件出来了：
 
-        当 Y>s 时，需要增大 W 来减小 Y ,从而 ∣Y−s∣ 变小；
+        当 $Y \ge s$ 时，需要增大 W 来减小 Y ,从而 ∣Y−s∣ 变小；
 
-        当 Y==s 时，∣Y−s∣==0;
+        当 $Y==s$ 时，∣Y−s∣==0;
 
-        当 Y < s 时，需要减小W来增大Y，从而 ∣Y−s∣变大；
+        当 $Y \le s$ 时，需要减小W来增大Y，从而 ∣Y−s∣变大；
 
         第二：前缀和。
         
@@ -1358,10 +1361,10 @@ while (r - l > eps) {
         ```
     
 ??? note "[Median](http://poj.org/problem?id=3579)"
-    给出n个数x1…xn, 求所有|xi - xj|中中位数的大小, 如果总数m为偶数, 则为(m+1)/2
+    给出n个数$x_1 ... x_n$, 求所有$|x_i - x_j|中中位数的大小, 如果总数m为偶数, 则为(m+1)/2
 
     ??? tip
-        对X排序后，与X_i的差大于mid（也就是某个数大于X_i + mid）的那些数的个数如果小于N / 2的话，说明mid太大了。以此为条件进行第一重二分搜索，第二重二分搜索是对X的搜索，直接用lower_bound实现。
+        对X排序后，与$X_i$的差大于mid（也就是某个数大于$X_i + mid$）的那些数的个数如果小于N / 2的话，说明mid太大了。以此为条件进行第一重二分搜索，第二重二分搜索是对X的搜索，直接用lower_bound实现。
 
     ??? note "参考代码"
 
@@ -1486,87 +1489,8 @@ while (r - l > eps) {
         }
         ```
     
-??? note "[第k大](http://acm.hdu.edu.cn/showproblem.php?pid=6231)"
-    给出一个长为N的序列，求出所有子序列中的第k大数(子序列长度必然大于等于k)并将其添加到一个新的序列中，求这个新序列的第m大为多少。
-
-    ??? tip
-        比如 对于下面样例序列（答案为3）
-        
-        5 3 2
-        
-        2 3 1 5 4
-        
-        首先我们知道最后新的序列组成 来源于原序列。我们对原序列排序 1 2 3 4 5 , 那么新序列的组成形式为 ( 1(a) , 2(b), 3(c) ,4 (d), 5(e) )//这里的a,b,c,d,e表示出现次数
-
-        若原序列中，所有长度不小于k的连续子序列中，第k大数不小于x，的子序列一共有ans个，那么x在所有第k大元素组成的数列中的位置排在 ans 个之后了
-
-        而对于 求解 ans个做法即时，首先找到一个区间从 l 开始第一个满足 x 为第 k 大的 r 位置（尺取法），然后对于其右边的长度部分 (n-r+1) , 如果有比 x 小，则对 x 排名没影响；
-
-        比x大，x排名就降低(就统计排在第k大，并且大于x的区间数)。所以这样就求出了 所有第k大数不小于x的子序列个数（子区间）。由于尺取是 O（N）
-
-        我们如果再遍历搜索就会到 O(N^2) , 所以我们再使用二分搜索 降到 O(N logN) 复杂度。
-    
-    ??? note "参考代码"
-
-        ```cpp
-        #include <bits/stdc++.h>
-        using namespace std;
-        typedef long long ll;
-        const int maxn = 1e5+7;
-        const int inf = 0x3f3f3f3f;
-
-        ll a[maxn];
-        ll b[maxn];
-        ll n,k,m;
-
-        bool judge(int x){
-            int num=0,j=1;
-            ll ans =0;
-            int l=1,r=0;
-            // 尺取法的两种写法
-            while(r<=n){
-                if(num<k){
-                    if(a[r+1]>=x) num++;
-                    r++;
-                }else{
-                    if(num==k) ans += n-r+1;
-                    if(a[l]>=x) num--;
-                    l++;
-                }
-            }
-            //小于或者等于
-            if(ans>=m) return true;
-            //大于
-            else return false;
-        }
-        int main(){
-            int T;
-            scanf("%d",&T);
-            while(T--){
-                scanf("%lld %lld %lld",&n,&k,&m);
-                memset(b,0,sizeof(b));
-                for(int i=1;i<=n;i++){
-                    scanf("%d",&a[i]);
-                    b[i] = a[i];
-                }
-                sort(b+1,b+1+n);
-                int size = unique(b+1,b+1+n) - (b+1); 
-                int l =1,r= size;
-                while(l<=r){
-                    int mid = (l+r)>>1;
-                    if(judge(b[mid])){
-                        l = mid+1;
-                    }else{
-                        r = mid-1;
-                    }
-                }
-                printf("%d\n",b[l-1]);    
-            }
-            return 0;
-        }
-    ```
 ??? note "[Moo University - Financial Aid](http://poj.org/problem?id=2010)"
-    奶大招生，从C头奶牛中招收N（N为奇数）头。它们分别得分score_i，需要资助学费aid_i。希望新生所需资助不超过F，同时得分中位数最高。求此中位数。
+    奶大招生，从C头奶牛中招收N（N为奇数）头。它们分别得分$score_i$，需要资助学费$aid_i$。希望新生所需资助不超过F，同时得分中位数最高。求此中位数。
 
     ??? tip
         假设选取的N头牛奶中最大的中位数为i，那么i之前选取了（n-1）/2头（或者直接n/2，因为n为奇数），之后选取了（n-1）/2头（或者n/2）。将c头奶牛从小到大或者从大到小排序，假设每一头奶牛都作为中位数，那么把它之前的满足数量的奶牛需要补助的最小总金额记录 $lower[i]$ ，把它之后的同理$upper[i]$，最后从大到小或者从小到大选取，第一个满足 $lower[i]+aid_i+upper[i]<=f$ 的就是满足条件的
@@ -1733,7 +1657,7 @@ while (r - l > eps) {
     有N个点，给出第一个点的高度，每个点的高度满足公式 $H_i = (H_{i-1} + H_{i+1})/2 - 1$ ,(1 < i < N)，求最后一个点高度最小是多少
     
     ??? tip
-        根据所有 Hi >= 0 这个条件进行二分枚举第二个点的值，最后计算出最后一个点的值判断 $if(num[i]<zero)$ 时，刚开始直接 < 0，导致错误，后来用了高精度 zero（#define zero 1e-10），所以细节很重要
+        根据所有 $H_i \geq 0$ 这个条件进行二分枚举第二个点的值，最后计算出最后一个点的值判断 $if(num[i]<zero)$ 时，刚开始直接 < 0，导致错误，后来用了高精度 zero（#define zero 1e-10），所以细节很重要
 
     ??? note "参考代码"
 
@@ -1949,6 +1873,86 @@ while (r - l > eps) {
         }
         ```
     
+??? note "[第k大](http://acm.hdu.edu.cn/showproblem.php?pid=6231)"
+    给出一个长为N的序列，求出所有子序列中的第k大数(子序列长度必然大于等于k)并将其添加到一个新的序列中，求这个新序列的第m大为多少。
+
+    ??? tip
+        比如 对于下面样例序列（答案为3）
+        
+        5 3 2
+        
+        2 3 1 5 4
+        
+        首先我们知道最后新的序列组成 来源于原序列。我们对原序列排序 1 2 3 4 5 , 那么新序列的组成形式为 ( 1(a) , 2(b), 3(c) ,4 (d), 5(e) )//这里的a,b,c,d,e表示出现次数
+
+        若原序列中，所有长度不小于k的连续子序列中，第k大数不小于x，的子序列一共有ans个，那么x在所有第k大元素组成的数列中的位置排在 ans 个之后了
+
+        而对于 求解 ans个做法即时，首先找到一个区间从 l 开始第一个满足 x 为第 k 大的 r 位置（尺取法），然后对于其右边的长度部分 (n-r+1) , 如果有比 x 小，则对 x 排名没影响；
+
+        比x大，x排名就降低(就统计排在第k大，并且大于x的区间数)。所以这样就求出了 所有第k大数不小于x的子序列个数（子区间）。由于尺取是 O（N）
+
+        我们如果再遍历搜索就会到 O(N^2) , 所以我们再使用二分搜索 降到 O(N logN) 复杂度。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include <bits/stdc++.h>
+        using namespace std;
+        typedef long long ll;
+        const int maxn = 1e5+7;
+        const int inf = 0x3f3f3f3f;
+
+        ll a[maxn];
+        ll b[maxn];
+        ll n,k,m;
+
+        bool judge(int x){
+            int num=0,j=1;
+            ll ans =0;
+            int l=1,r=0;
+            // 尺取法的两种写法
+            while(r<=n){
+                if(num<k){
+                    if(a[r+1]>=x) num++;
+                    r++;
+                }else{
+                    if(num==k) ans += n-r+1;
+                    if(a[l]>=x) num--;
+                    l++;
+                }
+            }
+            //小于或者等于
+            if(ans>=m) return true;
+            //大于
+            else return false;
+        }
+        int main(){
+            int T;
+            scanf("%d",&T);
+            while(T--){
+                scanf("%lld %lld %lld",&n,&k,&m);
+                memset(b,0,sizeof(b));
+                for(int i=1;i<=n;i++){
+                    scanf("%d",&a[i]);
+                    b[i] = a[i];
+                }
+                sort(b+1,b+1+n);
+                int size = unique(b+1,b+1+n) - (b+1); 
+                int l =1,r= size;
+                while(l<=r){
+                    int mid = (l+r)>>1;
+                    if(judge(b[mid])){
+                        l = mid+1;
+                    }else{
+                        r = mid-1;
+                    }
+                }
+                printf("%d\n",b[l-1]);    
+            }
+            return 0;
+        }
+        ```
+
 ## 分数规划
 
 参见：[分数规划](../misc/frac-programming.md)
