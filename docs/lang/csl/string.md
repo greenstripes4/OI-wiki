@@ -149,3 +149,33 @@ printf("将字符串 s 的前两位替换为 NOI 后得到的字符串是 %s", s
 将字符串 s 的第 3~7 位替换为空串后得到的字符串是 OI
 将字符串 s 的前两位替换为 NOI 后得到的字符串是 NOI
 ```
+
+### 示例代码
+
+```cpp
+string s = "Hi,..morn";		//定义了名为s的string类并初始化
+s = s + "ing";				//尾部添加字符串"ing"
+cout << s << endl;			//输出"Hi,..morning"
+s.erase(3, 2);				//删除第3个字符后的2个字符
+cout << s << endl;			//输出"Hi,morning"
+int f = s.find("Hi,");		//查找"Hi,"在s中的位置，-1为无法找到
+s.insert(f + 3, 2, 'G');	//在第3个字符后插入单个字符'G'2次
+cout << s << endl;			//输出"Hi,GGmorning"
+s.insert(5, ",MM,");		//在第5个字符后插入字符串",MM,"
+cout << s << endl;			//输出”Hi,GG,MM,morning”
+string v = s.substr(4, 3);	//取s中第4个字符后的3个字符给v
+cout << v << endl;			//输出"G,M"
+cout << v.length() << endl; //输出3,即v的长
+s += to_string(1234);		//int to string
+reverse(s.begin(), s.end()); //反转字符串
+
+// cin读取一行字符串时，遇到空格就会停止。如果读取一行包含空格符的字符串，可以使用getline()函数。
+string sa, sb;
+getline(cin, sa); //读取一行包含空格符的字符串赋值给str
+getline(cin, sb);
+cout << sa << endl;
+cout << sb.length() << endl; // strlen(字符串)的功能是返回字符串的长度，不包括字符串结束标记'\0'。
+sa.find(sb);				 //查找sa中第一次出现sb的位置，如果找不到就返回 - 1。
+sa.find(sb, 5);				 //从sa的第p个位置开始查找第一次出现sb的位置，找不到就返回-1
+                             // string support +, =, +=, ==, !=, <, <=, >, >=, []
+```

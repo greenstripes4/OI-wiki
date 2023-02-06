@@ -41,6 +41,25 @@ struct Edge {
 
 上例仅作举例，不必纠结实际意义。
 
+###
+
+如果想使用结构体作为set或者map的key，就必须定义比较函数，因为set、map需要对key排序。
+
+```cpp
+struct student //声明一个名为student的结构体类型
+{
+	int ID;		   //学号
+	char name[20]; //姓名
+	char sex;	   //性别
+	float score;   //成绩
+	bool operator<(student other) const //语法要求必须重载成常成员函数
+	{
+		if(score!=other.score) return score>other.score;
+		else return ID<other.ID;
+	}
+};				   //声明结束，注意此处不可省略分号
+```
+
 ## 访问/修改成员元素
 
 可以使用 `变量名.成员元素名` 进行访问。

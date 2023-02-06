@@ -81,6 +81,46 @@ bitset<1000> bs;  // a bitset with 1000 bits
 - `_Find_first()`: 返回 `bitset` 第一个 `true` 的下标，若没有 `true` 则返回 `bitset` 的大小。
 - `_Find_next(pos)`: 返回 `pos` 后面（下标严格大于 `pos` 的位置）第一个 `true` 的下标，若 `pos` 后面没有 `true` 则返回 `bitset` 的大小。
 
+### 示例代码
+
+```cpp
+bitset<32> bitvec;				  // 32 bits, all zero
+bool is_set = bitvec.any();		  // false, all bits are zero
+bool is_not_set = bitvec.none();  // true, all bits are zero
+size_t bits_set = bitvec.count(); // returns number of bits that are on
+size_t sz = bitvec.size();		  // returns 32
+// assign 1 to even numbered bits
+for (int index = 0; index != 32; index += 2)
+    bitvec[index] = 1;
+// equivalent loop using set operation
+for (int index = 0; index != 32; index += 2)
+    bitvec.set(index);
+int i=6;
+if (bitvec.test(i))
+    // bitvec[i] is on
+    // equivalent test using subscript
+    if (bitvec[i])
+        ;		// bitvec[i] is on
+bitvec.reset(); // set all the bits to 0.
+bitvec.set();	// set all the bits to 1
+
+// bitvec1 is smaller than the initializer
+bitset<16> bitvec1(0xffff); // bits 0 ... 15 are set to 1
+// bitvec2 same size as initializer
+bitset<32> bitvec2(0xffff);				// bits 0 ... 15 are set to 1; 16 ... 31 are 0
+cout << "bitvec2: " << bitvec2 << endl; // bitvec2: 00000000000000001111111111111111
+// on a 32-bit machine, bits 0 to 31 initialized from 0xffff
+bitset<128> bitvec3(0xffff); // bits 32 through 127 initialized to zero
+unsigned long ulong = bitvec3.to_ulong();
+cout << "ulong = " << ulong << endl;
+
+string strval("1100");
+bitset<32> bitvec4(strval);
+string str("1111111000000011001101");
+bitset<32> bitvec5(str, 5, 4);			 // 4 bits starting at str[5], 1100
+bitset<32> bitvec6(str, str.size() - 4); // use last 4 characters
+```
+
 ## 应用
 
 ### [「LibreOJ β Round #2」贪心只能过样例](https://loj.ac/problem/515)

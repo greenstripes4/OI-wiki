@@ -46,6 +46,8 @@ vector<int> v4(v2);
 vector<int> v5(v4.begin() + 1, v4.begin() + 3);
 // 7. 移动v2到新创建的vector v6，不发生拷贝; 常数复杂度; 需要 C++11
 vector<int> v6(std::move(v2));  // 或者 v6 = std::move(v2);
+// 8. 带值初始化
+vector<vector<int>> dirs = {{0,1},{0,-1},{1,0},{-1,0},{-1,-1},{1,1},{-1,1},{1,-1}};
 ```
 
 ??? note "测试代码"
@@ -149,6 +151,40 @@ vector 提供了如下几种 [迭代器](./iterator.md)
 - `push_back()` 在末尾插入一个元素，均摊复杂度为 **常数**，最坏为线性复杂度。
 - `pop_back()` 删除末尾元素，常数复杂度。
 - `swap()` 与另一个容器进行交换，此操作是 **常数复杂度** 而非线性的。
+
+### 示例代码
+
+```cpp
+vector<int> v;  //定义了一个存放整数的vector容器
+v.reserve(30);  //调整数据空间大小
+v.push_back(20);  //尾端插入新元素
+v.push_back(26);
+v.push_back(12);
+v.push_back(52);
+v.insert(v.begin(), 2);			   // begin()为指针，指向v的头部,在此处插入2
+v.insert(v.end(), 43);			   // end()为指针，指向v最后的元素的后面，插入43
+v.insert(v.begin() + 2, 15);	   //在第3个元素前插入15
+v.erase(v.begin() + 1);			   //删除第2个元素
+v.erase(v.begin(), v.begin() + 2); //删除前3个元素
+v.pop_back();					   //删除末尾的一个元素
+for (int i = 0; i < v.size(); ++i) // size()为v中元素的个数
+    cout << v[i] << ' ';
+cout << "\n 首元素为:" << v.front() << '\n'; //首元素引用
+cout << "末元素为:" << v.back() << '\n';	 //末元素引用
+reverse(v.begin(), v.end());				 //反转整个vector元素
+for (int i = 0; i < v.size(); ++i)
+    cout << v[i] << ' ';
+v.clear();									  //清空全部元素
+cout << "\n v是否为空:" << v.empty() << '\n'; //判断是否为空
+
+a1.insert(a1.begin() + 1, 5, 10);					   //插入5个10
+a1.insert(a1.begin() + 1, a2.begin(), a2.begin() + 3); //插入vector a2的某个区间
+a1.resize(5);										   //设置大小为5，如果当前有8个元素，舍弃后3个
+if (find(a1.begin(), a1.end(), a2[0]) != a1.end())
+{
+    //在a1中可以查到a2[0]
+}
+```
 
 ### `vector` 的实现细节
 
@@ -285,6 +321,34 @@ deque<int> v5(std::move(v2));
 - `pop_back()` 删除末尾元素，**常数复杂度**。
 - `swap()` 与另一个容器进行交换，此操作是 **常数复杂度** 而非线性的。
 
+### 示例代码
+
+```cpp
+deque<string> d;  //定义一个包含string的deque
+d.push_back("A"); //尾部插入元素
+d.push_back("B");
+d.push_front("X"); //头部插入元素
+d.push_front("Y");
+// d.pop_front();                  //删除首元素
+// d.pop_back();                   //删除尾元素
+// d.erase(d.begin()+1);           //删除指定位置的元素
+// d.clear();                      //删除所有元素
+d.insert(d.end() - 2, "O");		   //指定位置插入
+reverse(d.begin(), d.end());	   //反转元素顺序
+for (int i = 0; i < d.size(); i++) //数组方式访问
+    cout << d[i] << " ";
+cout << endl;
+swap(d[1], d[2]);					   //两个元素交换
+deque<string>::iterator i;			   //迭代器访问
+for (i = d.begin(); i != d.end(); i++) //正向遍历
+    cout << *i << " ";
+cout << endl;
+cout << "\ndeque是否为空 " << d.empty();
+cout << "\ndeque元素个数为 " << d.size();
+cout << "\ndeque的首元素为 " << d.front();
+cout << "\ndeque的末元素为 " << d.back();
+```
+
 ### `deque` 的实现细节
 
 `deque` 通常的底层实现是多个不连续的缓冲区，而缓冲区中的内存是连续的。而每个缓冲区还会记录首指针和尾指针，用来标记有效数据的区间。当一个缓冲区填满之后便会在之前或者之后分配新的缓冲区来存储更多的数据。更详细的说明可以参考 [STL 源码剖析——deque 的实现原理和使用方法详解](https://blog.csdn.net/baidu_28312631/article/details/48000123)。
@@ -315,3 +379,37 @@ deque<int> v5(std::move(v2));
 ### `forward_list` 的使用方法
 
 `forward_list` 的使用方法与 `list` 几乎一致，但是迭代器只有单向的，因此其具体用法不作详细介绍。详细内容 [请参见 C++ 文档](https://zh.cppreference.com/w/cpp/container/forward_list)
+
+### 示例代码
+
+```cpp
+//双向链表，性能差
+list<int> l;
+l.push_back(2); //尾部插入新元素，链表自动扩张
+l.push_back(2);
+l.push_back(9);
+l.push_back(12);
+l.push_back(12);
+l.push_back(4);
+l.push_front(9); //头部插入新元素，链表自动扩张
+list<int>::iterator it;
+it = l.begin();
+it++;			  //链表迭代器只能++或--操作，不能+n操作，因为list节点非连续内存
+l.insert(it, 20); //当前位置插入新元素
+it++;
+l.erase(it);							  //删除迭代器位置上的元素
+for (it = l.begin(); it != l.end(); it++) //正向遍历
+    cout << *it << " ";
+cout << endl;
+l.remove(12);					  //删除所有值为12的元素
+l.pop_front();					  //删除链表首元素
+l.pop_back();					  //删除链表尾元素
+it = find(l.begin(), l.end(), 4); //查找值为4的元素
+if (it != l.end())
+    cout << "find " << *it << endl;
+l.sort();								  //升序排列
+l.unique();								  //删除连续重复元素(只保留一个)，不排序的话不连续的重复元素无法被去除
+for (it = l.begin(); it != l.end(); it++) //正向遍历
+    cout << *it << " ";
+// l.clear();                          //清空链表
+```

@@ -16,6 +16,35 @@ author: sbofgayschool
     
     然而，自定义 `struct` 的变量命名往往更加清晰（`pair` 只能使用 `first` 与 `second` 访问包含的两个变量）。同时，如果需要将两个以上的变量进行关联，自定义 `struct` 会更加合适。
 
+### 示例代码
+
+```cpp
+typedef pair<string, double> Record; // typedef简化pair的声明为Record
+pair<int, double> p1;						 //定义p1为pair类型，包含一个整数和一个浮点数
+pair<int, double> p[10];					 //定义pair类型的数组p[]
+pair<string, string> author("James", "Joy"); //定义author是pair类型且初始化
+p1.first = 10;
+p1.second = 12.5;
+cout << p1.first << ' ' << p1.second << endl;
+Record p2 = make_pair("zxh", 100);
+cout << p2.first << ' ' << p2.second << endl;
+// pair的比较是按照字典序比较的，比较时先按first的大小比较，如果相等，再按second的大小比较
+pair<int, char> A(10, 'z');
+pair<int, char> B(90, 'a');
+if (A == B)
+    cout << "相等\n";
+if (A != B)
+    cout << "不相等\n";
+if (A < B)
+    cout << "A<B\n";
+if (A > B)
+    cout << "A>B\n";
+if (A <= B)
+    cout << "A<=B\n";
+if (A >= B)
+    cout << "A>=B\n";
+```
+
 ## 使用
 
 ### 初始化

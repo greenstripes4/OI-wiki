@@ -51,6 +51,93 @@
 
 ### 使用样例
 
+```cpp
+struct Comp{
+	bool operator()(const int &a, const int &b) const //重载操作符"（）"
+    {
+		return a > b; //由大到小排序
+					  // return a<b;                        //由小到大排序
+	}
+}; //需在结构体内定义比较函数
+
+set<int> s;
+for (int i = 10; i > 0; --i) //此处由大到小赋值
+    s.insert(i);			 //插入元素
+set<int> s2(s);				 //复制s生成s2
+s.erase(s.begin());			 //删除操作
+s.erase(6);
+s.insert(5);							  //不会重复插入
+set<int>::iterator ii;					  // ii为正向迭代器
+for (ii = s.begin(); ii != s.end(); ii++) // ii从首地址到末元素地址遍历
+    cout << *ii << ' ';					  // ii为地址，所以取地址上的值前面要加*
+cout << "\n元素个数为" << s.size();		  //统计set中元素个数，时间复杂度为O(1)
+ii = s.find(10);						  //查找元素值，并返回指向该元素的迭代器
+if (ii != s.end())						  //如果容器中不存在该元素，返回值等于s.end()
+    cout << "\n查找=" << *ii;
+if (s.count(5)) // count返回s中值为5的元素个数，时间复杂度为O(logn)
+    cout << "\n存在元素5";
+s.clear(); //清空所有元素
+cout << "\n元素是否为空:" << s.empty();
+
+set<int, greater<int>> sd; //降序
+set<int, Comp> s1;		   // set调用的比较函数为Comp（）
+// set<int,greater<int> >s;             //其实这样写最简单
+for (int i = 1; i <= 10; ++i) //此处由小到大赋值
+    s1.insert(i);
+for (ii = s1.begin(); ii != s1.end(); ii++) //遍历
+    cout << *ii << ' ';						//输出是由大到小排序
+
+// 当元素是结构体时，必须要重载运算符“<”
+set<Info> ss;
+info = {"A", 90.0};
+ss.insert(info);
+info = {"B", 92.0};
+ss.insert(info);
+info = {"C", 96.0};
+ss.insert(info);
+set<Info>::iterator iii;
+for (iii = ss.begin(); iii != ss.end(); iii++) //遍历
+    cout << (*iii).name << ' ' << (*iii).score << endl;
+
+// rbegin is the last element of your container. end is one past the end of the container.
+```
+
+multiset的用法基本一致。
+
+```cpp
+multiset<int> m;
+m.insert(11); //插入数据
+m.insert(21);
+m.insert(10);
+m.insert(12);
+m.insert(12);
+m.insert(11);
+m.insert(11);
+m.insert(11);
+m.insert(9);
+cout << "11的个数有" << m.count(11) << endl; // count返回m中11的个数
+cout << "第一个大于等于10的元素为：" << *m.lower_bound(10) << endl;
+cout << "第一个大于11的元素为:" << *m.upper_bound(11) << endl;
+multiset<int>::iterator it;
+for (it = m.begin(); it != m.end(); it++)
+    cout << *it << endl;							//从小到大输出
+cout << "删除12,有" << m.erase(12) << "个" << endl; //删除等于12的元素
+cout << "查找9\n";
+multiset<int>::iterator i = m.find(9); //查找v，返回该元素的迭代器位置
+if (i != m.end())					   //找到则输出，否则i为end()迭代器位置
+    cout << *i << endl;
+int v = 11; //查找所有相同元素
+pair<multiset<int>::iterator, multiset<int>::iterator> p;
+// equal_range:有序容器中表示一个值第一次出现与最后一次出现的后一位
+p = m.equal_range(v);
+cout << "大于等于" << v << "的第一个元素为" << *p.first << endl;
+cout << "大于" << v << "的第一个元素为" << *p.second << endl;
+cout << "键值为" << v << "的全部元素为";
+for (it = p.first; it != p.second; it++) //打印重复键值元素11
+    cout << *it << " ";
+m.clear(); //清空所有元素
+```
+
 #### `set` 在贪心中的使用
 
 在贪心算法中经常会需要出现类似 **找出并删除最小的大于等于某个值的元素**。这种操作能轻松地通过 `set` 来完成。
@@ -119,6 +206,45 @@ map<string, int> mp;
 - `size()`: 返回容器内元素个数。
 
 ### 使用样例
+
+```cpp
+map<string, int> a1;				  //升序
+map<string, int, greater<string>> a2; //降序
+map<char *, float> m;
+m["apple"] = 3.4;
+m["orange"] = 1.2;
+m["pear"] = 3.5;
+cout << m["apple"] << endl;
+cout << m["orange"] << endl;
+cout << m["pear"] << endl;
+m.clear();
+
+map<int, string> ms;
+ms[1] = "student_one";
+ms[1] = "student_two"; // id相同，则覆盖
+ms[2] = "student_three";
+map<int, string>::iterator iter;
+ms.insert(make_pair(3, "student_four")); //插入新元素，用make_pair
+for (iter = ms.begin(); iter != ms.end(); iter++)
+    cout << iter->first << " " << iter->second << endl;
+cout << endl;
+iter = ms.lower_bound(1); //首个大于等于1的元素
+cout << iter->second << endl;
+iter = ms.upper_bound(1); //首个大于1的元素
+cout << iter->second << endl;
+iter = ms.find(1); //查找键值为1的元素的位置
+ms.erase(iter);	   //删除键值为1的元素
+for (iter = ms.begin(); iter != ms.end(); iter++)
+    cout << iter->first << " " << iter->second << endl;
+ms.erase(ms.begin(), ms.end()); //删除全部元素
+cout << ms.size() << endl;
+cout << ms.empty() << endl; // empty()判断map是否为空
+
+multimap<string, double> mp;					//定义multimap对象，当前无任何元素
+mp.insert(pair<string, double>("Jack", 300.5)); //插入元素
+mp.insert(pair<string, double>("Jack", 306));	//重复插入键值"Jack"
+cout << mp.count("Jack") << endl;				// 2
+```
 
 #### `map` 用于存储复杂状态
 

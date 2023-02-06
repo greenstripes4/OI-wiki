@@ -133,7 +133,7 @@ std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int> >,
 
 ```cpp
 std::priority_queue<int> q1;
-std::priority_queue<int, std::vector<int> > q2;
+std::priority_queue<int, std::vector<int> > q2; //缺省大根堆，priority_queue<int, vector<int>, greater<int>> q2;
 // C++11 后空格可省略
 std::priority_queue<int, std::deque<int>, std::greater<int> > q3;
 // q3 为小根堆
