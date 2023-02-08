@@ -290,6 +290,133 @@ void traverse(TreeNode* root) {
 
 ## 习题
 
+??? note [棋盘覆盖](https://programmerall.com/article/3423605686/)
+    ![](./images/divide-and-conquer-3.png)
+    ![](./images/divide-and-conquer-4.png)
+
+??? note [气球膨胀](https://vjudge.net/problem/UVA-12627)
+    ![](./images/divide-and-conquer-5.png)
+    ![](./images/divide-and-conquer-6.png)
+    ![](./images/divide-and-conquer-7.png)
+
+??? note [不无聊的序列](https://vjudge.net/problem/UVA-1608)
+    一个序列为不无聊序列，则必须满足划分任意长度的连续子序列（包括其本身），其中至少存在一个元素仅仅出现一次，即至少有一个元素不重复。
+    
+    例子：
+    
+    123321 ——无聊序列，子序列33中没有独特元素。
+    
+    12321 ——不无聊序列，任意子序列都有独特元素。
+
+    ??? tip
+        ![](./images/divide-and-conquer-8.png)
+
+??? note [不公平竞赛](https://vjudge.net/problem/UVA-1609)
+    给你一群队伍，1号对至少能击败一半的队伍，每只一号队不能击败的队伍都有另一只队伍能击败他。给一个比赛安排让一号队夺冠。
+
+    ??? tip
+        ![](./images/divide-and-conquer-9.png)
+        ![](./images/divide-and-conquer-10.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        #define LL long long
+        #define ms(s) memset(s, 0, sizeof(s))
+        using namespace std;
+        const int maxn = 1024 + 10;
+        char G[maxn][maxn];
+        int vis[maxn], haveFailed[maxn];
+        int n;
+
+        void dfs(int m) {
+            if(m == 1) return;
+            ms(vis);
+            //step 1
+            for(int i = 2; i <= n; i++) {
+                for(int j = 2; j <= n; j++) {
+                    // 1 < i && j > i && 1 > j
+                    if(vis[i] || vis[j] || haveFailed[i] || haveFailed[j]) continue;
+                    if(!G[1][i] && G[j][i] && G[1][j]) {
+                        cout << i << " " << j << endl;
+                        vis[i] = vis[j] = 1;
+                        haveFailed[i] = 1;
+                        break;
+                    }
+                }
+            }
+            //step 2
+            for(int i = 2; i <= n; i++) {
+                if(vis[i] || haveFailed[i]) continue;
+                if(G[1][i]) {
+                    cout << 1 << " " << i << endl;
+                    vis[i] = true;
+                    haveFailed[i] = true;
+                    break;
+                }
+            }
+
+            //step3
+            bool flag = false;
+            int pre, cur;
+            for(int i = 2; i <= n; i++) {
+                if(!G[1][i] && !vis[i] && !haveFailed[i]) {
+                    if(!flag) {
+                        flag = true;
+                        pre = i;
+                    } else {
+                        flag = false;
+                        cur = i;
+                        if(G[pre][cur]) haveFailed[cur] = true;
+                        else haveFailed[pre] = true;
+                        vis[pre] = vis[cur] = 1;
+                        cout << pre << " " << cur << endl;
+                    }
+                }
+            }
+
+        //step4
+            flag = false;
+            for(int i = 2; i <= n; i++) {
+                if(!vis[i] && !haveFailed[i]) {
+                    if(!flag) {
+                        flag = true;
+                        pre = i;
+                    } else {
+                        flag = false;
+                        cur = i;
+                        if(G[pre][cur]) haveFailed[cur] = true;
+                        else haveFailed[pre] = true;
+                        vis[pre] = vis[cur] = 1;
+                        cout << pre << " " << cur << endl;
+                    }
+                }
+            }
+        
+            dfs(m >> 1);
+        }
+
+
+        int main() {
+            // freopen("in.txt", "r", stdin);
+            // freopen("out.txt", "w", stdout);
+            ios::sync_with_stdio(false);
+            cin.tie(0);
+            while(cin >> n) {
+                for(int i = 1; i <= n; i++) {
+                    for(int j = 1; j <= n; j++) {
+                        cin >> G[i][j];
+                        G[i][j] -= '0';
+                    }
+                }
+                ms(haveFailed);
+                dfs(n);
+            }
+            return 0;
+        }
+        ```
+
 - [LeetCode 上的递归专题练习](https://leetcode.com/explore/learn/card/recursion-i/)
 - [LeetCode 上的分治算法专项练习](https://leetcode.com/tag/divide-and-conquer/)
 

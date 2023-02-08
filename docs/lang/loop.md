@@ -207,3 +207,56 @@ while (1) {
   statement2;
 }
 ```
+
+## C++11 Ranged Loop
+
+C++11 introduced the ranged for loop. This for loop is specifically used with collections such as arrays and vectors.
+
+```cpp
+// initialize array  
+int numArray[] = {1, 2, 3, 4, 5};
+// use of ranged for loop to print array elements  
+for (int n : numArray) {
+    cout << n << " ";
+}
+
+// declare and initialize vector  
+vector<int> num_vector = {1, 2, 3, 4, 5};
+// print vector elements  
+for (int n : num_vector) {
+    cout << n << " ";
+}
+
+// define the collection in the loop itself
+for (int n : {1, 2, 3, 4, 5}) {
+    cout << n << " ";
+}
+
+// Printing string characters
+std::string str = "Geeks";
+for (char c : str)
+    std::cout << c << ' ';
+
+// Printing keys and values of a map
+std::map<int, int> MAP(
+    { { 1, 1 }, { 2, 2 }, { 3, 3 } });
+for (auto i : MAP)
+    std::cout << '{' << i.first << ", " << i.second
+                << "}\n";
+```
+
+### Best Practices
+
+```cpp
+int num[3] = {1, 2, 3};
+
+// NO: copy elements of num to var
+for (int var : num) {
+    // code
+}
+
+// YES: access memory location of elements of num
+for (int &var : num) {
+    // code
+}
+```
