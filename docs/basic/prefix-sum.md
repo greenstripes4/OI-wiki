@@ -67,10 +67,81 @@ C++ 标准库中实现了前缀和函数 [`std::partial_sum`](https://zh.cpprefe
 ???+note "[洛谷 P1387 最大正方形](https://www.luogu.com.cn/problem/P1387)"
     在一个 $n\times m$ 的只包含 $0$ 和 $1$ 的矩阵里找出一个不包含 $0$ 的最大正方形，输出边长。
 
+??? tip
+    解法1：动态规划
+    
+    $f[i][j]$表示以节点i,j为右下角，可构成的最大正方形的边长。
+    
+    $if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;$
+
+    解法2：前缀和+二分
+    
+    先枚举正方形左上角（i，j），然后枚举边长l，判断正方形内的元素和是否为正方形面积（元素不是0就是1嘛），如果是则ans=max（l，ans）。得到一个$O(nml^3)$;
+
+    考虑优化：
+
+    求矩阵内元素和当然可以使用二维前缀和啦。 也就是：sum为前缀和数组，a为矩阵元素。预处理：$sum[i][j]=sum[i][j-1]+sum[i-1][j]-sum[i-1][j-1]+a[i][j];$ 按i，j顺着推一遍就行了。求（lx,ly）到（rx,ry)这一矩阵中的元素和：$sum[rx][ry]-sum[rx][ly-1]-sum[lx-1][ry]+sum[lx-1][ly-1];$ 然后就可以把$O(nml^3)$ 优化到 $O(nml)$。然后就可以过啦
+
+    注意到若一个正方形中元素和不为正方形面积的话，那么再枚举边长（当然是按边长从小到大枚举啦）显然没有意义，所以可以直接break。（注意到正方形面积与边长成函数关系，即$S(l)=l^2$，S(l)具有严格单调性，那么我们可以二分l啦，复杂度可以达到$O(nm \log (\min(n,m)))$ 。
+
+    边长按从小到大枚举遇到不合法情况直接break（当然是在枚举时才能用啦）。
+
 ??? note "参考代码"
-    ```cpp
-    --8<-- "docs/basic/code/prefix-sum/prefix-sum_2.cpp"
-    ```
+    === "动态规划"
+
+        ```cpp
+        #include <iostream>
+        #include <cstdio>
+        using namespace std;
+        int a[101][101],n,m,f[101][101],ans;
+        int main()
+        {
+            scanf("%d%d",&n,&m);//读入
+            for (int i=1;i<=n;++i)
+                for (int j=1;j<=m;++j)
+                {
+                    scanf("%d",&a[i][j]);
+                    //因为只需用到i，j上方，左方，左上方的信息，读入同步处理
+                    if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;
+                    ans=max(ans,f[i][j]);//同步更新答案
+                }
+            printf("%d",ans);
+        }
+        ```
+
+    === "前缀和+二分"
+
+        ```cpp
+        #include <bits/stdc++.h>
+        using namespace std;
+        int n, m, ans = 0, x, f[205][205];
+        int main() {
+            scanf("%d%d", &n, &m);
+            for (int i=0; i<n; ++i)
+                for (int j=0; j<m; ++j) {
+                    scanf("%d", &x);
+                    f[i][j]= f[i-1][j]+f[i][j-1]-f[i-1][j-1]+x;
+                }
+            for (int i=0; i<n; ++i)
+                for (int j=0; j<m; ++j) {
+                    int l = 0, r = min(n,m);
+                    while (l<=r) {
+                        int mid = (l+r)>>1;
+                        if (i+mid>n || j+mid>m || f[i+mid][j+mid]-f[i+mid][j]-f[i][j+mid]+f[i][j] < mid*mid) r = mid-1;
+                            else l = mid+1;
+                    }
+                    if (f[i+r][j+r]-f[i+r][j]-f[i][j+r]+f[i][j] == r*r) ans = max(ans, r);
+                }
+            cout << ans;
+            return 0;
+        }
+        ```
+
+    === "OI-Wiki"
+
+        ```cpp
+        --8<-- "docs/basic/code/prefix-sum/prefix-sum_2.cpp"
+        ```
 
 ### 基于 DP 计算高维前缀和
 
@@ -570,7 +641,7 @@ $$
 
 前缀和：
 
-??? note [洛谷 B3612【深进 1. 例 1】求区间和](https://www.luogu.com.cn/problem/B3612)
+??? note "[洛谷 B3612【深进 1. 例 1】求区间和](https://www.luogu.com.cn/problem/B3612)"
     给定 $n$ 个正整数组成的数列 $a_1, a_2, \cdots, a_n$ 和 $m$ 个区间 $[l_i,r_i]$，分别求这 $m$ 个区间的区间和。
 
     ??? tip
@@ -619,16 +690,16 @@ $$
         }
         ```
 
-??? note [洛谷 U69096 前缀和的逆](https://www.luogu.com.cn/problem/U69096)
+??? note "[洛谷 U69096 前缀和的逆](https://www.luogu.com.cn/problem/U69096)"
     有 N 个正整数放到数组 B 里，它是数组 A 的前缀和数组，求 A 数组。
 
     ??? tip
     A 就是 B 的差分数组。
 
-??? note [AT2412 最大の和](https://vjudge.net/problem/AtCoder-joi2007ho_a#author=wuyudi)
+??? note "[AT2412 最大の和](https://vjudge.net/problem/AtCoder-joi2007ho_a#author=wuyudi)"
     读入 n 个整数的数列 a1，a2，…，an 和正整数 k（1<=k<=n），请输出连续排列的 k 个整数的和的最大值
 
-??? note [「USACO16JAN」子共七 Subsequences Summing to Sevens](https://www.luogu.com.cn/problem/P3131)
+??? note "[「USACO16JAN」子共七 Subsequences Summing to Sevens](https://www.luogu.com.cn/problem/P3131)"
     给你n个数，分别是$a[1],a[2],...,a[n]$。求一个最长的区间$[x,y]$，使得区间中的数($a[x],a[x+1],a[x+2],...,a[y-1],a[y]$)的和能被7整除。输出区间长度。若没有符合要求的区间，输出0。
 
     ??? tip
@@ -654,7 +725,7 @@ $$
         }
         ```
 
-??? note [「USACO05JAN」Moo Volume S](https://www.luogu.com.cn/problem/P6067)
+??? note "[「USACO05JAN」Moo Volume S](https://www.luogu.com.cn/problem/P6067)"
     Farmer John 的农场上有 $N$ 头奶牛（$1 \leq N \leq 10^5$），第 $i$ 头奶牛的位置为 $x_i$（$0 \leq x_i \leq 10^9$）。
 
     奶牛很健谈，每头奶牛都和其他 $N-1$ 头奶牛聊天。第 $i$ 头奶牛和第 $j$ 头奶牛聊天时，音量为 $|x_i-x_j|$。
@@ -705,7 +776,7 @@ $$
 
 二维/多维前缀和：
 
-??? note [HDU 6514 Monitor](https://vjudge.net/problem/HDU-6514)
+??? note "[HDU 6514 Monitor](https://vjudge.net/problem/HDU-6514)"
     给出一个n*m的矩阵，开始全部初始化为0，然后给出一系列的小矩阵的范围，小矩阵中的格子全部变为1，最后再给出一些查询，查询矩阵范围内是否所有的格子都是1，是的话输出yes，否则输出no
 
     ??? tip
@@ -779,75 +850,7 @@ $$
         }
         ```
 
-??? note [洛谷 P1387 最大正方形](https://www.luogu.com.cn/problem/P1387)
-    在一个 n×m 的只包含 0 和 1 的矩阵里找出一个不包含 0 的最大正方形，输出边长。
-
-    ??? tip
-        解法1：动态规划
-        
-        $f[i][j]$表示以节点i,j为右下角，可构成的最大正方形的边长。
-        
-        $if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;$
-
-        ```cpp
-        #include <iostream>
-        #include <cstdio>
-        using namespace std;
-        int a[101][101],n,m,f[101][101],ans;
-        int main()
-        {
-            scanf("%d%d",&n,&m);//读入
-            for (int i=1;i<=n;++i)
-                for (int j=1;j<=m;++j)
-                {
-                    scanf("%d",&a[i][j]);
-                    //因为只需用到i，j上方，左方，左上方的信息，读入同步处理
-                    if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;
-                    ans=max(ans,f[i][j]);//同步更新答案
-                }
-            printf("%d",ans);
-        }
-        ```
-
-        解法2：前缀和+二分
-        
-        先枚举正方形左上角（i，j），然后枚举边长l，判断正方形内的元素和是否为正方形面积（元素不是0就是1嘛），如果是则ans=max（l，ans）。得到一个$O(nml^3)$;
-
-        考虑优化：
-
-        求矩阵内元素和当然可以使用二维前缀和啦。 也就是：sum为前缀和数组，a为矩阵元素。预处理：$sum[i][j]=sum[i][j-1]+sum[i-1][j]-sum[i-1][j-1]+a[i][j];$ 按i，j顺着推一遍就行了。求（lx,ly）到（rx,ry)这一矩阵中的元素和：$sum[rx][ry]-sum[rx][ly-1]-sum[lx-1][ry]+sum[lx-1][ly-1];$ 然后就可以把$O(nml^3)$ 优化到 $O(nml)$。然后就可以过啦
-
-        注意到若一个正方形中元素和不为正方形面积的话，那么再枚举边长（当然是按边长从小到大枚举啦）显然没有意义，所以可以直接break。（注意到正方形面积与边长成函数关系，即$S(l)=l^2$，S(l)具有严格单调性，那么我们可以二分l啦，复杂度可以达到$O(nm \log (\min(n,m)))$ 。
-
-        边长按从小到大枚举遇到不合法情况直接break（当然是在枚举时才能用啦）。
-
-        ```cpp
-        #include <bits/stdc++.h>
-        using namespace std;
-        int n, m, ans = 0, x, f[205][205];
-        int main() {
-            scanf("%d%d", &n, &m);
-            for (int i=0; i<n; ++i)
-                for (int j=0; j<m; ++j) {
-                    scanf("%d", &x);
-                    f[i][j]= f[i-1][j]+f[i][j-1]-f[i-1][j-1]+x;
-                }
-            for (int i=0; i<n; ++i)
-                for (int j=0; j<m; ++j) {
-                    int l = 0, r = min(n,m);
-                    while (l<=r) {
-                        int mid = (l+r)>>1;
-                        if (i+mid>n || j+mid>m || f[i+mid][j+mid]-f[i+mid][j]-f[i][j+mid]+f[i][j] < mid*mid) r = mid-1;
-                            else l = mid+1;
-                    }
-                    if (f[i+r][j+r]-f[i+r][j]-f[i][j+r]+f[i][j] == r*r) ans = max(ans, r);
-                }
-            cout << ans;
-            return 0;
-        }
-        ```
-
-??? note [「HNOI2003」激光炸弹](https://www.luogu.com.cn/problem/P2280)
+??? note "[「HNOI2003」激光炸弹](https://www.luogu.com.cn/problem/P2280)"
 
     一种新型的激光炸弹，可以摧毁一个边长为 $m$ 的正方形内的所有目标。现在地图上有 $n$ 个目标，用整数 $x_i$ , $y_i$ 表示目标在地图上的位置，每个目标都有一个价值 $v_i$ .激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 $m$ 的边必须与 $x$ 轴, $y$ 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。
 
@@ -913,7 +916,7 @@ $$
 
 差分：
 
-??? note [Master of GCD](https://vjudge.net/problem/HDU-6273#author=Alanaxixi)
+??? note "[Master of GCD](https://vjudge.net/problem/HDU-6273#author=Alanaxixi)"
     学姐有n个数字在一行，最开始它们都等于1，另外学姐对质数很有兴趣，每次学姐会选择一个连续的序列$[L,R]$和一个质数X，她将会把L到R区间的数都乘上X。为了简化这个问题，X只会是2或者3。经过m次操作后，学姐想要知道这个序列的最大公约数。
 
     ??? tip
@@ -1089,7 +1092,7 @@ $$
             }
             ```
 
-??? note [Complete the Sequence](https://vjudge.net/problem/HDU-1121)
+??? note "[Complete the Sequence](https://vjudge.net/problem/HDU-1121)"
     给你一个序列，让你找出规律并给出接下来得c项。
 
     ??? tip
@@ -1150,7 +1153,7 @@ $$
         }
         ```
 
-??? note [海底高铁](https://www.luogu.com.cn/problem/P3406)
+??? note "[海底高铁](https://www.luogu.com.cn/problem/P3406)"
     该铁路经过 $N$ 个城市，每个城市都有一个站。不过，由于各个城市之间不能协调好，于是乘车每经过两个相邻的城市之间（方向不限），必须单独购买这一小段的车票。第 $i$ 段铁路连接了城市 $i$ 和城市 $i+1(1\leq i<N)$。如果搭乘的比较远，需要购买多张车票。第 $i$ 段铁路购买纸质单程票需要 $A_i$ 博艾元。
 
     虽然一些事情没有协调好，各段铁路公司也为了方便乘客，推出了 IC 卡。对于第 $i$ 段铁路，需要花 $C_i$ 博艾元的工本费购买一张 IC 卡，然后乘坐这段铁路一次就只要扣 $B_i(B_i<A_i)$ 元。IC 卡可以提前购买，有钱就可以从网上买得到，而不需要亲自去对应的城市购买。工本费不能退，也不能购买车票。每张卡都可以充值任意数额。对于第 $i$ 段铁路的 IC 卡，无法乘坐别的铁路的车。
@@ -1216,7 +1219,7 @@ $$
         }
         ```
 
-??? note [IncDec Sequence](https://www.luogu.com.cn/problem/P4552)
+??? note "[IncDec Sequence](https://www.luogu.com.cn/problem/P4552)"
     给定一个长度为 $n$ 的数列 ${a_1,a_2,\cdots,a_n}$，每次可以选择一个区间$[l,r]$，使这个区间内的数都加 $1$ 或者都减 $1$。 
     
     请问至少需要多少次操作才能使数列中的所有数都一样，并求出在保证最少次数的前提下，最终得到的数列有多少种。
@@ -1291,7 +1294,7 @@ $$
         }
         ```
 
-??? note [Tallest Cow](http://poj.org/problem?id=3263)
+??? note "[Tallest Cow](http://poj.org/problem?id=3263)"
     有n头牛，它们按顺序排成一列。 只知道其中最高的奶牛的序号及它的高度，其他奶牛的高度都是未知的。手上有R条信息，每条信息上有两头奶牛的序号（a和b），其中b奶牛的高度一定大于等于a奶牛的高度，且a，b之间的所有奶牛的高度都比a小。想让你根据这些信息求出每一头奶牛的可能的最大的高度。（数据保证有解）
 
     ??? tip
@@ -1334,7 +1337,7 @@ $$
         }
         ```
 
-??? note [P3397 地毯](https://www.luogu.com.cn/problem/P3397)
+??? note "[P3397 地毯](https://www.luogu.com.cn/problem/P3397)"
     在 $n\times n$ 的格子上有 $m$ 个地毯。给出这些地毯的信息，问每个点被多少个地毯覆盖。
 
     ??? tip
