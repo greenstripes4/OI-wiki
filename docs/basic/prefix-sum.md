@@ -570,19 +570,329 @@ $$
 
 前缀和：
 
-- [洛谷 B3612【深进 1. 例 1】求区间和](https://www.luogu.com.cn/problem/B3612)
-- [洛谷 U69096 前缀和的逆](https://www.luogu.com.cn/problem/U69096)
-- [AT2412 最大の和](https://vjudge.net/problem/AtCoder-joi2007ho_a#author=wuyudi)
-- [「USACO16JAN」子共七 Subsequences Summing to Sevens](https://www.luogu.com.cn/problem/P3131)
-- [「USACO05JAN」Moo Volume S](https://www.luogu.com.cn/problem/P6067)
+??? note [洛谷 B3612【深进 1. 例 1】求区间和](https://www.luogu.com.cn/problem/B3612)
+    给定 $n$ 个正整数组成的数列 $a_1, a_2, \cdots, a_n$ 和 $m$ 个区间 $[l_i,r_i]$，分别求这 $m$ 个区间的区间和。
 
+    ??? tip
+        前缀和差分模板题。
+
+        我们定义一个数列 {$a_n$} 的前缀和为 $S_n = \sum_{i=1}^n a_i = a_1 + a_2 + \dots +a_n$ 。
+
+        有了前缀和之后，我们可以使用差分来进行静态的区间求和。具体而言，对于一个区间 $[l, r]$，区间的和 = $S_r - S_{l-1}$
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cstdio>
+        #include <cstring>
+        #include <algorithm>
+        #include <cmath>
+        #include <cctype>
+        #include <queue>
+        #include <vector>
+
+        using namespace std;
+
+        inline int read()
+        {
+            int x=0,f=1;char ch=getchar();
+            while (!isdigit(ch)){if (ch=='-') f=-1;ch=getchar();}
+            while (isdigit(ch)){x=x*10+ch-48;ch=getchar();}
+            return x*f;
+        }
+
+        int n,m,a[100050],s[100050];
+
+        int main()
+        {
+            n=read();
+            for (int i=1;i<=n;i++)
+                s[i]=s[i-1]+(a[i]=read());
+            m=read();
+            for (int i=1;i<=m;i++)
+            {
+                int l=read(),r=read();
+                cout << s[r]-s[l-1] << endl;
+            }
+            return 0;
+        }
+        ```
+
+??? note [洛谷 U69096 前缀和的逆](https://www.luogu.com.cn/problem/U69096)
+    有 N 个正整数放到数组 B 里，它是数组 A 的前缀和数组，求 A 数组。
+
+    ??? tip
+    A 就是 B 的差分数组。
+
+??? note [AT2412 最大の和](https://vjudge.net/problem/AtCoder-joi2007ho_a#author=wuyudi)
+    读入 n 个整数的数列 a1，a2，…，an 和正整数 k（1<=k<=n），请输出连续排列的 k 个整数的和的最大值
+
+??? note [「USACO16JAN」子共七 Subsequences Summing to Sevens](https://www.luogu.com.cn/problem/P3131)
+    给你n个数，分别是$a[1],a[2],...,a[n]$。求一个最长的区间$[x,y]$，使得区间中的数($a[x],a[x+1],a[x+2],...,a[y-1],a[y]$)的和能被7整除。输出区间长度。若没有符合要求的区间，输出0。
+
+    ??? tip
+        前缀和， $s[i]$ 表示 $[1,i]$ 的和，当 $s[r]$ 和 $s[l−1]$ 模7相同时，区间就能被7整除，求出前缀和每个余数对应的最小的 l−1 和最大的 r 从而算出最长区间长度，可以边读入边记录。端点模 7 为 0 到 6 的最长区间长度的最大值就是答案，注意判断区间是否存在 用滚动数组，时间 O(n)。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<algorithm>
+        using namespace std;
+        int n,a,s,l[]={0,-1,-1,-1,-1,-1,-1},r[7],ans; //s是前缀和，l[i]存%7为i的最小l-1,r[i]存%7为i的最大r,-1代表没有%7为i的前缀和,当有任意前缀和s[x]%7等于0时,最长区间长度就是x
+        int main(){
+            scanf("%d",&n);
+            for(int i=1;i<=n;++i){
+                scanf("%d",&a);
+                s=(s+a)%7;
+                if(l[s]==-1)l[s]=i;
+                r[s]=i;
+            }
+            for(int i=0;i<7;++i)if(l[i]!=-1)ans=max(ans,r[i]-l[i]);
+            printf("%d",ans);
+        }
+        ```
+
+??? note [「USACO05JAN」Moo Volume S](https://www.luogu.com.cn/problem/P6067)
+    Farmer John 的农场上有 $N$ 头奶牛（$1 \leq N \leq 10^5$），第 $i$ 头奶牛的位置为 $x_i$（$0 \leq x_i \leq 10^9$）。
+
+    奶牛很健谈，每头奶牛都和其他 $N-1$ 头奶牛聊天。第 $i$ 头奶牛和第 $j$ 头奶牛聊天时，音量为 $|x_i-x_j|$。
+
+    请您求出所有奶牛聊天音量的总和。
+
+    ??? tip
+        首先，我们可以把题简化一下，第 i 头牛和 j 头牛音量只需要 $∣x_i − x_j∣$，因为有绝对值，$∣x_i − x_j∣$ = $∣x_j − x_i∣$，所以最后只需乘 2 即可。
+
+        于是，我们枚举第 i 头奶牛，算出它与第 1∽i−1 头奶牛谈话的总音量。
+
+        咱们再看看这个算第 i 头奶牛总音量的式子。
+
+        $(a_i − a_{i−1})+(a_i − a_{i−2} )+...+(a_i − a_1)$
+
+        我们把括号拆开，把这个式子简化。
+
+        $a_i \times (i−1) − a_{i−1} − a_{i−2} − ... − a_1$
+        ​
+        ​用前缀和存，这样时间复杂度并不会爆。
+
+        注意：这种方法必须有序，否则不能变成我们简化后的式子。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<iostream>
+        #include<cmath>
+        #include<algorithm>
+        using namespace std;
+        long long ans,a[1000005],n,sum[1000005];
+        int main(){
+            cin>>n;
+            for(int i=1;i<=n;i++)
+                cin>>a[i];
+            sort(a+1,a+1+n);
+            for(int i=1;i<=n;i++){
+                sum[i]=sum[i-1]+a[i];//前缀和 
+            }
+            for(int i=n;i>=1;i--){
+                ans=ans+labs(sum[i-1]-a[i]*(i-1));//简化后的式子 
+            }
+            cout<<ans*2;//把少计算的补回来 
+            return 0;
+        } 
+        ```
 * * *
 
 二维/多维前缀和：
 
-- [HDU 6514 Monitor](https://vjudge.net/problem/HDU-6514)
-- [洛谷 P1387 最大正方形](https://www.luogu.com.cn/problem/P1387)
-- [「HNOI2003」激光炸弹](https://www.luogu.com.cn/problem/P2280)
+??? note [HDU 6514 Monitor](https://vjudge.net/problem/HDU-6514)
+    给出一个n*m的矩阵，开始全部初始化为0，然后给出一系列的小矩阵的范围，小矩阵中的格子全部变为1，最后再给出一些查询，查询矩阵范围内是否所有的格子都是1，是的话输出yes，否则输出no
+
+    ??? tip
+        二维差分+二维前缀和
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<iostream>
+        using namespace std;
+        inline void read(int &x){
+            x=0;char c=getchar();
+            while(!isdigit(c)){c=getchar();}
+            while(isdigit(c)){x=(x<<3)+(x<<1)+(c-48);c=getchar();}
+        }
+        const int N = 2E7+10;
+        
+        int s[N];  //因为 n*m<=1E7,可以开vector二维，这里选择开一维模拟
+        int n,m,p,q;
+        
+        int id(int x,int y){return m*x+y;}
+        
+        void add(int x,int y,int op){s[id(x,y)]+=op;}
+        
+        int sum(int x1,int y1,int x2,int y2){
+            return s[id(x2,y2)]-s[id(x2,y1-1)]-s[id(x1-1,y2)]+s[id(x1-1,y1-1)];
+            //二维前缀和查询
+        }
+        int main()
+        {
+            while(~scanf("%d%d",&n,&m)){
+                for(int i=0;i<=(n+1)*(m+1);i++) s[i]=0;
+                read(p);
+                while(p--){
+                    int x1,y1,x2,y2;
+                    read(x1),read(y1),read(x2),read(y2);
+                    
+                    //这四句是二维差分基本语句，就不解释了
+                    add(x1,y1,1);
+                    add(x1,y2+1,-1);
+                    add(x2+1,y1,-1);
+                    add(x2+1,y2+1,1);
+                }
+                for(int i=1;i<=n;i++){
+                    for(int j=1;j<=m;j++){
+                        s[id(i,j)]+=s[id(i-1,j)]+s[id(i,j-1)]-s[id(i-1,j-1)];
+                        //第一遍前缀和是根据差分的性质求出每个点被几个摄像头监视到；
+                    }
+                }
+                for(int i=1;i<=n;i++){
+                    for(int j=1;j<=m;j++){
+                        if(s[id(i,j)]>1) s[id(i,j)]=1;
+                        //只要被监视到，置 1 ；
+                    }
+                }
+                for(int i=1;i<=n;i++){
+                    for(int j=1;j<=m;j++){
+                        s[id(i,j)]+=s[id(i-1,j)]+s[id(i,j-1)]-s[id(i-1,j-1)];
+                        //第二遍前缀和是这个点以及之前所有的点被监视的单位的数量，也是上一步置1的原因；
+                    }
+                }
+                read(q);
+                while(q--){
+                    int x1,y1,x2,y2;
+                    read(x1),read(y1),read(x2),read(y2);
+                    if(sum(x1,y1,x2,y2)==(y2-y1+1)*(x2-x1+1)) puts("YES");
+                    else puts("NO");
+                }
+            }
+        }
+        ```
+
+??? note [洛谷 P1387 最大正方形](https://www.luogu.com.cn/problem/P1387)
+    在一个 n×m 的只包含 0 和 1 的矩阵里找出一个不包含 0 的最大正方形，输出边长。
+
+    ??? tip
+        解法1：动态规划
+        
+        $f[i][j]$表示以节点i,j为右下角，可构成的最大正方形的边长。
+        
+        $if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;$
+
+        ```cpp
+        #include <iostream>
+        #include <cstdio>
+        using namespace std;
+        int a[101][101],n,m,f[101][101],ans;
+        int main()
+        {
+            scanf("%d%d",&n,&m);//读入
+            for (int i=1;i<=n;++i)
+                for (int j=1;j<=m;++j)
+                {
+                    scanf("%d",&a[i][j]);
+                    //因为只需用到i，j上方，左方，左上方的信息，读入同步处理
+                    if (a[i][j]==1) f[i][j]=min(min(f[i][j-1],f[i-1][j]),f[i-1][j-1])+1;
+                    ans=max(ans,f[i][j]);//同步更新答案
+                }
+            printf("%d",ans);
+        }
+        ```
+
+        解法2：前缀和+二分
+        
+        先枚举正方形左上角（i，j），然后枚举边长l，判断正方形内的元素和是否为正方形面积（元素不是0就是1嘛），如果是则ans=max（l，ans）。得到一个$O(nml^3)$;
+
+        考虑优化：
+
+        求矩阵内元素和当然可以使用二维前缀和啦。 也就是：sum为前缀和数组，a为矩阵元素。预处理：$sum[i][j]=sum[i][j-1]+sum[i-1][j]-sum[i-1][j-1]+a[i][j];$ 按i，j顺着推一遍就行了。求（lx,ly）到（rx,ry)这一矩阵中的元素和：$sum[rx][ry]-sum[rx][ly-1]-sum[lx-1][ry]+sum[lx-1][ly-1];$ 然后就可以把$O(nml^3)$ 优化到 $O(nml)$。然后就可以过啦
+
+        注意到若一个正方形中元素和不为正方形面积的话，那么再枚举边长（当然是按边长从小到大枚举啦）显然没有意义，所以可以直接break。（注意到正方形面积与边长成函数关系，即$S(l)=l^2$，S(l)具有严格单调性，那么我们可以二分l啦，复杂度可以达到$O(nm \log (\min(n,m)))$ 。
+
+        边长按从小到大枚举遇到不合法情况直接break（当然是在枚举时才能用啦）。
+
+        ```cpp
+        #include <bits/stdc++.h>
+        using namespace std;
+        int n, m, ans = 0, x, f[205][205];
+        int main() {
+            scanf("%d%d", &n, &m);
+            for (int i=0; i<n; ++i)
+                for (int j=0; j<m; ++j) {
+                    scanf("%d", &x);
+                    f[i][j]= f[i-1][j]+f[i][j-1]-f[i-1][j-1]+x;
+                }
+            for (int i=0; i<n; ++i)
+                for (int j=0; j<m; ++j) {
+                    int l = 0, r = min(n,m);
+                    while (l<=r) {
+                        int mid = (l+r)>>1;
+                        if (i+mid>n || j+mid>m || f[i+mid][j+mid]-f[i+mid][j]-f[i][j+mid]+f[i][j] < mid*mid) r = mid-1;
+                            else l = mid+1;
+                    }
+                    if (f[i+r][j+r]-f[i+r][j]-f[i][j+r]+f[i][j] == r*r) ans = max(ans, r);
+                }
+            cout << ans;
+            return 0;
+        }
+        ```
+
+??? note [「HNOI2003」激光炸弹](https://www.luogu.com.cn/problem/P2280)
+
+    一种新型的激光炸弹，可以摧毁一个边长为 $m$ 的正方形内的所有目标。现在地图上有 $n$ 个目标，用整数 $x_i$ , $y_i$ 表示目标在地图上的位置，每个目标都有一个价值 $v_i$ .激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 $m$ 的边必须与 $x$ 轴, $y$ 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。
+
+    现在你的任务是计算一颗炸弹最多能炸掉地图上总价值为多少的目标。
+
+    ??? tip
+        二维前缀和
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <algorithm>
+        using namespace std;
+
+        int n, m, s[5010][5010];
+        // 因为空间较为紧张，这里只用了一个数组，计算出前缀和后原数组直接被覆盖
+
+        int main() {
+            cin >> n >> m;
+            for (int i = 1; i <= n; i ++) {
+                int x, y, v;
+                cin >> x >> y >> v;
+                s[x + 1][y + 1] += v;	// 将横纵坐标都加一，坐标范围变成 [1, 5001]，避免越界
+            }
+            
+            int N = 5001; // N 为坐标范围
+            for (int i = 1; i <= N; i ++)
+                for (int j = 1; j <= N; j ++)
+                    s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + s[i][j];
+            
+            int ans = 0;
+            for (int i = m; i <= N; i ++)
+                for (int j = m; j <= N; j ++) {
+                    int num = s[i][j] - s[i - m][j] - s[i][j - m] + s[i - m][j - m];
+                    // num 为以 (i, j) 为右下角的边长为 m 的正方形区域中的目标价值之和
+                    ans = max(ans, num);
+                    // 用 num 更新答案
+                }
+            
+            cout << ans << endl;
+            
+            return 0;
+        }
+        ```
 
 * * *
 
@@ -603,14 +913,464 @@ $$
 
 差分：
 
-- [Master of GCD](https://vjudge.net/problem/HDU-6273#author=Alanaxixi)
-- [Complete the Sequence](https://vjudge.net/problem/HDU-1121)
-- [海底高铁](https://www.luogu.com.cn/problem/P3406)
-- [IncDec Sequence](https://www.luogu.com.cn/problem/P4552)
-- [Tallest Cow](http://poj.org/problem?id=3263)
+??? note [Master of GCD](https://vjudge.net/problem/HDU-6273#author=Alanaxixi)
+    学姐有n个数字在一行，最开始它们都等于1，另外学姐对质数很有兴趣，每次学姐会选择一个连续的序列$[L,R]$和一个质数X，她将会把L到R区间的数都乘上X。为了简化这个问题，X只会是2或者3。经过m次操作后，学姐想要知道这个序列的最大公约数。
+
+    ??? tip
+        解法1：线段树的区间更新，找到区间中最少的2和最少的3，所有乘积即为答案。
+
+        解法2：差分数组，因为这数列的最大公约数就是这个数列2的最少次数的幂，乘以3的最少次数的幂，将2和3分开讨论，然后分别记录这个区间内最少出现了几次2或3；再利用矩阵快速幂进行计算，最后把两个结果相乘。
+
+    ??? note "参考代码"
+
+        === "线段树"
+
+            ```cpp
+            #include<stdio.h>
+            #include<iostream>
+            #include<memory.h>
+            using namespace std;
+            struct Node{
+                int l,r;
+                long long int num2,num3;
+                long long int lazy2,lazy3;
+            };
+            struct Node nodes[100005<<2];
+            void build(int l,int r,int n)
+            {
+                nodes[n].l=l;
+                nodes[n].r=r;
+                nodes[n].lazy2=0;
+                nodes[n].lazy3=0;
+                nodes[n].num2=0;
+                nodes[n].num3=0;
+                if(l==r) 
+                    return;
+                int mid=(l+r)>>1;
+                build(l,mid,n<<1);
+                build(mid+1,r,n<<1|1);
+            }
+            void pushdown(int n)
+            {
+                if(nodes[n].lazy2)
+                {
+                    nodes[n<<1].lazy2+=nodes[n].lazy2;
+                    nodes[n<<1|1].lazy2+=nodes[n].lazy2;
+                    nodes[n<<1].num2+=nodes[n].lazy2;
+                    nodes[n<<1|1].num2+=nodes[n].lazy2;
+                    nodes[n].lazy2=0;
+                }
+                if(nodes[n].lazy3)
+                {
+                    nodes[n<<1].lazy3+=nodes[n].lazy3;
+                    nodes[n<<1|1].lazy3+=nodes[n].lazy3;
+                    nodes[n<<1].num3+=nodes[n].lazy3;
+                    nodes[n<<1|1].num3+=nodes[n].lazy3;
+                    nodes[n].lazy3=0;
+                }
+            }
+            void update(int l,int r,int x,int n)
+            {
+                if(l<=nodes[n].l&&r>=nodes[n].r)
+                {
+                    if(x==2)
+                    {
+                        nodes[n].lazy2++;
+                        nodes[n].num2++;
+                    }
+                    if(x==3)
+                    {
+                        nodes[n].lazy3++;
+                        nodes[n].num3++;
+                    }
+                    return;
+                }
+                pushdown(n);
+                int mid=(nodes[n].l+nodes[n].r)>>1;
+                if(l<=mid) update(l,r,x,n<<1);
+                if(r>mid) update(l,r,x,n<<1|1);
+                nodes[n].num2=min(nodes[n<<1].num2,nodes[n<<1|1].num2);
+                nodes[n].num3=min(nodes[n<<1].num3,nodes[n<<1|1].num3);	
+            }
+            int main()
+            {
+                int t;
+                scanf("%d",&t);
+                while(t--)
+                {
+                    int n,m;
+                    scanf("%d%d",&n,&m);
+                    build(1,n,1);
+                    for(int i=0;i<m;i++)
+                    {
+                        int l,r,x;
+                        scanf("%d%d%d",&l,&r,&x);
+                        update(l,r,x,1);
+                    }	
+                    long long int ans=1;
+                    for(long long int i=0;i<nodes[1].num2;i++)
+                        ans=ans*2%998244353;
+                    for(long long int i=0;i<nodes[1].num3;i++)
+                        ans=ans*3%998244353;
+                    printf("%lld\n",ans);
+                }	
+                return 0;
+            }
+            ```
+
+        === "差分"
+
+            ```cpp
+            #include<iostream>
+            #include<algorithm>
+
+            using namespace std;
+            #define ll long long
+            const int maxn=1e5+10;
+            const int mod=998244353;
+            ll a[maxn],b[maxn],c[maxn];
+            //矩阵快速幂 
+            ll poww(ll x,ll y)
+            {
+                ll da=1;
+                while(y)
+                {
+                    if(y&1) da=(da*x)%mod;
+                    x=x*x%mod;
+                    y>>=1;
+                }
+                return da;
+            }
+
+            int main()
+            {
+                ios::sync_with_stdio(false);
+                int t,m,n;
+                ll x,y,z;
+                cin>>t;
+                while(t--)
+                {
+                    cin>>n>>m;
+                    for(int i=0;i<=n;i++) b[i]=c[i]=0;
+                    // 数组 b[]记录 2；的情况
+                    // 数组 c[]记录3；的情况 
+                    while(m--)
+                    {
+                        cin>>x>>y>>z;
+                        // 差分的关键代码			
+                        if(z==2)
+                        {
+                            b[x]++,b[y+1]--;
+                        }
+                        else c[x]++,c[y+1]--;
+                    }
+                    ll sum=0;
+                    ll ans,ans2;
+                    ans2=ans=10000000;
+                    // 记录这个数组内最少出现了多少 2  
+                    for(int i=1;i<=n;i++)
+                    {
+                        sum+=b[i];
+                        ans=ans<sum?ans:sum;
+                    }
+                    // 记录这个数组内最少出现了多少 3 	
+                    sum=0;
+                    for(int i=1;i<=n;i++)
+                    {
+                        sum+=c[i];
+                        ans2=ans2<sum?ans2:sum;
+                    }
+                    //分别求 2 和 3 的幂然后相乘		
+                    sum=poww(2,ans);
+                    ans=sum%mod*(poww(3,ans2))%mod;
+                    cout<<ans<<"\n";
+                }
+                return 0;
+            }
+            ```
+
+??? note [Complete the Sequence](https://vjudge.net/problem/HDU-1121)
+    给你一个序列，让你找出规律并给出接下来得c项。
+
+    ??? tip
+        使用差分，也就是不断地求相邻两项之间的差，一直到其所有的差值都相同为止，这个时候在返回去就会得到原序列。
+
+        原数列：1 2 4 7 11 16 22
+
+        一阶差分：1 2 3 4  5  6
+
+        二阶差分：1 1 1 1  1
+
+        所以计算出的二维差分数组是这个样子的：
+
+        ![](./images/prefix-6.png)
+
+        然后把n-1阶差分补充完整，输出多少就补到多少，
+
+        ![](./images/prefix-7.png)
+
+        然后逆推上去，$a[i][j]=a[i+1][j-1]+a[i][j-1];$
+
+        ![](./images/prefix-8.png)
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<stdio.h>
+        #include<algorithm>
+        using namespace std;
+        const int maxn=110;
+        int a[maxn][maxn];
+        int main()
+        {
+            int t;
+            scanf("%d",&t);
+            while(t--)
+            {
+                int n,m;
+                scanf("%d %d",&n,&m);
+                for(int i=0; i<n; i++)
+                    scanf("%d",&a[0][i]);
+                for(int i=1; i<n; i++)
+                    for(int j=0; j<n-i; j++)
+                        a[i][j]=a[i-1][j+1]-a[i-1][j];
+                for(int i=1; i<m+n; i++)
+                    a[n-1][i]=a[n-1][0];
+                for(int i=n-2; i>=0; i--)
+                {
+                    for(int j=n-i; j<n+m; j++)
+                    {
+                        a[i][j]=a[i+1][j-1]+a[i][j-1];
+                    }
+                }
+                for(int i=n;i<n+m;i++)
+                    printf("%d ",a[0][i]);
+                printf("\n");
+            }
+        }
+        ```
+
+??? note [海底高铁](https://www.luogu.com.cn/problem/P3406)
+    该铁路经过 $N$ 个城市，每个城市都有一个站。不过，由于各个城市之间不能协调好，于是乘车每经过两个相邻的城市之间（方向不限），必须单独购买这一小段的车票。第 $i$ 段铁路连接了城市 $i$ 和城市 $i+1(1\leq i<N)$。如果搭乘的比较远，需要购买多张车票。第 $i$ 段铁路购买纸质单程票需要 $A_i$ 博艾元。
+
+    虽然一些事情没有协调好，各段铁路公司也为了方便乘客，推出了 IC 卡。对于第 $i$ 段铁路，需要花 $C_i$ 博艾元的工本费购买一张 IC 卡，然后乘坐这段铁路一次就只要扣 $B_i(B_i<A_i)$ 元。IC 卡可以提前购买，有钱就可以从网上买得到，而不需要亲自去对应的城市购买。工本费不能退，也不能购买车票。每张卡都可以充值任意数额。对于第 $i$ 段铁路的 IC 卡，无法乘坐别的铁路的车。
+
+    Uim 现在需要出差，要去 $M$ 个城市，从城市 $P_1$ 出发分别按照 $P_1,P_2,P_3,\cdots,P_M$ 的顺序访问各个城市，可能会多次访问一个城市，且相邻访问的城市位置不一定相邻，而且不会是同一个城市。
+
+    现在他希望知道，出差结束后，至少会花掉多少的钱，包括购买纸质车票、买卡和充值的总费用。
+
+    ??? tip
+        对于其中一小段，我们要么全部买纸票，要么全部刷卡。所以我们只需要统计每一小段经过的总次数。使用差分数组来计算每段经过的次数。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<iostream>
+        #include<cstdio>
+        #include<cmath>
+        #include<cstring>
+        #define LL unsigned long long
+        using namespace std;
+        int n,m;
+        LL ans=0,x,y;
+        long long  a,b,c,p[100001],val[100001];
+        inline long long read(){
+            long long x=0,f=1;
+            char ch;
+            ch=getchar();
+            while (ch<'0'||ch>'9'){
+                if (ch='-')f=-1;
+                ch=getchar();
+            }
+            while (ch>='0'&&ch<='9'){
+                x=x*10+ch-'0';
+                ch=getchar();
+            }
+            return x*f;
+        }
+        inline LL Min(LL x,LL y){
+            if (x<y)return x;
+            else return y;
+        }
+        inline LL Max(LL x,LL y){
+            if (x>y)return x;
+            else return y;
+        }
+        int main(){
+            n=read();
+            m=read();
+            for (register int i=1;i<=m;++i)p[i]=read();
+            memset(val,0,sizeof(val));
+            for (register int i=1;i<m;++i){
+                x=Max(p[i],p[i+1]);
+                y=Min(p[i],p[i+1]);
+                val[y]++;
+                val[x]--;
+            }
+            for (register int i=1;i<=n;++i)val[i]+=val[i-1];
+            for (register int i=1;i<n;++i){
+                a=read();b=read();c=read();
+                ans+=Min(a*val[i],b*val[i]+c);
+            }
+            cout<<ans;
+        }
+        ```
+
+??? note [IncDec Sequence](https://www.luogu.com.cn/problem/P4552)
+    给定一个长度为 $n$ 的数列 ${a_1,a_2,\cdots,a_n}$，每次可以选择一个区间$[l,r]$，使这个区间内的数都加 $1$ 或者都减 $1$。 
+    
+    请问至少需要多少次操作才能使数列中的所有数都一样，并求出在保证最少次数的前提下，最终得到的数列有多少种。
+
+    ??? tip
+        本质是如何操作差分数组除第一项外使其全部成0。
+        
+        由于题目要求最少的步骤，我们可以考虑，如果差分序列里有一个正数和一个负数（出现的顺序无所谓），那么我们优先对这个正数和负数进行操作，为什么呢？因为我们有以下两个公式
+
+        如果$a[l,r]+1$，则$b[l]+1，b[r+1]-1$
+
+        如果$a[l,r]-1$，则$b[l]-1，b[r+1]+1$
+
+        正数-1，负数+1，这样相当于一步里作用了两步，比让正数一个个-1和让负数一个个+1快多了
+
+        那么我们可以进行多少种这样的操作呢？
+
+        我们可以令差分序列里正数绝对值的总和为p，负数绝对值总和为q
+
+        可以进行这样一步顶两步的操作就是min（p，q），因为这种操作正数负数是一一配对的，当少的那个先用完了，剩下的没有可以配对的了，只能一步步减或一步步加。
+
+        所以我们总共要进行的操作就为min（p，q）+ abs（p-q），也就是max（p，q）
+
+        保证最少次数的前提下，最终得到的数列有多少种？
+
+        得到的数列有多少种，其实就是问的b[1]可以有多少种
+
+        我们上述所有操作是与b[1]无关的，因为我们的目标是让除了b[1]以外的项变0，所
+
+        以我们上述的操作没有考虑到b[1]，b[1]怎么变，与我们求出的最小步骤无关
+
+        那么，我们怎么知道b[1]有几种呢？很简单，其实就是看看有几种一步步减或一步步加的操作数，因为我们一步步加的时候（假设我们现在的操作对象下标为i），可以这样操作，b[1]-1,b[i]+1，一步步减的时候可以这样操作，b[1]+1,b[i]-1
+
+        （注意，一个差分序列里一步步操作的时候只可能一步步加或一步步减，不可能一步步加和一步步减同时存在）
+
+        所以说，有几步一步步的操作就有几种情况+1，为什么+1呢，因为这个b[1]本身就有一个值啊！就算你不对他进行任何操作，它自己也有一种情况。
+
+        一加一减（也就是我们所说的一步顶两步的操作）操作数为min（p，q）
+
+        那么一步步的操作数就为max（p，q）-min（p，q）= abs（p，q）
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<iostream>
+        #include<cstdio>
+        #include<algorithm>
+        using namespace std;
+        typedef long long LL;
+        LL n,c,p,q,a[100010];
+        int main()
+        {
+            cin>>n;
+            for(int i=1;i<=n;i++)
+            {
+                scanf("%lld",&a[i]);
+            }
+            for(int i=2;i<=n;i++)
+            {
+                c=a[i]-a[i-1];
+                if(c>0)
+                {
+                    p+=c;
+                }
+                else 
+                q-=c;
+            }
+            LL ans1=max(p,q);
+            LL ans2=abs(p-q)+1;
+            cout<<ans1<<endl<<ans2;
+            return 0;
+        }
+        ```
+
+??? note [Tallest Cow](http://poj.org/problem?id=3263)
+    有n头牛，它们按顺序排成一列。 只知道其中最高的奶牛的序号及它的高度，其他奶牛的高度都是未知的。手上有R条信息，每条信息上有两头奶牛的序号（a和b），其中b奶牛的高度一定大于等于a奶牛的高度，且a，b之间的所有奶牛的高度都比a小。想让你根据这些信息求出每一头奶牛的可能的最大的高度。（数据保证有解）
+
+    ??? tip
+        读入每一组数据a,b我们就将差分序列$x[a+1]-1$,将$x[b]+1$,这样做的话我们相当于让原序列中的a+1到b-1都减去1，因为我们题目要求的是每一头牛最大的高度，对于两头牛能互相看到，中间的牛高度至少要比这两头牛的高度小1，而我们刚好要求的就是最大的高度，所以我们就假设每一头中间的牛高度比两头的高度少1。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<iostream>
+        #include<cstdio>
+        #include<map>
+        #include<utility>
+        using namespace std;
+
+        const int maxn = 10005;
+        int n, I, h, r;
+        int c[maxn], d[maxn];
+        map<pair<int, int>, bool>existed;
+
+        int main()
+        {
+            cin >> n >> I >> h >> r;
+            for (int i = 0; i < r; i++)
+            {
+                int a, b;
+                scanf("%d%d", &a, &b);
+                if (a > b)  swap(a, b);
+                if (existed[make_pair(a, b)])   continue;
+                //map判断一下是否曾经操作过了
+                d[a + 1]--, d[b]++;
+                existed[make_pair(a, b)] = true;
+            }
+
+            for (int i = 1; i <= n; i++)
+            {
+                c[i] = c[i - 1] + d[i];
+                printf("%d\n", h + c[i]);
+            }
+            return 0;
+        }
+        ```
+
+??? note [P3397 地毯](https://www.luogu.com.cn/problem/P3397)
+    在 $n\times n$ 的格子上有 $m$ 个地毯。给出这些地毯的信息，问每个点被多少个地毯覆盖。
+
+    ??? tip
+        二维差分前缀和
+        
+        设$b[i][j]=a[i][j]-a[i-1][j]-a[i][j-1]+a[i-1][j-1]$
+
+        这样每次修改$b[i][j]$相当于对任意 $i \leq x, j \leq y$对 $a[x][y]$ 做同样的修改
+
+        然后每次修改就直接$++b[x1][y1],--b[x2+1][y1],--b[x1][y2+1],++b[x2+1][y2+1]$即可。
+
+        最后再直接$a[i][j]=a[i-1][j]+a[i][j-1]-a[i-1][j-1]+b[i][j]$还原出原序列即可。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+
+        int a[1024][1024];
+        int main(){
+            int n,m,xa,ya,xb,yb;
+            scanf("%d%d",&n,&m);
+            for(int i=1;i<=m;++i){
+                scanf("%d%d%d%d",&xa,&ya,&xb,&yb);
+                ++a[xa][ya];
+                --a[xb+1][ya];
+                --a[xa][yb+1];
+                ++a[xb+1][yb+1];
+            }
+            for(int i=1;i<=n;++i)for(int j=1;j<=n;++j)printf("%d%c",a[i][j]+=a[i-1][j]+a[i][j-1]-a[i-1][j-1],j==n?'\n':' ');
+            return 0;
+        }
+        ```
+
 - [树状数组 3：区间修改，区间查询](https://loj.ac/problem/132)
-- [P3397 地毯](https://www.luogu.com.cn/problem/P3397)
-- [「Poetize6」IncDec Sequence](https://www.luogu.com.cn/problem/P4552)
 
 * * *
 
