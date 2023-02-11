@@ -356,11 +356,433 @@ $$
 
 ### 习题
 
-- [leetcode 15. 三数之和](https://leetcode-cn.com/problems/3sum/)
-- [leetcode 1438. 绝对差不超过限制的最长连续子数组](https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
-- [Subsequence](http://poj.org/problem?id=3061)
-- [Jessica's Reading Problem](http://poj.org/problem?id=3320)
-- [Bound Found](http://poj.org/problem?id=2566)
-- [First One](https://vjudge.net/problem/HDU-5358)
-- [P1102 A-B 数对](https://www.luogu.com.cn/problem/P1102)
-- [Cave](https://vjudge.net/problem/UVA-1442)
+??? note "[leetcode 15. 三数之和](https://leetcode-cn.com/problems/3sum/)"
+    给你一个整数数组 nums ，判断是否存在三元组 $[nums[i], nums[j], nums[k]]$ 满足 i != j、i != k 且 j != k ，同时还满足 $nums[i] + nums[j] + nums[k] == 0$ 。请你返回所有和为 0 且不重复的三元组。
+
+    ??? tip
+        特判，对于数组长度 n，如果数组为 null 或者数组长度小于 3，返回 []。
+        
+        对数组进行排序。
+        
+        遍历排序后数组：
+        1. 若 $nums[i]>0$ ：因为已经排序好，所以后面不可能有三个数加和等于0，直接返回结果。
+        2. 对于重复元素：跳过，避免出现重复解
+        3. 令左指针 L=i+1，右指针 R=n−1，当 L < R 时，执行循环：
+            - 当 $nums[i]+nums[L]+nums[R]==0$，执行循环，判断左界和右界是否和下一位置重复，去除重复解。并同时将 L,R 移到下一位置，寻找新的解
+            - 若和大于 0，说明 $nums[R]$ 太大，R 左移
+            - 若和小于 0，说明 $nums[L]$ 太小，L 右移
+
+    ??? note "参考代码"
+
+        ```cpp
+        vector<vector<int>> threeSum(vector<int>& nums) {
+            vector<vector<int>> ans;
+            if(nums.size()<3) return ans;
+            sort(nums.begin(), nums.end());
+            if(nums[0]>0) return ans;
+            int i = 0;
+            while(i<nums.size()){
+                if(nums[i]>0) break;        // 1楼网友指正，将这个if语句放这里提前终止循环
+                int left = i+1, right = nums.size()-1;
+                while(left< right){
+                
+                    // 转换为long long避免加法过程中溢出
+                    long long y = static_cast<long long>(nums[i]);
+                    long long x = static_cast<long long>(nums[left]);
+                    long long z = static_cast<long long>(nums[right]);
+                    if(x + y >0-z)
+                        right--;
+                    else if(x + y <0-z)
+                        left++;
+                    else{
+                        ans.push_back({nums[i], nums[left], nums[right]});
+                        // 相同的left和right不应该再次出现，因此跳过
+                        while(left<right&&nums[left]==nums[left+1])
+                            left++;
+                        while(left<right&&nums[right] == nums[right-1])
+                            right--;
+                        left++;
+                        right--;
+                    }
+                }
+                // 避免nums[i]作为第一个数重复出现
+                while(i+1<nums.size()&&nums[i] == nums[i+1])
+                    i++;
+                i++;
+            }
+            return ans;
+        }
+        ```
+
+??? note "[leetcode 1438. 绝对差不超过限制的最长连续子数组](https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)"
+    给你一个整数数组 nums ，和一个表示限制的整数 limit，请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit 
+
+    ??? tip
+        我们可以枚举每一个位置作为右端点，找到其对应的最靠左的左端点，满足区间中最大值与最小值的差不超过 limit。
+
+        注意到随着右端点向右移动，左端点也将向右移动，于是我们可以使用滑动窗口解决本题。
+
+        为了方便统计当前窗口内的最大值与最小值，我们也可以分别使用两个单调队列解决本题。
+
+        在实际代码中，我们使用一个单调递增的队列 queMin 维护最小值，一个单调递减的队列 queMax 维护最大值。这样我们只需要计算两个队列的队首的差值，即可知道当前窗口是否满足条件。
+
+    ??? note "参考代码"
+
+        ```cpp
+        int longestSubarray(vector<int>& nums, int limit) {
+            deque<int> queMax, queMin;
+            int n = nums.size();
+            int left = 0, right = 0;
+            int ret = 0;
+            while (right < n) {
+                while (!queMax.empty() && queMax.back() < nums[right]) {
+                    queMax.pop_back();
+                }
+                while (!queMin.empty() && queMin.back() > nums[right]) {
+                    queMin.pop_back();
+                }
+                queMax.push_back(nums[right]);
+                queMin.push_back(nums[right]);
+                while (!queMax.empty() && !queMin.empty() && queMax.front() - queMin.front() > limit) {
+                    if (nums[left] == queMin.front()) {
+                        queMin.pop_front();
+                    }
+                    if (nums[left] == queMax.front()) {
+                        queMax.pop_front();
+                    }
+                    left++;
+                }
+                ret = max(ret, right - left + 1);
+                right++;
+            }
+            return ret;
+        }
+        ```
+
+??? note "[Subsequence](http://poj.org/problem?id=3061)"
+    给出了N个正整数序列(10 < N < 100,000)，每个正整数小于或等于10000，一个正整数S (S < 100 000 000)。编写一个程序，求序列中连续元素的子序列的最小长度，其和大于或等于S。
+
+    ??? tip
+        在这道题中，序列都是正数，如果一个区间其和大于等于S，那么不需要在向后推进右端点了，因为其和也肯定大于等于S但长度更长。
+    
+        所以，当区间和小于S时右端点向右移动，和大于等于S时，左端点向右移动以进一步找到最短的区间。
+        
+        如果右端点移动到区间末尾其和还不大于等于S，结束区间的枚举。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const int maxn=1e5+100;
+        int t,n,s;
+        int a[maxn];
+        int main()
+        {
+            ios::sync_with_stdio(false);  //加速流
+            cin>>t;
+            while(t--)
+            {
+                cin>>n>>s;
+                for(int i=0; i<n; i++)
+                    cin>>a[i];
+                int l=0,r=0,ans=n+1;   //l，r:左右端点  ans初始值设为n+1
+                int sum=0;
+                while(true)
+                {
+                    while(r<n&&sum<s)
+                        sum+=a[r++];
+                    if(sum<s)         //如果所有数的和都小于s，直接跳出循环
+                        break;
+                    ans=min(ans,r-l); //此时r一定小于n(可以思考一下)
+                    sum-=a[l++];      //去掉最左端点，继续前进
+                }
+                if(ans==n+1)
+                    cout<<0<<endl;
+                else
+                    cout<<ans<<endl;
+            }
+        }
+        ```
+
+??? note "[Jessica's Reading Problem](http://poj.org/problem?id=3320)"
+    每个数代表一个知识点，然后按顺序给出知识点的序列，求涵盖了所有知识点的最短连续子序列。
+
+    ??? tip
+        尺取法的经典例题，set用来求出所有不重复知识点的个数，map用来计算是否有新出现的的知识点。
+
+        1. 左端点s，右端点t，目前复习的知识点num初始化为0；
+        2. 只要有t < P，num < n，且出现新的知识点 $counts[a[t++]]++==0，num++；$
+        3. 如果num < n，则无法解决该题。否则更新答案，min(res,t-s);
+        4. 从s开始缩小范围，若某一知识点的次数为零，则num–；回归2.
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <cstdio>
+        #include <cstring>
+        #include <algorithm>
+        #include <set>
+        #include <map>
+        #include <iostream>
+        using namespace std;
+        const int maxn = 1000000+10;
+        int P;
+        int a[maxn];
+        int main()
+        {
+            while(~scanf("%d",&P)){
+                set<int> all;
+                for(int i=0;i<P;i++){
+                    scanf("%d",&a[i]);
+                    all.insert(a[i]);
+                    //去重，升序排序,支持集合的交(set_intersection),差(set_difference) 并(set_union)，对称差(set_symmetric_difference)
+                }
+                int n = all.size();
+                int s = 0,t = 0,num = 0;
+                map<int ,int > counts;
+                int res = P;
+                for(;;){
+                    while(t<P && num<n){
+                        if(counts[a[t++]]++ == 0){
+                            num++;
+                        }
+                    }
+                    if(num<n) break;
+                    res = min(res,t-s);
+                    if(--counts[a[s++]] == 0){
+                        num--;
+                    }
+                }
+                printf("%d\n",res);
+            }
+            return 0;
+        }
+        ```
+    
+??? note "[Bound Found](http://poj.org/problem?id=2566)"
+    从数列中找出连续序列，使得和的绝对值与目标数之差最小
+
+    ??? tip
+        因为这道题目给的数字可能是负数，如果还按照老的方法去算，可能会出现 r 向回收缩，l 向左延伸的现象，所以为了避免这种情况，我们可以引入前缀和，然后排序一下，这样不就可以保证 R 在向右的过程中 整个区间和是一直在增大的，L 收缩的过程中整个区间和是一直在减小的 ，成功实现尺取法
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <stdio.h>
+        #include <algorithm>
+        #include <math.h>
+        #include <cstring>
+        #include <vector>
+        #include <queue>
+        using namespace std;
+        const int N = 1e5 + 10;
+        const int INF = 0x7fffffff;
+        int n, k;
+        int a[N];
+        struct node {
+                int sum, id;
+        }pre[N];
+        bool cmp(node a, node b)
+        {
+                return a.sum < b.sum;
+        }
+        int main()
+        {
+                while (scanf("%d%d", &n, &k) != EOF)
+                {
+                    if (n == 0 && k == 0) break;
+                    pre[0].id = 0, pre[0].sum = 0;
+                    for (int i = 1; i <= n; i++)
+                    {
+                            scanf("%d", &a[i]);
+                            pre[i].id = i;
+                            pre[i].sum = pre[i - 1].sum + a[i];
+                    }
+                    sort(pre, pre + n + 1, cmp);
+                    for (int i = 0; i < k; i++)
+                    {
+                            int t;
+                            scanf("%d", &t);
+                            int Min = INF;
+                            int l = 0, r = 1;
+                            int ans, ansl, ansr;
+                            while (r <=n)
+                            {
+                                    int sub = pre[r].sum - pre[l].sum;
+                                    while (abs(sub - t) < Min)
+                                    {
+                                            Min = abs(sub - t);
+                                            ansl= min(pre[l].id, pre[r].id) + 1;
+                                            ansr = max(pre[l].id, pre[r].id);
+                                            ans = sub;
+                                    }
+                                    if (sub < t)
+                                            r++;
+                                    else if (sub > t) l++;
+                                    else break;
+                                    if (l == r) r++;
+                            }
+                            printf("%d %d %d\n", ans, ansl, ansr);
+                    }
+                }
+                return 0;
+        }
+        ```
+    
+??? note "[First One](https://vjudge.net/problem/HDU-5358)"
+    数列 a 中 $S[i, j]$ 表示 $\sum_{i}^{j}a_i$，求出下面式子的值：
+
+    $\sum_{i=1}^{n}\sum_{j=1}^{n}(((\log_2 S(i, j))+1) * (i+j))$, 其中的$((\log _2 S(i, j))+1)$是向下取整；
+
+    ??? tip
+         $((\log _2 S(i, j))+1)$表示 S(i,j) 转换为2进制的长度，然后我们经过分析 $((\log _2 S(i, j))+1)$ 的值域为 $[1,34]$ 然后我们枚举 $((\log _2 S(i, j))+1)$ 的值，例如我们枚举其值为k，对于一个k我们找到所有满足条件的区间(i,j)，这个条件的代数表达为 $2^{k-1} \leq S(i,j) \leq 2^k - 1$;
+
+        因此我们需要再枚举一个区间的左端点，对于一个给定的左端点，因为S(i,j)在给定i的情况下单调，
+
+        我们可以用尺举发求得一个区间$[l,r]$，使得区间内的$j (l<=j<=r)$都满足 sum(i,j)+1=k;
+
+        然后区间(i+j)的和可以表示为 $i*(r-l+1) + (r+l)*(r-l+1)/2$ ;
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cstring>
+        #include <algorithm>
+        #include <cstdio>
+        using namespace std;
+        
+        const int maxn = 1e5+10;
+        
+        typedef long long LL;
+        
+        LL sum[maxn];
+        
+        int main()
+        {
+            int t,n;
+            scanf("%d",&t);
+            while(t--){
+                scanf("%d",&n);
+                sum[0]=0;
+                for(int i=1;i<=n;i++){
+                    LL x;
+                    scanf("%I64d",&x);
+                    sum[i]=sum[i-1]+x;
+                }
+                LL ans = 0;
+                for(LL k = 1;k<=34;k++){
+                    LL l=1,r=0;
+                    LL lmax = 1LL<<(k-1),rmax=(1LL<<k)-1;
+                    if(k==1) lmax = 0;
+                    for(LL i=1;i<=n;i++){
+                        l=max((LL)i,l);
+                        while(l<=n&&sum[l]-sum[i-1]<lmax) l++;
+                        r=max(l-1,r);
+                        while(r+1<=n&&sum[r+1]-sum[i-1]<=rmax&&sum[r+1]-sum[i-1]>=lmax)r++;
+                        if(l>r) continue;
+                        ans=ans+(i*(r-l+1)+(r+l)*(r-l+1)/2)*k;
+                    }
+                }
+                printf("%I64d\n",ans);
+            }
+            return 0;
+        }
+        ```
+    
+??? note "[P1102 A-B 数对](https://www.luogu.com.cn/problem/P1102)"
+    给出一串正整数数列以及一个正整数 $C$，要求计算出所有满足 $A - B = C$ 的数对的个数（不同位置的数字一样的数对算不同的数对）。
+
+    ??? tip
+        我们考虑题目要求求出所有A-B=C的数对，我们可以先将原数组排序，然后就会发现每个数A，对应的数B一定是一段连续的区间。
+
+        然后我们再考虑如何去找到这个区间。我们显然是要找到这个连续区间的左端点和右端点。
+
+        考虑到排序之后序列的有序性，我们枚举每个数，他们的左端点和右端点都是单调不降的，因此我们可以用双指针来维护这个东西。
+
+        具体的实现就是，我们维护两个右端点r1 , r2，每次r1右移到 $a[r1] - a[l] <= c$ 的最后位置的下一位，r2右移到满足 $a[r2] - a[l] < c$ 最后一位.
+
+        也就是说， 此时如果 $a[r2] - a[l] == c && a[r1 - 1] - a[l] == c$，中间的那一段一定都是满足条件的，我们让ans += r1 - r2即可。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include <bits/stdc++.h>
+        #define ll long long
+
+        using namespace std;
+
+        const int N = 2e5 + 10;
+        int n , c;
+        int a[N];
+
+        int main () 
+        {
+            cin >> n >> c;
+            for(int i = 1 ; i <= n ; i ++) cin >> a[i];
+            sort(a + 1 , a + 1 + n);
+            int l = 1, r1 = 1 , r2 = 1;
+            ll ans = 0;
+            for(l = 1 ; l <= n ; l ++) {
+                while(r1 <= n && a[r1] - a[l] <= c) r1 ++;
+                while(r2 <= n && a[r2] - a[l] < c ) r2 ++;
+                if(a[r2] - a[l] == c && a[r1 - 1] - a[l] == c && r1 - 1 >= 1) 	
+                    ans += r1 - r2;
+            }
+            cout << ans;
+            return 0;
+        }
+        ```
+
+??? note "[Cave](https://vjudge.net/problem/UVA-1442)"
+    有一个山洞用于存放石油，给出山洞的长度n，以及每个位置的底高度以及顶高度，要求存放石油不能没过顶，求最大的放油量。
+
+    ![](./images/twopointer-1.png)
+
+    ??? tip
+        设level=s[0],判断[i,i+1]处的高度（其实level也就是i的高度，i则是i+1的高度，i和i+1进行比较）从左至右扫描，如果p[i]>level,说明水被阻隔了，需要把level提升至p[i].如果s[i]<level,说明水位太高，需要把level降低至s[i].从右向左扫描同理，
+
+        红线是从左到右扫描的结果，蓝线试从右到左扫描的结果。两次扫描完以后，蓝色的线和红色的线谁低谁就减去$p[i]$，也就是黑色覆盖的范围，就是最终答案.
+
+        ![](./images/twopointer-2.jpg)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<bits/stdc++.h>
+        using namespace std;
+        const int maxn = 1000000 + 5;
+        int p[maxn],s[maxn],h[maxn];
+        int main()
+        {
+            int i, n, j, t, sum,l, r;
+            cin >> t;
+            while (t--)
+            {
+                sum = 0;
+                cin >> n;
+                for (i = 0; i < n; i++)
+                    cin >> p[i];
+                for (i = 0; i < n; i++)
+                    cin >> s[i];
+                l = s[0];
+                for (i = 0; i < n ; i++)//从左到右扫描
+                {
+                    if (p[i] > l)l = p[i];
+                    if (s[i] < l)l = s[i];
+                    h[i] = l;//将level的值储存进h[i],也就是例子中的红线部分
+                }
+                l = s[n - 1];
+                for (i = n - 1; i >= 0; i--)//从右到左扫描
+                {
+                    if (p[i] > l)l = p[i];
+                    if (s[i] < l)l = s[i];
+                    sum += min(h[i], l) - p[i];//扫描的同时可以直接求出答案.min(h[i],l)也就是红线和蓝线比较后最低的位置
+                }
+                cout << sum << endl;
+            }
+            return 0;
+        }
+        ```
