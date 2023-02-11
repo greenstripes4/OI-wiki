@@ -601,8 +601,86 @@ g[0] = 1;  // 什么都不装是一种方案
 
 ## 习题
 
-- [Coins](http://poj.org/problem?id=1742)
-- [Ant Counting](http://poj.org/problem?id=3046)
+??? note "[Coins](http://poj.org/problem?id=1742)"
+    有n种不同面值的硬币 A1,A2,...,An， 分别有C1,C2,...,Cn 枚。求这些硬币所能组成的小于等于m的不同的面值种类数。
+
+    ??? tip
+        ![](./images/dp-36.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <cstdio>
+        #include <cstring>
+        using namespace std;
+        const int M = 1e5 + 5, N = 105;
+        int a[N], c[N], f[M], g[M], n, m;
+        int main() {
+            while (scanf("%d%d", &n, &m), n) {
+                memset(f, 0, sizeof(f));
+                for (int i = 1; i <= n; i++) scanf("%d", a + i);
+                for (int i = 1; i <= n; i++) scanf("%d", c + i);
+                f[0] = 1;
+                for (int i = 1; i <= n; i++) {
+                    memset(g, 0, sizeof(g));
+                    for (int j = a[i]; j <= m; j++) {
+                        if (!f[j] && f[j - a[i]] && g[j - a[i]] < c[i]) {
+                            f[j] = 1;
+                            g[j] = g[j - a[i]] + 1; 
+                        }
+                    } 
+                }
+                int ans = 0;
+                for (int i = 1; i <= m; i++) ans += f[i];
+                printf("%d\n", ans); 
+            }
+            return 0;
+        }
+        ```
+
+??? note "[Ant Counting](http://poj.org/problem?id=3046)"
+    蚂蚁有T个家族，每个家族里的蚂蚁没有区别，总共有A只蚂蚁，现在问：给出每个家族的蚂蚁数量，最多能组合成多少个不同的集合个数为S~B的集合？就是给你T个集合，每个集合$num[i]$个数，这些数排列组合能有多少个，个数为S~B的集合。
+
+    ??? tip
+        ![](./images/dp-35.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<iostream>
+        using namespace std;
+        
+        const int MAXN = 1E5+10;
+        const int  MOD = 1E6;
+        int f[2][MAXN];
+        int ant[1000+10];
+        int T,A,S,B; 
+        
+        int main()
+        {
+            scanf("%d%d%d%d",&T,&A,&S,&B);
+            for(int i=0;i<A;i++)
+            {
+                int v; scanf("%d",&v); ant[v]++;
+            }
+            f[0][0]=f[1][0]=1;  //滚动数组优化空间
+            for(int i=1;i<=T;i++)
+            {
+                for(int j=1;j<=B;j++)
+                {
+                    if(j-ant[i]-1>=0)
+                        f[i&1][j]=f[i&1][j-1]+f[(i-1)&1][j]-f[(i-1)&1][j-ant[i]-1];
+                    else
+                        f[i&1][j]=f[i&1][j-1]+f[(i-1)&1][j];
+                    f[i&1][j]=(f[i&1][j]+MOD)%MOD;
+                }
+            }
+            long long sum=0;
+            for(int i=S;i<=B;i++) sum+=f[T&1][i],sum%=MOD;
+            printf("%lld",sum);
+        } 
+        ```
 
 ## 参考资料与注释
 
