@@ -403,16 +403,878 @@ int main(){
 
 ## 习题
 
-- [Arrange the Bulls](http://poj.org/problem?id=2441)
-- [Corn Fields](http://poj.org/problem?id=3254)
-- [Rectangular Covering](http://poj.org/problem?id=2836)
-- [DNA Laboratory](http://poj.org/problem?id=1795)
-- [Paid Roads](http://poj.org/problem?id=3411)
-- [Tour](https://vjudge.net/problem/UVA-1347)
-- [「NOI2001」炮兵阵地](https://loj.ac/problem/10173)
-- [「USACO06NOV」玉米田 Corn Fields](https://www.luogu.com.cn/problem/P1879)
-- [「AHOI2009」中国象棋](https://www.luogu.com.cn/problem/P2051)
-- [「九省联考 2018」一双木棋](https://loj.ac/problem/2471)
-- [校长的烦恼](https://vjudge.net/problem/UVA-10817)
-- [20个问题](https://vjudge.net/problem/UVA-1252)
-- [基金管理](https://vjudge.net/problem/UVA-1412)
+??? note "[Arrange the Bulls](http://poj.org/problem?id=2441)"
+    有n头牛， m个仓库，每头牛有它喜欢的仓库，每个仓库最多只能安排一头牛，问有多少种安排方法。
+
+    ??? tip
+        1. 设计状态：$dp[i , j]$表示前i头牛形成状态集合j的方法数。
+        2. 状态转移：$dp[i , j] = \sum (dp[i-1 , j-(1<<k)])$，其中k表示第i头牛可以放在仓库k，则前i-1头牛形成了状态集合$j-(1<<k)$。
+
+        时间复杂度：$(n*m*2^m)$，状态数：$(n*2^m)$。
+        
+        这道题可以在空间上优化，类似于01背包的优化，从后向前推，具体见代码。
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <bitset>
+        using namespace std;
+        #define MAX_N 20
+        #define MAX_M 20
+        
+        int dp[1 << MAX_M];	        // dp[S]表示已分配场地构成的集合S时的情况种数
+        bool like[MAX_N][MAX_M];	// like[i][j]表示球队i喜欢场地j
+        
+        int main(int argc, char *argv[])
+        {
+            int N, M;
+            cin >> N >> M;
+            for (int i = 0; i < N; ++i)
+            {
+                int P; cin >> P;
+                for (int j = 0; j < P; ++j)
+                {
+                    int b;
+                    cin >> b; --b;
+                    like[i][b] = true;
+                }
+            }
+            for (int i = 0; i < M; ++i)
+            {
+                if (like[0][i])
+                {
+                    dp[1 << i] = 1;	// 将i场地分配给0号球队
+                }
+            }
+            for (int i = 1; i < N; ++i)
+            {
+                for (int comb = (1 << i) - 1, x, y; comb < (1 << M); x = comb & -comb, y = comb + x, comb = ((comb & ~y) / x >> 1) | y)
+                {
+                    // comb表示集合{0, 1, ... , M - 1}的大小为i的子集，也就是分配了i个场地，满足了i个球队
+                    if (dp[comb])
+                    {
+                        for (int j = 0; j < M; ++j)
+                        {
+                            if (like[i][j] && !((comb >> j) & 1))
+                            {
+                                // i需要j并且j没有被分配，此时将j分配掉
+                                dp[comb | (1 << j)] += dp[comb];
+                            }
+                        }
+                    }
+                }
+            }
+        
+            int result = 0;
+            for (int bit = 0; bit < (1 << M); ++bit)
+            {
+                if (bitset<32>(bit).count() == N)
+                {
+                    result += dp[bit];
+                }
+            }
+            cout << result << endl;
+            return 0;
+        }
+        ```
+
+??? note "[Corn Fields](http://poj.org/problem?id=3254)"
+
+    约翰购买了由$m \times n (1 \leq m ，n \leq 12)$的方格组成的矩形牧场，想在一些方格上种玉米。遗憾的是，有些方格土壤贫瘠，无法种植。约翰在选择种植哪些方格时，会避免选择相邻的方格，没有两个选定的方格共享一条边。约翰考虑了所有可能的选择，他认为没有选择方格也是一种有效的选择！帮助他选择种植方格的方案数。
+    
+    ??? tip
+        本题要求只能选择肥沃的方格种植，且任何两个选择的方格都不能相邻。在第i 行选择方格时，只需考虑与第i -1行的状态是否冲突。对每一行的状态都用一个m 位的二进制数表示，0表示不选择种植，1表示选择种植。
+
+        状态表示： $dp[i][j]$表示第i 行是第j 个状态时，前i 行得到的方案数。当前行的状态可由前一行的状态转移而来。若当前行的状态符合种植要求，且与上一行不冲突，则将当前行的方案数累加上一行的方案数。
+
+        状态转移方程： $dp[i][j]=(dp[i][j]+dp[i -1][k])$，k 表示第k 个合法状态。第i 行的第j 个状态必须满足合法性（横向检测，横向有没有相邻的种植方格）、匹配性（种植状态与土地状态匹配），而且与上一行不冲突（竖向检测，竖向有没有相邻的种植方格）。
+
+        边界条件： 若第j 个状态与土地状态匹配，则$dp[1][j]=1$。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cstdio>
+        #include <cstring>
+        #include <algorithm>
+        using namespace std;
+        const int MOD = 100000000, MAX = 13;
+        const int maxStateNumber = 600;//表示最大合法状态的个数
+        int M,N,top = 0;//top记录行合法状态的数目，即数组state的长度
+        int dp[MAX][maxStateNumber];//dp[i][j]表示到第i行时状态为state[j]时的方案数
+        int state[maxStateNumber],cur[MAX];/*用state数组存储合法的行状态的二进制，即行内没有相邻的1；用cur数组存储田是否允许放牧的二进制状态，1表示不可以放牧，0表示可以放牧*/
+        inline bool ok(int i){
+            return i&(i<<1)?false:true;
+        }
+        void init(){
+            top = 0;
+            int total =( 1 << N);
+            for(int i = 0; i < total; i++ ){
+                if(ok(i))state[top++] = i;
+            }
+        }
+        inline bool fit(int state,int line){//判断该状态是否可以用于第line行。
+            if(state & cur[line])return false;//state中的二进制数每一位与cur中的二进制每一位按位与，cur为0的位值为0，cur为1的位值与state值相同。如果最后的值为不为0，则表示在不能放牧的格子上放了牛，所以返回false。
+            return true;
+        }
+        int main(){
+            while(~scanf("%d %d",&M,&N)){
+                memset(dp,0,sizeof(dp));
+                init();
+                for(int i = 1; i <= M; i++){
+                    cur[i] = 0;
+                    int num;
+                    for(int j = 1; j <= N; j++){
+                        scanf("%d",&num);
+                        if(num == 0)
+                            cur[i] += (1 << (N - j));/*将不可放牧点二进制的该位置为1；cur[i]的值的二进制数则表示第i行的每个格子的是否可以放牧的状态，该位为1表示不可以放牧.*/
+                    }
+                }
+                for(int i = 0; i < top; i++){
+                    if(fit(state[i],1)){//state[i]这个状态是否可以填充到第一行
+                        dp[1][i] = 1;//如果可以填充，则记录dp[1][i]，表示第一行的状态为state[i]时的方案数为1。如果不能填充，依然为默认值0
+                    }
+                }
+                for(int i = 2; i <= M; i++){
+                    for(int j = 0; j < top; j++){
+                        if(fit(state[j],i) == false)continue;
+                        for(int k = 0; k < top; k++){
+                            if(fit(state[k],i-1) == false)continue;
+                            if(state[j] & state[k])continue;//过滤掉上下行之间有相邻的格子的状态，即判断同一位置上的数是不是同时为1
+                            dp[i][j] = (dp[i][j] + dp[i-1][k]) % MOD;
+                        }
+                    }
+                }
+                int ans = 0;
+                for(int i = 0; i < top; i++){
+                    ans  = (ans + dp[M][i]) %MOD;
+                }
+                printf("%d\n",ans);
+            }
+        }
+        ```
+
+??? note "[Rectangular Covering](http://poj.org/problem?id=2836)"
+    平面上有n个点，要求用矩形去覆盖所有的点，每一个矩形至少覆盖两个点，每一个点可以被重复覆盖，求最小的能覆盖所有点的矩形的面积。
+
+    ??? tip
+        枚举两个点，一个矩形覆盖这两个点的最小面积是以这两个点为对角线，所以我们可以得到n*(n-1)/2个矩形，求出这些矩形的面积和覆盖的点，接下来就是状压DP了
+
+        $dp[i | rec[j].S] =min(dp[i | rec[j].S],dp[i] + rec[j].area);$ // rec[j].S用bitmask表示覆盖了什么点，area是矩形的面积
+    
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<cstring>
+        #include<iostream>
+        #include<algorithm>
+        #include<vector>
+        #include<math.h>
+        #include<map>
+        #include<queue>
+        using namespace std;
+        struct node
+        {
+            int x,y;
+        }p[25];
+        int main()
+        {
+            int n;
+            while(cin>>n && n)
+            {
+                int state[120],dp[1<<15],area[120];
+                int cnt=0;
+                for(int i=0;i<n;i++)
+                cin>>p[i].x>>p[i].y;
+                for(int i=0;i<n;i++)
+                {
+                    for(int j=i+1;j<n;j++)
+                    {
+                        state[cnt]=(1<<i|1<<j);
+                        for(int k=0;k<n;k++)
+                        {
+                            if((p[i].x-p[k].x)*(p[k].x-p[j].x)>=0 && (p[i].y-p[k].y)*(p[k].y-p[j].y)>=0)//当一个点在这个矩形中时，把这个矩形的包含点的状态更新
+                            state[cnt]|=1<<k;
+                        }
+                        if(p[i].x==p[j].x)//特判
+                        area[cnt]=abs(p[i].y-p[j].y);
+                        else if(p[i].y==p[j].y)
+                        area[cnt]=abs(p[i].x-p[j].x);
+                        else
+                        {
+                            area[cnt]=abs(p[i].y-p[j].y)*abs(p[i].x-p[j].x);
+                        }
+                        cnt++;
+                    }
+                }
+                for(int i=0;i<(1<<n);i++)
+                dp[i]=0xfffffff;
+                dp[0]=0;
+                for(int i=0;i<(1<<n);i++)//好好想想为什么后枚举矩形？
+                {
+                    for(int j=0;j<cnt;j++)
+                    {
+                        dp[i|state[j]]=min(dp[i|state[j]],dp[i]+area[j]);
+                    }
+                }
+                cout<<dp[(1<<n)-1]<<endl;
+            }
+            return 0;
+        }
+        ```
+
+??? note "[DNA Laboratory](http://poj.org/problem?id=1795)"
+    给定n(1≤n≤15)(1≤n≤15)个字符串，只会由'A' 'C' 'G' 'T' 四种字符构成，求一个最短的字符串S，使得给定的n个字符串均为S的字串，如果有多解，输出字典序最小的S。
+
+    ??? tip
+        把给定的字符串拿来拼凑，相邻的字符串去掉重复部分，拼一个最短，字典序最小的字符串。TGCACA和CAT去掉重复的CA就得到了TGCACAT。
+
+        首先我们可以把那些被包含在其它字符串的子串全部去掉，然和用剩下的来拼凑。
+
+        数据规模很小，考虑状态压缩DP。
+
+        用状态ｓ表示当前已经选择了哪些字符串来拼凑。因为转移状态时，添加一个新的字符串来拼凑，我们需要知道当前拼凑结果中，最前面的字符，这样才能计算新添加的字符串与当前已拼凑有多少重合。用i来表示最前面的是哪个字符串。
+
+        $dp[s][i]$表示选择状态为s，最前面为第i个的字符串能拼凑出的最短字符串长度。
+
+        为了最后构造出这个最短字符串，我们还需要一个数组：
+
+        $second[s][i]$表示选择状态为s，最前面为第i个字符串拼凑出最短字符串时，前面第二个字符串为哪一个。
+
+        状态转移方程：（刷表法，从$dp[s][i]$转移到后面）
+        $dp[new][j]=min(dp[new][j],dp[s][i]+length[j]-rep[j][i]);$
+        （$length[j]$表示字符串j的长度）
+
+        （$rep[j][i]$表示j在前，i在后时，它们能重复的长度，如TGCACA与CAT的rep值为2，这个数组可以预处理出来）
+
+        初始时$dp[(1<<(i-1)][i]=length[i]$（只选一个字符串），其余全部无限大。
+
+        转移时，要判断字符串大小，以达到second数组一定是按字典序最小的方案存储的。
+
+        最后$dp[(1<<n)-1][1 \dots n]$为目标状态，枚举出最小值，利用second倒推回去，构造出字符串S。
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <stdio.h>
+        #include <string.h>
+        #include <string>
+        #include <algorithm>
+        #include <iostream>
+        using namespace std;
+        const int INF = 0x3f3f3f3f;
+        string s[20],ans;
+        int n,cost[20][20];//第i个字符串接到第j个字符串前的花费
+        int dp[20][1 << 15];//第i个字符串在最前面，S状态下的最小花费
+        int init()
+        {
+            int i,j,m,len,k;
+            for(i = 0; i < n; i++) {
+                for(j = 0; j < n; j++) {
+                    if(s[i].find(s[j]) != -1)
+                        s[j] = s[i];
+                }
+            }
+            sort(s,s + n);
+            m = unique(s,s + n) - s;
+            memset(cost,0,sizeof(cost));
+            for(i = 0; i < m; i++) {
+                for(j = 0; j < m; j++) {
+                    if(i == j) continue;
+                    len = min( s[i].size(),s[j].size() );
+                    cost[i][j] = s[i].size();
+                    for(k = 1; k <= len; k++) {
+                        if(s[i].substr(s[i].size() - k,k) == s[j].substr(0,k))
+                            cost[i][j] = s[i].size() - k;
+                    }
+                }
+            }
+            return m;
+        }
+        void dfs(int id,int cur,int n)
+        {
+            int i;
+            if(cur == 0)
+                return;
+            int nxt = -1;
+            string temp = "zzzz";
+            for(i = 0; i < n; i++) {
+                if( i != id && (cur & (1 << i)) && (dp[id][cur] == dp[i][cur & ~(1 << id)] + cost[id][i]) ) {
+                    if(s[i].substr(s[id].size() - cost[id][i]) < temp) {
+                        temp = s[i].substr(s[id].size() - cost[id][i]);
+                        nxt = i;
+                    }
+                }
+            }
+            if(nxt != -1)
+                ans += temp;
+            dfs(nxt,cur & ~(1 << id),n);
+        }
+        int main(void)
+        {
+            int T,id,i,j,k,Case;
+            scanf("%d",&T);
+            Case = 0;
+            while(T--) {
+                Case++;
+                scanf("%d",&n);
+                for(i = 0; i < n; i++)
+                    cin >> s[i];
+                n = init();
+                memset(dp,INF,sizeof(dp));
+                for(i = 0; i < n; i++)
+                    dp[i][1 << i] = s[i].size();
+                for(k = 0; k < (1 << n); k++) {
+                    for(j = 0; j < n; j++) {
+                        if( (k & (1 << j)) && dp[j][k] != INF ) {
+                            for(i = 0; i < n; i++) {
+                                dp[i][k | (1 << i)] = min(dp[i][k | (1 << i)],dp[j][k] + cost[i][j]);
+                            }
+                        }
+                    }
+                }
+                id = 0;
+                for(i = 0; i < n; i++) {
+                    if(dp[id][(1 << n) - 1] > dp[i][(1 << n) - 1])
+                        id = i;
+                }
+                ans = s[id];
+                dfs(id,(1 << n) - 1,n);
+                printf("Scenario #%d:\n",Case);
+                cout << ans << endl << endl;
+            }
+            return 0;
+        }
+        ```
+
+??? note "[Paid Roads](http://poj.org/problem?id=3411)"
+    给定N个城市和m条边，让你求出从1到N城市最少花费为多少。如果从1城市无法到达N城市，就输出impossible.
+
+    给出的数据要求:
+    
+    a b c C[0] C[1]
+    
+    a到b城市的花费前提: 如果在从a到b城市之前经历过c城市的话，花费为C[0],反之为C[1].
+
+    ??? tip
+        $dp[i][S]$ 经过在集合s中的点到达i的最短花费
+
+        - 当S中没有c时
+
+        $dp[b][s∪b]=min(dp[i][s],dp[a][s]+P(a,b));$
+
+        - 当S中有c时；
+
+        $dp[b][s∪b]=min(dp[i][s],dp[a][s]+R(a,b),dp[a][s]+P(a,b));$
+
+        先将路径按起点城市的序号升序排序；
+
+        首先如果一条路径缩短，在最短花费的路上肯定不会经过终点；
+
+        在第一次遍历中，可以求出城市号升序经过的最小花费路径；
+
+        每一次外层循环其实都是因为有回路缩短了最小距离，因为回路就会产生中间节点c，就可以使用第一种付费方案
+
+        每一次循环的最短回路只会被更新一次，比如n1到n2到n1是一条回路，缩短了n1到n3的值，因为是正序遍历，所以n3到n1的回路值后跟新，但是下次外循环时不会再缩短n1到n2到n1到n3这条回路而是缩短n1到n3到n1到ni>3的回路，所以最多需要N-1次外层循环！
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<cstring>
+        #include<algorithm>
+        using namespace std;
+        #define INF 0x3f3f3f3f
+        int dp[15][1<<11];  //到i点时经过了集合s 
+        struct edge
+        {
+            int a,b,c,p,r;
+            bool operator<(const edge B)const
+            {
+                if(a==B.a&&b==B.b)
+                    return c<B.c;
+                if(a==B.a)
+                    return b<B.b;
+                return a<B.a;
+            }
+        }arr[15];
+
+        int N,m;
+        int main()
+        {
+            while(scanf("%d%d",&N,&m)!=EOF)
+            {
+                int i,s;
+                for(i=1;i<=m;i++)
+                    scanf("%d%d%d%d%d",&arr[i].a,&arr[i].b,&arr[i].c,&arr[i].p,&arr[i].r);
+                memset(dp,INF,sizeof(dp));
+                dp[1][1]=0;
+                sort(arr+1,arr+m+1);   
+                for(int j=1;j<N;j++)  //！！！
+                for(i=1;i<=m;i++)
+                {
+                    for(s=1;s<(1<<N);s++)
+                    {
+                        if(!(s&(1<<(arr[i].a-1)))||dp[arr[i].a][s]==INF)continue;
+                        dp[arr[i].b][s|(1<<(arr[i].b-1))]=min(dp[arr[i].b][s|(1<<(arr[i].b-1))],dp[arr[i].a][s]+arr[i].r);
+                        if(s&(1<<(arr[i].c-1)))
+                        dp[arr[i].b][s|(1<<(arr[i].b-1))]=min(dp[arr[i].b][s|(1<<(arr[i].b-1))],dp[arr[i].a][s]+arr[i].p);
+                    }
+                }
+                int ans=INF;
+                for(s=1;s<(1<<N);s++)
+                    ans=min(ans,dp[N][s]);
+                if(ans==INF)
+                    printf("impossible\n");
+                else
+                    printf("%d\n",ans);
+            }
+            return 0;
+        } 
+        ```
+
+??? note "[Tour](https://vjudge.net/problem/UVA-1347)"
+    ![](./images/treedp-12.png)
+
+    ??? tip
+        ![](./images/treedp-13.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cstring>
+        #include <algorithm>
+        #include <cmath>
+        #include <iomanip>
+        using namespace std;
+        #define MAXN 1000 + 10
+        int x[MAXN], y[MAXN];
+        double dp[MAXN][MAXN], dist[MAXN][MAXN];
+        int N;
+        double di(int a, int b)
+        {
+            return hypot(x[a]-x[b], y[a] - y[b]);
+        }
+        double recur(int a, int b)
+        {
+            if (dp[a][b]!=-1.0) return dp[a][b];
+            if (a==N-1)
+            {
+                return dp[a][b] = dp[b][a] = dist[b][N-1];
+            }
+            return dp[a][b] = dp[b][a] = min(recur(a+1,b) + dist[a][a+1] , recur(a+1, a) + dist[b][a+1]);
+        }
+        int main()
+        {
+            cout<<fixed<<setprecision(2);
+            while(cin>>N)
+            {
+                for (int i = 0 ; i < N; i++)
+                    for (int j = 0 ; j < N; j++)
+                        dp[i][j] = -1.0;
+                for (int i = 0,a,b ; i < N; i++)
+                    cin>>x[i]>>y[i];
+                for (int i = 0; i < N-1; i++)
+                    for (int j = i + 1; j < N; j++)
+                        dist[i][j] = dist[j][i] = di(i,j);
+                cout<<recur(0,0)<<endl;
+            }
+        }
+        ```
+
+??? note "[「NOI2001」炮兵阵地](https://www.luogu.com.cn/problem/P2704)"
+    一个 N×M 的地图由 M 列组成，地图的每一格可能是山地（用 H 表示），也可能是平原（用 P 表示），在每一格平原地形上最多可以布置一支炮兵部队。
+
+    一支炮兵部队，可以攻击横向左右各两格，纵向上下各两格。问最多能部署多少炮兵。
+
+    ??? tip
+        因为每一个炮兵都会影响到之后的两行的放置，所以用状压去压两行，按行处理每一行的情况即可。每一行放置的时候也很简单，只需考虑这个位置前两行有没有放置炮兵以及这个位置是不是山丘即可。
+
+        那么首先，dp 方程可以很快推出来，$dp[L][S][i]$表示当前状态是 S，上一行的状态是 L，当前考虑到了第 i 行：
+
+        $dp[L][S][i]=max(dp[L][S][i],dp[FL][L][i-1]+Sum[S]);$ 这里 FL 表示上上行的状态，$Sum[S]$ 表示当前状态 S 里面包含几个 1。
+
+        那么有了这个 dp 方程后，就可以愉快的递推了，不过这道题有几个细节需要注意一下：
+
+        - 判断每个位置是不是山丘
+
+        这个很好解决，只要把每一行的输入都转成一个二进制数(平原是 0，山丘是1)，然后直接跟待判断的状态做一次位运算即可，就是 S& $a[i]$，如果位运算结果不是零，说明有些位置放在了山丘上，也就是说当前状态不合法。
+
+        - 判断每个状态有没有两个炮兵左右距离在两格之内
+
+        这个需要动脑想一下，我们发现一个神奇的结论，如果把表示当前状态的二进制数位运算左移一位，那么用这个结果与原状态做一次位运算与操作，如果结果不是 0，那么就一定存在两个炮兵左右距离在一格之内。同理，左移两位就可以判断左右距离在两格之内。这个过程也就是 S&$(S<<1)$，S&$(S<<2)$。
+
+        - 判断每一列之前两行有没有炮兵
+
+        这个就直接用当前状态分别与之前的两行即可，就是 S&L，S&FL，如果与操作结果不为零，说明有若干列前两行有炮兵，也就是说当前状态不合法。
+
+        最后说一句，一定要用滚动数组(因为只用到每一行和前两行，所以只用滚动三行)，否则会 MLE
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<iostream>
+        using namespace std;
+        int n,m,ans,dp[(1<<10)][(1<<10)][3]/*滚动数组*/,a[105],Sum[(1<<10)];
+        char x;
+        int getsum(int S)	//当前状态 S 里面包含几个 1
+        {
+            int tot=0;
+            while(S) {if(S&1) tot++; S>>=1;}
+            return tot;
+        }
+        int main()
+        {
+            cin>>n>>m;
+            for(int i=0;i<n;i++)
+                for(int j=0;j<m;j++)
+                    cin>>x,a[i]<<=1,a[i]+=(x=='H'?1:0);	//转成二进制数
+            for(int i=0;i<(1<<m);i++)
+                Sum[i]=getsum(i);	//初始化 Sum 数组
+            for(int S=0;S<(1<<m);S++)
+                if(!(S&a[0] || (S&(S<<1)) || (S&(S<<2))))
+                    dp[0][S][0]=Sum[S];	//初始化
+            for(int L=0;L<(1<<m);L++)
+                for(int S=0;S<(1<<m);S++)
+                    if(!(L&S || L&a[0] || S&a[1] || (L&(L<<1)) || (L&(L<<2)) || (S&(S<<1)) || (S&(S<<2))))	//谜之一长串特判
+                        dp[L][S][1]=Sum[S]+Sum[L];
+            for(int i=2;i<n;i++)
+                for(int L=0;L<(1<<m);L++)
+                {
+                    if(L&a[i-1] || (L&(L<<1)) || (L&(L<<2))) continue;	//特判
+                    for(int S=0;S<(1<<m);S++)
+                    {
+                        if(S&a[i] || L&S || (S&(S<<1)) || (S&(S<<2))) continue;
+                        for(int FL=0;FL<(1<<m);FL++)
+                        {
+                            if(FL&L || FL&S || FL&a[i-2] || (FL&(FL<<1)) || (FL&(FL<<2)))	continue;
+                            dp[L][S][i%3]=max(dp[L][S][i%3],dp[FL][L][(i-1)%3]+Sum[S]);		//滚动数组的实现方法
+                        }
+                    }
+                }
+            for(int L=0;L<(1<<m);L++)
+                for(int S=0;S<(1<<m);S++)
+                    ans=max(ans,dp[L][S][(n-1)%3]);	//结束状态可以是最后一行的任何状态
+            cout<<ans;
+            return 0;
+        }
+        ```
+
+??? note "[「AHOI2009」中国象棋](https://www.luogu.com.cn/problem/P2051)"
+    这次小可可想解决的难题和中国象棋有关，在一个 n 行 m 列的棋盘上，让你放若干个炮（可以是 0 个），使得没有一个炮可以攻击到另一个炮，请问有多少种放置方法。大家肯定很清楚，在中国象棋中炮的行走方式是：一个炮攻击到另一个炮，当且仅当它们在同一行或同一列中，且它们之间恰好 有一个棋子。你也来和小可可一起锻炼一下思维吧！
+
+    ??? tip
+        [Luogu题解](https://www.luogu.com.cn/problem/solution/P2051)
+
+        $f[i][j][k]$代表放了前i行,有j列是有一个棋子,有k列是有2个棋子的合法方案数.
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<cstring>
+        #include<cmath>
+        #include<cctype>
+        #include<cstring>
+        #define mod 9999973
+        #define int long long
+        #define R register
+        using namespace std;
+        inline  void in(int &x)
+        {
+            int f=1;x=0;char s=getchar();
+            while(!isdigit(s)){if(s=='-')f=-1;s=getchar();}
+            while(isdigit(s)){x=x*10+s-'0';s=getchar();}
+            x*=f;
+        }
+        int n,m,ans;
+        int f[108][108][108];
+        inline int C(int x)
+        {
+            return ((x*(x-1))/2)%mod;
+        }
+        signed main()
+        {
+            in(n),in(m);
+            f[0][0][0]=1;
+            for(R int i=1;i<=n;i++)
+            {
+                for(R int j=0;j<=m;j++)
+                {
+                    for(R int k=0;k<=m-j;k++)
+                    {
+                        f[i][j][k]=f[i-1][j][k];
+                        if(k>=1)(f[i][j][k]+=f[i-1][j+1][k-1]*(j+1));
+                        if(j>=1)(f[i][j][k]+=f[i-1][j-1][k]*(m-j-k+1));
+                        if(k>=2)(f[i][j][k]+=f[i-1][j+2][k-2]*(((j+2)*(j+1))/2));
+                        if(k>=1)(f[i][j][k]+=f[i-1][j][k-1]*j*(m-j-k+1));
+                        if(j>=2)(f[i][j][k]+=f[i-1][j-2][k]*C(m-j-k+2));
+                        f[i][j][k]%=mod;
+                    }
+                }
+            }
+            for(R int i=0;i<=m;i++)
+                for(R int j=0;j<=m;j++)
+                    (ans+=f[n][i][j])%=mod;
+            printf("%lld",(ans+mod)%mod);
+        }
+        ```
+
+- "[「九省联考 2018」一双木棋](https://www.luogu.com.cn/problem/P4363)"
+
+??? note "[校长的烦恼](https://vjudge.net/problem/UVA-10817)"
+    ![](./images/treedp-18.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<cstring>
+        #include<iostream>
+        #include<sstream>
+        using namespace std;
+
+        const int maxn = 100 + 20 + 5;
+        const int maxs = 8;
+        const int INF = 1000000000;
+        int m, n, s, c[maxn], st[maxn], d[maxn][1<<maxs][1<<maxs];
+
+        // s1是一个人教的科目集合，s2是两个人教的科目集合
+        int dp(int i, int s0, int s1, int s2) {
+        if(i == m+n) return s2 == (1<<s) - 1 ? 0 : INF;
+        int& ans = d[i][s1][s2];
+        if(ans >= 0) return ans;
+
+        ans = INF;
+        if(i >= m) ans = dp(i+1, s0, s1, s2); // 不选
+
+        // 选
+        int m0 = st[i] & s0, m1 = st[i] & s1;
+        s0 ^= m0;
+        s1 = (s1 ^ m1) | m0;
+        s2 |= m1;
+        ans = min(ans, c[i] + dp(i+1, s0, s1, s2));
+        return ans;
+        }
+
+        int main() {
+        int x;
+        string line;
+        while(getline(cin, line)) {
+            stringstream ss(line);
+            ss >> s >> m >> n;
+            if(s == 0) break;
+
+            for(int i = 0; i < m+n; i++) {
+            getline(cin, line);
+            stringstream ss(line);
+            ss >> c[i];
+            st[i] = 0;
+            while(ss >> x) st[i] |= (1 << (x-1));
+            }
+            memset(d, -1, sizeof(d));
+            cout << dp(0, (1<<s)-1, 0, 0) << "\n";
+        }
+        return 0;
+        }
+        ```
+
+??? note "[20个问题](https://vjudge.net/problem/UVA-1252)"
+    ![](./images/treedp-16.png)
+
+    ??? tip
+        ![](./images/treedp-17.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <string>
+        #include <cstring>
+        #include <algorithm>
+        using namespace std;
+
+        int M, N;
+        int F[128];
+        int dp[1 << 11][1 << 11];
+
+        // Q: bitmask of questions.
+        // A: bitmask of answers.
+        int search(int Q, int A)
+        {
+            if (dp[Q][A] != -1)
+                return dp[Q][A];
+
+            // If the number of remained objects are less than 2, then there is no
+            // need to ask any other questions.
+            int nObjects = 0;
+            for (int i = 0; i < N; ++i)
+                if ((F[i] & Q) == A)
+                    ++nObjects;
+
+            if (nObjects <= 1)
+                return dp[Q][A] = 0;
+
+            // Try to ask each question and check its maximum number of required 
+            // questions to identify the remained objects. Pick the minimum of them.
+            int nQuestions = M + 1;
+            for (int i = 0; i < M; ++i)
+                if ((Q & (1 << i)) == 0)
+                    nQuestions = min(nQuestions, 1 + max(search(Q | (1 << i), A),
+                                                        search(Q | (1 << i), A | (1 << i))));
+
+            return dp[Q][A] = nQuestions;
+        }
+
+        int solve()
+        {
+            memset(dp, -1, sizeof(dp));
+            return search(0, 0);
+        }
+
+        int main()
+        {
+            while (cin >> M >> N, !(M == 0 && N == 0))
+            {
+                for (int i = 0; i < N; ++i)
+                {
+                    string s;
+                    cin >> s;
+                    
+                    int feature = 0;
+                    for (int j = 0; j < M; ++j)
+                        feature |= (s[j] - '0') << j;
+                    
+                    F[i] = feature;
+                }
+                cout << solve() << endl;
+            }
+            return 0;
+        } 
+        ```
+
+??? note "[基金管理](https://vjudge.net/problem/UVA-1412)"
+    ![](./images/treedp-14.png)
+
+    ??? tip
+        ![](./images/treedp-15.png)
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include<cstdio>
+        #include<cstring>
+        #include<vector>
+        #include<map>
+        using namespace std;
+
+        const double INF = 1e30;
+        const int maxn = 8;
+        const int maxm = 100 + 5;
+        const int maxstate = 15000;
+
+        int m, n, s[maxn], k[maxn], kk;
+        double c, price[maxn][maxm];
+        char name[maxn][10];
+
+        double d[maxm][maxstate];
+        int opt[maxm][maxstate], pprev[maxm][maxstate];
+
+        int buy_next[maxstate][maxn], sell_next[maxstate][maxn];
+        vector<vector<int> > states;
+        map<vector<int>, int> ID;
+
+        void dfs(int stock, vector<int>& lots, int totlot) {
+        if(stock == n) {
+            ID[lots] = states.size();
+            states.push_back(lots);
+        }
+        else for(int i = 0; i <= k[stock] && totlot + i <= kk; i++) {
+            lots[stock] = i;
+            dfs(stock+1, lots, totlot + i);
+        }
+        }
+
+        void init() {
+        vector<int> lots(n);
+        states.clear();
+        ID.clear();
+        dfs(0, lots, 0);
+        for(int s = 0; s < states.size(); s++) {
+            int totlot = 0;
+            for(int i = 0; i < n; i++) totlot += states[s][i];
+            for(int i = 0; i < n; i++) {
+            buy_next[s][i] = sell_next[s][i] = -1;
+            if(states[s][i] < k[i] && totlot < kk) {
+                vector<int> newstate = states[s];
+                newstate[i]++;
+                buy_next[s][i] = ID[newstate];
+            }
+            if(states[s][i] > 0) {
+                vector<int> newstate = states[s];
+                newstate[i]--;
+                sell_next[s][i] = ID[newstate];
+            }
+            }
+        }
+        }
+
+        void update(int day, int s, int s2, double v, int o) {
+        if(v > d[day+1][s2]) {
+            d[day+1][s2] = v;
+            opt[day+1][s2] = o;
+            pprev[day+1][s2] = s;
+        }
+        }
+
+        double dp() {
+        for(int day = 0; day <= m; day++)
+            for(int s = 0; s < states.size(); s++) d[day][s] = -INF;
+
+        d[0][0] = c;
+        for(int day = 0; day < m; day++)
+            for(int s = 0; s < states.size(); s++) {
+            double v = d[day][s];
+            if(v < -1) continue;
+
+            update(day, s, s, v, 0); // HOLD
+            for(int i = 0; i < n; i++) {
+                if(buy_next[s][i] >= 0 && v >= price[i][day] - 1e-3)
+                update(day, s, buy_next[s][i], v - price[i][day], i+1); // BUY
+                if(sell_next[s][i] >= 0)
+                update(day, s, sell_next[s][i], v + price[i][day], -i-1); // SELL
+            }
+            }
+        return d[m][0];
+        }
+
+        void print_ans(int day, int s) {
+        if(day == 0) return;
+        print_ans(day-1, pprev[day][s]);
+        if(opt[day][s] == 0) printf("HOLD\n");
+        else if(opt[day][s] > 0) printf("BUY %s\n", name[opt[day][s]-1]);
+        else printf("SELL %s\n", name[-opt[day][s]-1]);
+        }
+
+        int main() {
+        int kase = 0;
+        while(scanf("%lf%d%d%d", &c, &m, &n, &kk) == 4) {
+            if(kase++ > 0) printf("\n");
+
+            for(int i = 0; i < n; i++) {
+            scanf("%s%d%d", name[i], &s[i], &k[i]);
+            for(int j = 0; j < m; j++) { scanf("%lf", &price[i][j]); price[i][j] *= s[i]; }
+            }
+            init();
+
+            double ans = dp();
+            printf("%.2lf\n", ans);
+            print_ans(m, 0);
+        }
+        return 0;
+        }
+        ```
