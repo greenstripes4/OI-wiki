@@ -290,16 +290,16 @@ void traverse(TreeNode* root) {
 
 ## 习题
 
-??? note [棋盘覆盖](https://programmerall.com/article/3423605686/)
+??? note "[棋盘覆盖](https://programmerall.com/article/3423605686/)"
     ![](./images/divide-and-conquer-3.png)
     ![](./images/divide-and-conquer-4.png)
 
-??? note [气球膨胀](https://vjudge.net/problem/UVA-12627)
+??? note "[气球膨胀](https://vjudge.net/problem/UVA-12627)"
     ![](./images/divide-and-conquer-5.png)
     ![](./images/divide-and-conquer-6.png)
     ![](./images/divide-and-conquer-7.png)
 
-??? note [不无聊的序列](https://vjudge.net/problem/UVA-1608)
+??? note "[不无聊的序列](https://vjudge.net/problem/UVA-1608)"
     一个序列为不无聊序列，则必须满足划分任意长度的连续子序列（包括其本身），其中至少存在一个元素仅仅出现一次，即至少有一个元素不重复。
     
     例子：
@@ -311,7 +311,7 @@ void traverse(TreeNode* root) {
     ??? tip
         ![](./images/divide-and-conquer-8.png)
 
-??? note [不公平竞赛](https://vjudge.net/problem/UVA-1609)
+??? note "[不公平竞赛](https://vjudge.net/problem/UVA-1609)"
     给你一群队伍，1号对至少能击败一半的队伍，每只一号队不能击败的队伍都有另一只队伍能击败他。给一个比赛安排让一号队夺冠。
 
     ??? tip
