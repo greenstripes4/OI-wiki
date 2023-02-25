@@ -437,7 +437,7 @@ nav:
       - 行列式: math/linear-algebra/determinant.md
       - 高斯消元: math/linear-algebra/gauss.md
       - 线性空间: math/linear-algebra/vector-space.md
-      - Hamel基: math/linear-algebra/basis.md
+      - 线性基: math/linear-algebra/basis.md
       - 线性映射: math/linear-algebra/linear-mapping.md
       - 特征多项式: math/linear-algebra/char-poly.md
       - 对角化: math/linear-algebra/diagonalization.md
@@ -466,6 +466,133 @@ nav:
     - 杨氏矩阵: math/young-tableau.md
     - Schreier–Sims 算法: math/schreier-sims.md
     - Berlekamp-Massey 算法: math/berlekamp-massey.md
+  - 数据结构:
+    - 数据结构部分简介: ds/index.md
+    - 栈: ds/stack.md
+    - 队列: ds/queue.md
+    - 链表: ds/linked-list.md
+    - 哈希表: ds/hash.md
+    - 并查集:
+      - 并查集: ds/dsu.md
+      - 并查集复杂度: ds/dsu-complexity.md
+    - 堆:
+      - 堆简介: ds/heap.md
+      - 二叉堆: ds/binary-heap.md
+      - 配对堆: ds/pairing-heap.md
+      - 左偏树: ds/leftist-tree.md
+    - 块状数据结构:
+      - 分块思想: ds/decompose.md
+      - 块状数组: ds/block-array.md
+      - 块状链表: ds/block-list.md
+      - 树分块: ds/tree-decompose.md
+      - Sqrt Tree: ds/sqrt-tree.md
+    - 单调栈: ds/monotonous-stack.md
+    - 单调队列: ds/monotonous-queue.md
+    - ST 表: ds/sparse-table.md
+    - 树状数组: ds/fenwick.md
+    - 线段树: ds/seg.md
+    - 李超线段树: ds/li-chao-tree.md
+    - 区间最值操作 & 区间历史最值: ds/seg-beats.md
+    - 划分树: ds/dividing.md
+    - 二叉搜索树 & 平衡树:
+      - 二叉搜索树 & 平衡树: ds/bst.md
+      - Treap: ds/treap.md
+      - Splay 树: ds/splay.md
+      - WBLT: ds/wblt.md
+      - Size Balanced Tree: ds/sbt.md
+      - AVL 树: ds/avl.md
+      - B 树: ds/b-tree.md
+      - B+ 树: ds/bplus-tree.md
+      - 替罪羊树: ds/sgt.md
+      - Leafy Tree: ds/leafy-tree.md
+      - 笛卡尔树: ds/cartesian-tree.md
+      - 红黑树: ds/rbtree.md
+      - 左偏红黑树: ds/llrbt.md
+    - 跳表: ds/skiplist.md
+    - 可持久化数据结构:
+      - 可持久化数据结构简介: ds/persistent.md
+      - 可持久化线段树: ds/persistent-seg.md
+      - 可持久化块状数组: ds/persistent-block-array.md
+      - 可持久化平衡树: ds/persistent-balanced.md
+      - 可持久化字典树: ds/persistent-trie.md
+      - 可持久化可并堆: ds/persistent-heap.md
+    - 树套树:
+      - 线段树套线段树: ds/seg-in-seg.md
+      - 平衡树套线段树: ds/seg-in-balanced.md
+      - 线段树套平衡树: ds/balanced-in-seg.md
+      - 树状数组套权值线段树: ds/seg-in-bit.md
+      - 分块套树状数组: ds/bit-in-block-array.md
+    - K-D Tree: ds/kdt.md
+    - 动态树:
+      - Link Cut Tree: ds/lct.md
+      - Euler Tour Tree: ds/ett.md
+      - Top Tree: ds/top-tree.md
+    - 析合树: ds/divide-combine.md
+    - PQ 树: ds/pq-tree.md
+    - 手指树: ds/finger-tree.md
+    - 霍夫曼树: ds/huffman-tree.md
+  - 图论:
+    - 图论部分简介: graph/index.md
+    - 图论相关概念: graph/concept.md
+    - 图的存储: graph/save.md
+    - DFS（图论）: graph/dfs.md
+    - BFS（图论）: graph/bfs.md
+    - 树上问题:
+      - 树基础: graph/tree-basic.md
+      - 树的直径: graph/tree-diameter.md
+      - 最近公共祖先: graph/lca.md
+      - 树的重心: graph/tree-centroid.md
+      - 树链剖分: graph/hld.md
+      - 树上启发式合并: graph/dsu-on-tree.md
+      - 虚树: graph/virtual-tree.md
+      - 树分治: graph/tree-divide.md
+      - 动态树分治: graph/dynamic-tree-divide.md
+      - AHU 算法: graph/tree-ahu.md
+      - 树哈希: graph/tree-hash.md
+      - 树上随机游走: graph/tree-random-walk.md
+    - 矩阵树定理: graph/matrix-tree.md
+    - 有向无环图: graph/dag.md
+    - 拓扑排序: graph/topo.md
+    - 最小生成树: graph/mst.md
+    - 斯坦纳树: graph/steiner-tree.md
+    - 最小树形图: graph/dmst.md
+    - 最小直径生成树: graph/mdst.md
+    - 最短路: graph/shortest-path.md
+    - 拆点: graph/node.md
+    - 差分约束: graph/diff-constraints.md
+    - k 短路: graph/kth-path.md
+    - 同余最短路: graph/mod-shortest-path.md
+    - 连通性相关:
+      - 强连通分量: graph/scc.md
+      - 双连通分量: graph/bcc.md
+      - 割点和桥: graph/cut.md
+      - 圆方树: graph/block-forest.md
+      - 点/边连通度: graph/connectivity.md
+    - 2-SAT: graph/2-sat.md
+    - 欧拉图: graph/euler.md
+    - 哈密顿图: graph/hamilton.md
+    - 二分图: graph/bi-graph.md
+    - 最小环: graph/min-circle.md
+    - 平面图: graph/planar.md
+    - 图的着色: graph/color.md
+    - 网络流:
+      - 网络流简介: graph/flow.md
+      - 最大流: graph/flow/max-flow.md
+      - 最小割: graph/flow/min-cut.md
+      - 费用流: graph/flow/min-cost.md
+      - 上下界网络流: graph/flow/bound.md
+    - Stoer-Wagner 算法: graph/stoer-wagner.md
+    - 图的匹配:
+      - 图匹配: graph/graph-matching/graph-match.md
+      - 增广路: graph/graph-matching/augment.md
+      - 二分图最大匹配: graph/graph-matching/bigraph-match.md
+      - 二分图最大权匹配: graph/graph-matching/bigraph-weight-match.md
+      - 一般图最大匹配: graph/graph-matching/general-match.md
+      - 一般图最大权匹配: graph/graph-matching/general-weight-match.md
+    - Prüfer 序列: graph/prufer.md
+    - LGV 引理: graph/lgv.md
+    - 弦图: graph/chord.md
+    - 最大团搜索算法: graph/max-clique.md
   - 计算几何:
     - 计算几何部分简介: geometry/index.md
     - 二维计算几何基础: geometry/2d.md

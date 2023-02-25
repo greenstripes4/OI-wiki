@@ -1,20 +1,20 @@
-本页面将简要介绍 A\*算法。
+本页面将简要介绍 A \* 算法。
 
 ## 定义
 
-A\*搜索算法（英文：A\*search algorithm，A\*读作 A-star），简称 A\*算法，是一种在图形平面上，对于有多个节点的路径求出最低通过成本的算法。它属于图遍历（英文：Graph traversal）和最佳优先搜索算法（英文：Best-first search），亦是 [BFS](./bfs.md) 的改进。
+A \* 搜索算法（英文：A\*search algorithm，A \* 读作 A-star），简称 A \* 算法，是一种在图形平面上，对于有多个节点的路径求出最低通过成本的算法。它属于图遍历（英文：Graph traversal）和最佳优先搜索算法（英文：Best-first search），亦是 [BFS](./bfs.md) 的改进。
 
 ## 简介
 
 定义起点 $s$，终点 $t$，从起点（初始状态）开始的距离函数 $g(x)$，到终点（最终状态）的估计距离函数 $h(x)$，到终点（最终状态）的真实距离函数 $h^{\ast}(x)$[^note1]，以及每个点的估价函数 $f(x)=g(x)+h(x)$。
 
-A\*算法每次从优先队列中取出一个 $f$ 最小的元素，然后更新相邻的状态。
+A \* 算法每次从优先队列中取出一个 $f$ 最小的元素，然后更新相邻的状态。
 
-如果 $h\leq h*$，则 A\*算法能找到最优解。
+如果 $h\leq h*$，则 A \* 算法能找到最优解。
 
-上述条件下，如果 $h$ 满足三角形不等式，则 A\*算法不会将重复结点加入队列。
+上述条件下，如果 $h$ 满足三角形不等式，则 A \* 算法不会将重复结点加入队列。
 
-当 $h=0$ 时，A\*算法变为 [Dijkstra](./../graph/shortest-path.md#dijkstra-算法)；当 $h=0$ 并且边权为 $1$ 时变为 [BFS](./bfs.md)。
+当 $h=0$ 时，A \* 算法变为 [Dijkstra](./../graph/shortest-path.md#dijkstra-算法)；当 $h=0$ 并且边权为 $1$ 时变为 [BFS](./bfs.md)。
 
 ## A\*搜索算法详解
 A\*算法的技术可以概况为：A\*算法 = 贪心最优搜索 + BFS + 优先队列。
@@ -234,7 +234,7 @@ h(i) = sqrt ( (i.x – t.x)2 + (i.y – t.y)2 )
         --8<-- "docs/search/code/astar/astar_1.cpp"
         ```
 
-???+note "[k 短路](https://www.luogu.com.cn/problem/P2483)" 
+???+ note "[k 短路](https://www.luogu.com.cn/problem/P2483)"
     按顺序求一个有向图上从结点 $s$ 到结点 $t$ 的所有路径最小的前任意多（不妨设为 $k$）个。
 
     ??? tip

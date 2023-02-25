@@ -90,6 +90,6 @@ struct student //声明一个名为student的结构体类型
 
 ## 参考资料
 
-1. [Class - zh.cppreference.com](https://zh.cppreference.com/w/cpp/language/class)
-2. [Data structures - cplusplus.com](http://www.cplusplus.com/doc/tutorial/structures/)
-3. [对齐方式 - Microsoft Docs](https://docs.microsoft.com/zh-cn/cpp/cpp/alignment-cpp-declarations)
+1.  [Class - zh.cppreference.com](https://zh.cppreference.com/w/cpp/language/class)
+2.  [Data structures - cplusplus.com](http://www.cplusplus.com/doc/tutorial/structures/)
+3.  [对齐方式 - Microsoft Docs](https://docs.microsoft.com/zh-cn/cpp/cpp/alignment-cpp-declarations)

@@ -16,11 +16,11 @@ int q[SIZE], ql = 1, qr;
 
 队列操作对应的代码如下：
 
-- 插入元素：`q[++qr] = x;`
-- 删除元素：`ql++;`
-- 访问队首：`q[ql]`
-- 访问队尾：`q[qr]`
-- 清空队列：`ql = 1; qr = 0;`
+-   插入元素：`q[++qr] = x;`
+-   删除元素：`ql++;`
+-   访问队首：`q[ql]`
+-   访问队尾：`q[qr]`
+-   清空队列：`ql = 1; qr = 0;`
 
 ## 双栈模拟队列
 
@@ -28,8 +28,8 @@ int q[SIZE], ql = 1, qr;
 
 这种方法使用两个栈 F, S 模拟一个队列，其中 F 是队尾的栈，S 代表队首的栈，支持 push（在队尾插入），pop（在队首弹出）操作：
 
-- push：插入到栈 F 中。
-- pop：如果 S 非空，让 S 弹栈；否则把 F 的元素倒过来压到 S 中（其实就是一个一个弹出插入，做完后是首尾颠倒的），然后再让 S 弹栈。
+-   push：插入到栈 F 中。
+-   pop：如果 S 非空，让 S 弹栈；否则把 F 的元素倒过来压到 S 中（其实就是一个一个弹出插入，做完后是首尾颠倒的），然后再让 S 弹栈。
 
 容易证明，每个元素只会进入/转移/弹出一次，均摊复杂度 $O(1)$。
 
@@ -37,7 +37,7 @@ int q[SIZE], ql = 1, qr;
 
 C++ 在 STL 中提供了一个容器 `std::queue`，使用前需要先引入 `<queue>` 头文件。
 
-???+ info "STL 中对 `queue` 的定义"
+???+ info "STL 中对 `queue` 的定义 "
     ```cpp
     // clang-format off
     template<
@@ -50,24 +50,24 @@ C++ 在 STL 中提供了一个容器 `std::queue`，使用前需要先引入 `<q
     
     `Container` 为用于存储元素的底层容器类型。这个容器必须提供通常语义的下列函数：
     
-    - `back()`
-    - `front()`
-    - `push_back()`
-    - `pop_front()`
+    -   `back()`
+    -   `front()`
+    -   `push_back()`
+    -   `pop_front()`
     
     STL 容器 `std::deque` 和 `std::list` 满足这些要求。如果不指定，则默认使用 `std::deque` 作为底层容器。
 
 STL 中的 `queue` 容器提供了一众成员函数以供调用。其中较为常用的有：
 
 -   元素访问
-    - `q.front()` 返回队首元素
-    - `q.back()` 返回队尾元素
+    -   `q.front()` 返回队首元素
+    -   `q.back()` 返回队尾元素
 -   修改
-    - `q.push()` 在队尾插入元素
-    - `q.pop()` 弹出队首元素
+    -   `q.push()` 在队尾插入元素
+    -   `q.pop()` 弹出队首元素
 -   容量
-    - `q.empty()` 队列是否为空
-    - `q.size()` 返回队列中元素的数量
+    -   `q.empty()` 队列是否为空
+    -   `q.size()` 返回队列中元素的数量
 
 此外，`queue` 还提供了一些运算符。较为常用的是使用赋值运算符 `=` 为 `queue` 赋值，示例：
 
@@ -91,10 +91,10 @@ std::cout << q2.front() << std::endl;
 
 双端队列是指一个可以在队首/队尾插入或删除元素的队列。相当于是栈与队列功能的结合。具体地，双端队列支持的操作有 4 个：
 
-- 在队首插入一个元素
-- 在队尾插入一个元素
-- 在队首删除一个元素
-- 在队尾删除一个元素
+-   在队首插入一个元素
+-   在队尾插入一个元素
+-   在队首删除一个元素
+-   在队尾删除一个元素
 
 数组模拟双端队列的方式与普通队列相同。
 
@@ -102,7 +102,7 @@ std::cout << q2.front() << std::endl;
 
 C++ 在 STL 中也提供了一个容器 `std::deque`，使用前需要先引入 `<deque>` 头文件。
 
-??? info "STL 中对 `deque` 的定义"
+??? info "STL 中对 `deque` 的定义 "
     ```cpp
     // clang-format off
     template<
@@ -118,23 +118,23 @@ C++ 在 STL 中也提供了一个容器 `std::deque`，使用前需要先引入 
 STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为常用的有：
 
 -   元素访问
-    - `q.front()` 返回队首元素
-    - `q.back()` 返回队尾元素
+    -   `q.front()` 返回队首元素
+    -   `q.back()` 返回队尾元素
 -   修改
-    - `q.push_back()` 在队尾插入元素
-    - `q.pop_back()` 弹出队尾元素
-    - `q.push_front()` 在队首插入元素
-    - `q.pop_front()` 弹出队首元素
-    - `q.insert()` 在指定位置前插入元素（传入迭代器和元素）
-    - `q.erase()` 删除指定位置的元素（传入迭代器）
+    -   `q.push_back()` 在队尾插入元素
+    -   `q.pop_back()` 弹出队尾元素
+    -   `q.push_front()` 在队首插入元素
+    -   `q.pop_front()` 弹出队首元素
+    -   `q.insert()` 在指定位置前插入元素（传入迭代器和元素）
+    -   `q.erase()` 删除指定位置的元素（传入迭代器）
 -   容量
-    - `q.empty()` 队列是否为空
-    - `q.size()` 返回队列中元素的数量
+    -   `q.empty()` 队列是否为空
+    -   `q.size()` 返回队列中元素的数量
 
 此外，`deque` 还提供了一些运算符。其中较为常用的有：
 
-- 使用赋值运算符 `=` 为 `deque` 赋值，类似 `queue`。
-- 使用 `[]` 访问元素，类似 `vector`。
+-   使用赋值运算符 `=` 为 `deque` 赋值，类似 `queue`。
+-   使用 `[]` 访问元素，类似 `vector`。
 
 `<queue>` 头文件中还提供了优先队列 `std::priority_queue`，因其与 [堆](./heap.md) 更为相似，在此不作过多介绍。
 
@@ -144,7 +144,7 @@ STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为�
 
 示例如下：
 
-???+note "实现"
+???+ note "实现"
     ```python
     from collections import deque
     
@@ -287,13 +287,13 @@ STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为�
             }
             ```
 
-???+note "[LOJ6515「雅礼集训 2018 Day10」贪玩蓝月](https://loj.ac/problem/6515)"
+???+ note "[LOJ6515「雅礼集训 2018 Day10」贪玩蓝月](https://loj.ac/problem/6515)"
     一个双端队列（deque），m 个事件：
     
-    1. 在前端插入 (w,v)
-    2. 在后端插入 (w,v)
-    3. 删除前端的二元组
-    4. 删除后端的二元组
+    1.  在前端插入 (w,v)
+    2.  在后端插入 (w,v)
+    3.  删除前端的二元组
+    4.  删除后端的二元组
     5.  给定 l,r，在当前 deque 中选择一个子集 S 使得 $\sum_{(w,v)\in S}w\bmod p\in[l,r]$，且最大化 $\sum_{(w,v)\in S}v$.
     
         $m\leq 5\times 10^4,p\leq 500$.
@@ -446,5 +446,5 @@ STL 中的 `deque` 容器提供了一众成员函数以供调用。其中较为�
 
 ## 参考资料
 
-1. [std::queue - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/queue)
-2. [std::deque - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/deque)
+1.  [std::queue - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/queue)
+2.  [std::deque - zh.cppreference.com](https://zh.cppreference.com/w/cpp/container/deque)

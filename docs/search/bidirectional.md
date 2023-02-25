@@ -200,7 +200,7 @@ while (队列 q 不为空)
 
 ## Meet in the middle
 
-???+warning
+???+ warning
     本节要介绍的不是 [**二分搜索**](../basic/binary.md)（二分搜索的另外一个译名为「折半搜索」）。
 
 ### 引入
@@ -1077,5 +1077,5 @@ Meet in the middle 算法的主要思想是将整个搜索过程分成两半，�
 
 ## 外部链接
 
-- [What is meet in the middle algorithm w.r.t. competitive programming? - Quora](https://www.quora.com/What-is-meet-in-the-middle-algorithm-w-r-t-competitive-programming)
-- [Meet in the Middle Algorithm - YouTube](https://www.youtube.com/watch?v=57SUNQL4JFA)
+-   [What is meet in the middle algorithm w.r.t. competitive programming? - Quora](https://www.quora.com/What-is-meet-in-the-middle-algorithm-w-r-t-competitive-programming)
+-   [Meet in the Middle Algorithm - YouTube](https://www.youtube.com/watch?v=57SUNQL4JFA)

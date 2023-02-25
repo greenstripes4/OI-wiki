@@ -8,6 +8,9 @@ author: HeRaNO, JuicyMio, Xeonacid, sailordiary, ouuan
 
 并查集在算法竞赛中极为常见。
 
+-   合并（Union）：合并两个元素所属集合（合并对应的树）
+-   查询（Find）：查询某个元素所属集合（查询对应的树的根节点），这可以用于判断两个元素是否属于同一集合
+
 通常用“帮派”的例子来说明并查集的应用背景。一个城市中有n个人，他们分成不同的帮派；给出一些人的关系，例如1号、2号是朋友，1号、3号也是朋友，那么他们都属于一个帮派；在分析完所有的朋友关系之后，问有多少帮派，每人属于哪个帮派。给出的n可能是106的。
 
 读者可以先思考暴力的方法，以及复杂度。如果用并查集实现，不仅代码很简单，而且复杂度可以达到O(logn)。
@@ -23,14 +26,14 @@ author: HeRaNO, JuicyMio, Xeonacid, sailordiary, ouuan
 2. 并查集的优化：合并和路径压缩。
 3. 带权并查集。
 
-!!! warning
+??? warning
     并查集无法以较低复杂度实现集合的分离。
 
 ## 并查集的基本操作
 
 1) 初始化。定义数组int s[]是以结点i为元素的并查集。初始时，每个元素都位于一个单独的集合，表示为一棵只有根节点的树。方便起见，我们将根节点的父亲设为自己。例如元素1的集s[1]=1。
 
-???+note "实现"
+???+ note "实现"
     === "C++"
     
         ```cpp
@@ -65,7 +68,7 @@ author: HeRaNO, JuicyMio, Xeonacid, sailordiary, ouuan
 
 ![](images/disjoint-set-merge.svg)
 
-???+note "实现"
+???+ note "实现"
     === "C++"
     
         ```cpp
@@ -241,13 +244,13 @@ void merge_set(int x, int y){         //优化合并操作
     
     当然，我们不总能遇到恰好如上所述的集合——点数与深度都更小。鉴于点数与深度这两个特征都很容易维护，我们常常从中择一，作为估价函数。而无论选择哪一个，时间复杂度都为 $O (m\alpha(m,n))$，具体的证明可参见 References 中引用的论文。
     
-    在算法竞赛的实际代码中，即便不使用启发式合并，代码也往往能够在规定时间内完成任务。在 Tarjan 的论文[1]中，证明了不使用启发式合并、只使用路径压缩的最坏时间复杂度是 $O (m \log n)$。在姚期智的论文[2]中，证明了不使用启发式合并、只使用路径压缩，在平均情况下，时间复杂度依然是 $O (m\alpha(m,n))$。
+    在算法竞赛的实际代码中，即便不使用启发式合并，代码也往往能够在规定时间内完成任务。在 Tarjan 的论文 \[1] 中，证明了不使用启发式合并、只使用路径压缩的最坏时间复杂度是 $O (m \log n)$。在姚期智的论文 \[2] 中，证明了不使用启发式合并、只使用路径压缩，在平均情况下，时间复杂度依然是 $O (m\alpha(m,n))$。
     
     如果只使用启发式合并，而不使用路径压缩，时间复杂度为 $O(m\log n)$。由于路径压缩单次合并可能造成大量修改，有时路径压缩并不适合使用。例如，在可持久化并查集、线段树分治 + 并查集中，一般使用只启发式合并的并查集。
 
 按节点数合并的参考实现：
 
-???+note "实现"
+???+ note "实现"
     === "C++"
     
         ```cpp
@@ -290,7 +293,7 @@ void merge_set(int x, int y){         //优化合并操作
 
 要删除一个叶子节点，我们可以将其父亲设为自己。为了保证要删除的元素都是叶子，我们可以预先为每个节点制作副本，并将其副本作为父亲。
 
-???+note "实现"
+???+ note "实现"
     === "C++"
     
         ```cpp
@@ -326,7 +329,7 @@ void merge_set(int x, int y){         //优化合并操作
 
 与删除类似，通过以副本作为父亲，保证要移动的元素都是叶子。
 
-???+note "实现"
+???+ note "实现"
     === "C++"
     
         ```cpp
@@ -553,14 +556,14 @@ int find_set(int x){
     }
     ```
 
-???+note "[UVA11987 Almost Union-Find](https://www.luogu.com.cn/problem/UVA11987)"
+???+ note "[UVA11987 Almost Union-Find](https://www.luogu.com.cn/problem/UVA11987)"
     实现类似并查集的数据结构，支持以下操作：
     
-    1. 合并两个元素所属集合
-    2. 移动单个元素
-    3. 查询某个元素所属集合的大小及元素和
+    1.  合并两个元素所属集合
+    2.  移动单个元素
+    3.  查询某个元素所属集合的大小及元素和
     
-    ??? mdui-shadow-6 "参考代码"
+    ??? note "参考代码"
         === "C++"
         
             ```cpp
@@ -603,7 +606,7 @@ int find_set(int x){
 
 ## 参考资料与拓展阅读
 
-- [1]Tarjan, R. E., & Van Leeuwen, J. (1984). Worst-case analysis of set union algorithms. Journal of the ACM (JACM), 31(2), 245-281.[ResearchGate PDF](https://www.researchgate.net/profile/Jan_Van_Leeuwen2/publication/220430653_Worst-case_Analysis_of_Set_Union_Algorithms/links/0a85e53cd28bfdf5eb000000/Worst-case-Analysis-of-Set-Union-Algorithms.pdf)
-- [2]Yao, A. C. (1985). On the expected performance of path compression algorithms.[SIAM Journal on Computing, 14(1), 129-133.](https://epubs.siam.org/doi/abs/10.1137/0214010?journalCode=smjcat)
-- [3][知乎回答：是否在并查集中真的有二分路径压缩优化？](<https://www.zhihu.com/question/28410263/answer/40966441>)
-- [4]Gabow, H. N., & Tarjan, R. E. (1985). A Linear-Time Algorithm for a Special Case of Disjoint Set Union. JOURNAL OF COMPUTER AND SYSTEM SCIENCES, 30, 209-221.[PDF](https://dl.acm.org/doi/pdf/10.1145/800061.808753)
+-   \[1]Tarjan, R. E., & Van Leeuwen, J. (1984). Worst-case analysis of set union algorithms. Journal of the ACM (JACM), 31(2), 245-281.[ResearchGate PDF](https://www.researchgate.net/profile/Jan_Van_Leeuwen2/publication/220430653_Worst-case_Analysis_of_Set_Union_Algorithms/links/0a85e53cd28bfdf5eb000000/Worst-case-Analysis-of-Set-Union-Algorithms.pdf)
+-   \[2]Yao, A. C. (1985). On the expected performance of path compression algorithms.[SIAM Journal on Computing, 14(1), 129-133.](https://epubs.siam.org/doi/abs/10.1137/0214010?journalCode=smjcat)
+-   \[3][知乎回答：是否在并查集中真的有二分路径压缩优化？](https://www.zhihu.com/question/28410263/answer/40966441)
+-   \[4]Gabow, H. N., & Tarjan, R. E. (1985). A Linear-Time Algorithm for a Special Case of Disjoint Set Union. JOURNAL OF COMPUTER AND SYSTEM SCIENCES, 30, 209-221.[PDF](https://dl.acm.org/doi/pdf/10.1145/800061.808753)

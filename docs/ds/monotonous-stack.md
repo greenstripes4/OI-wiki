@@ -20,7 +20,7 @@
 
 用伪代码描述如下：
 
-???+note "实现"
+???+ note "实现"
     ```text
     insert x
     while !sta.empty() && sta.top()<x

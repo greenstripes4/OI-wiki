@@ -15,15 +15,15 @@
 
 同时了解一下 C++ 的源程序的大致框架是什么样子的。
 
-- [Hello, World!](../lang/helloworld.md)
-- [C++ 语法基础](../lang/basic.md)
+-   [Hello, World!](../lang/helloworld.md)
+-   [C++ 语法基础](../lang/basic.md)
 
 ### 1.2 变量与运算
 
 计算机出现的最初目的就是计算。因此我们先学习如何完成一些简单的运算任务吧。
 
-- [变量](../lang/var.md)
-- [运算](../lang/op.md)
+-   [变量](../lang/var.md)
+-   [运算](../lang/op.md)
 
 ### 1.3 流程控制
 
@@ -31,33 +31,33 @@
 
 有的时候，我们需要在不同的条件下，选择执行不同的语句，这时候我们就需要借助分支语句。
 
-- [分支](../lang/branch.md)
+-   [分支](../lang/branch.md)
 
 分支语句包括下面几种：
 
-- if 语句
-- if-else 语句
-- if-elif-else 语句
-- switch 语句
+-   if 语句
+-   if-else 语句
+-   if-elif-else 语句
+-   switch 语句
 
 #### 1.3.2 循环结构
 
 将若干条语句重复执行多次，就需要用到循环语句。
 
-- [循环](../lang/loop.md)
+-   [循环](../lang/loop.md)
 
 循环语句包括下面几种：
 
-- for 语句
-- while 语句
-- do-while 语句
+-   for 语句
+-   while 语句
+-   do-while 语句
 
 ### 1.4 数组与结构体
 
 数组用于存储大量相同类型的数据。而结构体则可以将若干变量捆绑起来。
 
-- [数组](../lang/array.md)
-- [结构体](../lang/struct.md)
+-   [数组](../lang/array.md)
+-   [结构体](../lang/struct.md)
 
 ### 1.5 函数与递归
 
@@ -65,8 +65,8 @@
 
 递归则是新手入门的一道坎，「自己调用自己」听起来并不是那么容易理解，不过仔细深究根本，就会发现「自己调用自己」和「自己调用别人」并没有本质差别。
 
-- [函数](../lang/func.md)
-- [递归 & 分治](../basic/divide-and-conquer.md)
+-   [函数](../lang/func.md)
+-   [递归 & 分治](../basic/divide-and-conquer.md)
 
 ## 2 简单算法
 
@@ -84,7 +84,7 @@
 
 递归是指函数定义中不断调用自己的方法；而分治则是不断将这一个问题分解为若干子问题，求解后合并的操作。分治可以一开始跳过，在后面还会涉及。
 
-- [递归 & 分治](../basic/divide-and-conquer.md)
+-   [递归 & 分治](../basic/divide-and-conquer.md)
 
 ### 2.3 字符串
 
@@ -100,17 +100,17 @@
 
 排序的方法有点多，但理解后记住它们并不难。
 
-- [排序简介](../basic/sort-intro.md)
-- [选择排序](../basic/selection-sort.md)
-- [冒泡排序](../basic/bubble-sort.md)
-- [插入排序](../basic/insertion-sort.md)
-- [计数排序](../basic/counting-sort.md)
-- [基数排序](../basic/radix-sort.md)
-- [快速排序](../basic/quick-sort.md)
-- [归并排序](../basic/merge-sort.md)
-- [堆排序](../basic/heap-sort.md)
-- [桶排序](../basic/bucket-sort.md)
-- [排序相关 STL](../basic/stl-sort.md)
+-   [排序简介](../basic/sort-intro.md)
+-   [选择排序](../basic/selection-sort.md)
+-   [冒泡排序](../basic/bubble-sort.md)
+-   [插入排序](../basic/insertion-sort.md)
+-   [计数排序](../basic/counting-sort.md)
+-   [基数排序](../basic/radix-sort.md)
+-   [快速排序](../basic/quick-sort.md)
+-   [归并排序](../basic/merge-sort.md)
+-   [堆排序](../basic/heap-sort.md)
+-   [桶排序](../basic/bucket-sort.md)
+-   [排序相关 STL](../basic/stl-sort.md)
 
 NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个排序算法，但是其余的难度也并不大，且初赛中可能涉及，故一并列出。
 
@@ -124,7 +124,7 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 二分查找，本质上是运用分治的思想，不断减少查找范围的大小，直至找到答案。但是需要注意，这个查找方式必须应用在有序的数据结构中。
 
-- [二分](../basic/binary.md)
+-   [二分](../basic/binary.md)
 
 ### 2.7 搜索
 
@@ -134,7 +134,7 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 深度优先搜索指利用递归函数方便地实现暴力枚举的算法，与图论中的 DFS 算法有一定相似之处，但并不完全相同。
 
-- [DFS（搜索）](../search/dfs.md)
+-   [DFS（搜索）](../search/dfs.md)
 
 很多题目都可以用 DFS 来解决，而这个算法的复杂度显然是无法通过的。因此，需要一些优化使它跑得更快。这样的优化能够减少不可能成功的尝试，称为“剪枝”。BFS 相关的优化就要更加灵活了，但是基本思路和这里是一样的。
 
@@ -145,7 +145,7 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 将每一个状态设计为图中的一个点，可以展开地毯式搜索。
 
-- [BFS（搜索）](../search/bfs.md)
+-   [BFS（搜索）](../search/bfs.md)
 
 ## 3 简单数据结构
 
@@ -204,26 +204,26 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 由于动态规划并不是某种具体的算法，而是一种解决特定问题的方法，因此它会出现在各式各样的数据结构中，与之相关的题目种类也更为繁杂。
 
-- [动态规划简介](../dp/index.md)
+-   [动态规划简介](../dp/index.md)
 
 ### 5.1 背包问题
 
 即给出一个有限制容量的背包，选择放入若干有容量和价值的物品，求解如何放置能使得价值总和最大。这是阻挡很多 OIer 的第一道坎，从这里开始，算法就有些难以理解。
 
-- [背包 DP](../dp/knapsack.md)
+-   [背包 DP](../dp/knapsack.md)
 
 ### 5.2 线性动态规划
 
 在动态规划中，最难的部分之一就是设计状态，需要用到构造相关技巧。当你写出了状态和状态转移方程之后，完成一道动态规划的题目就不难了。
 
-- [构造](../basic/construction.md)
-- [动态规划基础](../dp/basic.md)
+-   [构造](../basic/construction.md)
+-   [动态规划基础](../dp/basic.md)
 
 记忆化搜索是一种通过记录已经遍历过的状态的信息，从而避免对同一状态重复遍历的搜索实现方式。有的题目也可以使用记忆化搜索来降低思维难度。
 
 因为记忆化搜索确保了每个状态只访问一次，它也是一种常见的动态规划实现方式。
 
-- [记忆化搜索](../dp/memo.md)
+-   [记忆化搜索](../dp/memo.md)
 
 ### 5.3 复杂动态规划
 
@@ -252,13 +252,13 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 就算是 long long（或 int64）还不够怎么办？用高精度算法。本质上就是模拟了四则运算。
 
-- [高精度计算](../math/bignum.md)
+-   [高精度计算](../math/bignum.md)
 
 ### 7.2 进制转换
 
 在计算机中，除了二进制，比较常用的还有八进制和十六进制。有的时候学会运用正确的进制对解题也有很大帮助。
 
-- [进位制](../math/base.md)
+-   [进位制](../math/base.md)
 
 ### 7.3 位运算
 
@@ -266,24 +266,24 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 
 基本的位运算共 6 种，分别为按位与、按位或、按位异或、按位取反、左移和右移。
 
-- [位运算](../math/bit.md)
+-   [位运算](../math/bit.md)
 
 #### 7.4 数论
 
-- [数论基础](../math/number-theory/basic.md)
-- [素数](../math/number-theory/prime.md)
-- [筛法](../math/number-theory/sieve.md)
-- [最大公因数](../math/number-theory/gcd.md)
-- [欧拉函数](../math/number-theory/euler.md)
-- [分解质因数](../math/number-theory/pollard-rho.md)
+-   [数论基础](../math/number-theory/basic.md)
+-   [素数](../math/number-theory/prime.md)
+-   [筛法](../math/number-theory/sieve.md)
+-   [最大公因数](../math/number-theory/gcd.md)
+-   [欧拉函数](../math/number-theory/euler.md)
+-   [分解质因数](../math/number-theory/pollard-rho.md)
 
 #### 7.5 组合计数
 
-- [排列组合](../math/combinatorics/combination.md)
-- [抽屉原理](../math/combinatorics/drawer-principle.md)
-- [容斥原理](../math/combinatorics/inclusion-exclusion-principle.md)
+-   [排列组合](../math/combinatorics/combination.md)
+-   [抽屉原理](../math/combinatorics/drawer-principle.md)
+-   [容斥原理](../math/combinatorics/inclusion-exclusion-principle.md)
 
-## 7 线段树, 树状数组和字典树
+## 8 线段树, 树状数组和字典树
 
 - [树状数组](../ds/fenwick.md)
 - [基础线段树](../ds/seg.md)
