@@ -76,7 +76,6 @@ int bin_search(int *a, int n, int x){
 }
 ```
 
-<<<<<<< HEAD
 下面对上述代码进行补充说明：
 
 1. 代码执行完毕后，left==right，两者相等，即答案所处的位置。
@@ -88,6 +87,45 @@ int bin_search(int *a, int n, int x){
 C++ 标准库中实现了查找首个不小于给定值的元素的函数 [`std::lower_bound`](https://zh.cppreference.com/w/cpp/algorithm/lower_bound) 和查找首个大于给定值的元素的函数 [`std::upper_bound`](https://zh.cppreference.com/w/cpp/algorithm/upper_bound)，二者均定义于头文件 `<algorithm>` 中。
 
 二者均采用二分实现，所以调用前必须保证元素有序。
+
+注意：bsearch 与上文的 lower\_bound 和 upper\_bound 有两点不同：
+
+-   当符合条件的元素有重复多个的时候，会返回执行二分查找时第一个符合条件的元素，从而这个元素可能位于重复多个元素的中间部分。
+-   当查找不到相应的元素时，会返回 NULL。
+
+用 lower\_bound 可以实现与 bsearch 完全相同的功能，所以可以使用 bsearch 通过的题目，直接改写成 lower\_bound 同样可以实现。但是鉴于上述不同之处的第二点，例如，在序列 1、2、4、5、6 中查找 3，bsearch 实现 lower\_bound 的功能会变得困难。
+
+利用 bsearch 实现 lower\_bound 的功能比较困难，是否一定就不能实现？答案是否定的，存在比较 tricky 的技巧。借助编译器处理比较函数的特性：总是将第一个参数指向待查元素，将第二个参数指向待查数组中的元素，也可以用 bsearch 实现 lower\_bound 和 upper\_bound，如下文示例。只是，这要求待查数组必须是全局数组，从而可以直接传入首地址。
+
+```cpp
+int A[100005];  // 示例全局数组
+
+// 查找首个不小于待查元素的元素的地址
+int lower(const void *p1, const void *p2) {
+  int *a = (int *)p1;
+  int *b = (int *)p2;
+  if ((b == A || compare(a, b - 1) > 0) && compare(a, b) > 0)
+    return 1;
+  else if (b != A && compare(a, b - 1) <= 0)
+    return -1;  // 用到地址的减法，因此必须指定元素类型
+  else
+    return 0;
+}
+
+// 查找首个大于待查元素的元素的地址
+int upper(const void *p1, const void *p2) {
+  int *a = (int *)p1;
+  int *b = (int *)p2;
+  if ((b == A || compare(a, b - 1) >= 0) && compare(a, b) >= 0)
+    return 1;
+  else if (b != A && compare(a, b - 1) < 0)
+    return -1;  // 用到地址的减法，因此必须指定元素类型
+  else
+    return 0;
+}
+```
+
+因为现在的 OI 选手很少写纯 C，并且此方法作用有限，所以不是重点。对于新手而言，建议老老实实地使用 C++ 中的 lower\_bound 和 upper\_bound 函数。
 
 如果只是简单地找x或x附近的数，就用STL的lower_bound()和upper_bound()函数。有以下情况：
 
@@ -245,7 +283,6 @@ pos = upper_bound(a, a+n, test) - a;
     
     样例输出：
 
-<<<<<<< HEAD
     0.75
 
     ??? tip
@@ -297,46 +334,6 @@ pos = upper_bound(a, a+n, test) - a;
 
         }
         ```
-=======
-注意：bsearch 与上文的 lower\_bound 和 upper\_bound 有两点不同：
-
--   当符合条件的元素有重复多个的时候，会返回执行二分查找时第一个符合条件的元素，从而这个元素可能位于重复多个元素的中间部分。
--   当查找不到相应的元素时，会返回 NULL。
-
-用 lower\_bound 可以实现与 bsearch 完全相同的功能，所以可以使用 bsearch 通过的题目，直接改写成 lower\_bound 同样可以实现。但是鉴于上述不同之处的第二点，例如，在序列 1、2、4、5、6 中查找 3，bsearch 实现 lower\_bound 的功能会变得困难。
-
-利用 bsearch 实现 lower\_bound 的功能比较困难，是否一定就不能实现？答案是否定的，存在比较 tricky 的技巧。借助编译器处理比较函数的特性：总是将第一个参数指向待查元素，将第二个参数指向待查数组中的元素，也可以用 bsearch 实现 lower\_bound 和 upper\_bound，如下文示例。只是，这要求待查数组必须是全局数组，从而可以直接传入首地址。
-
-```cpp
-int A[100005];  // 示例全局数组
-
-// 查找首个不小于待查元素的元素的地址
-int lower(const void *p1, const void *p2) {
-  int *a = (int *)p1;
-  int *b = (int *)p2;
-  if ((b == A || compare(a, b - 1) > 0) && compare(a, b) > 0)
-    return 1;
-  else if (b != A && compare(a, b - 1) <= 0)
-    return -1;  // 用到地址的减法，因此必须指定元素类型
-  else
-    return 0;
-}
-
-// 查找首个大于待查元素的元素的地址
-int upper(const void *p1, const void *p2) {
-  int *a = (int *)p1;
-  int *b = (int *)p2;
-  if ((b == A || compare(a, b - 1) >= 0) && compare(a, b) >= 0)
-    return 1;
-  else if (b != A && compare(a, b - 1) < 0)
-    return -1;  // 用到地址的减法，因此必须指定元素类型
-  else
-    return 0;
-}
-```
-
-因为现在的 OI 选手很少写纯 C，并且此方法作用有限，所以不是重点。对于新手而言，建议老老实实地使用 C++ 中的 lower\_bound 和 upper\_bound 函数。
->>>>>>> upstream/master
 
 ### 二分答案
 
@@ -354,9 +351,7 @@ int upper(const void *p1, const void *p2) {
     ??? tip
         我们可以在 $1$ 到 $10^9$ 中枚举答案，但是这种朴素写法肯定拿不到满分，因为从 $1$ 枚举到 $10^9$ 太耗时间。我们可以在 $[1,~10^9]$ 的区间上进行二分作为答案，然后检查各个答案的可行性（一般使用贪心法）。**这就是二分答案。**
 
-<<<<<<< HEAD
     ??? note "参考代码"
-
         ```cpp
         int a[1000005];
         int n, m;
@@ -402,7 +397,6 @@ int upper(const void *p1, const void *p2) {
             ![](./images/binary-final-2.png)
         
             合法的最小值恰恰相反。
-        
         2.  为何返回左边值？
         
             同上。
@@ -476,57 +470,6 @@ for循环的100次，比while的循环次数要多。如果时间要求不是太
             return 0;
         }
         ```
-=======
-??? note "参考代码"
-    ```cpp
-    int a[1000005];
-    int n, m;
-    
-    bool check(int k) {  // 检查可行性，k 为锯片高度
-      long long sum = 0;
-      for (int i = 1; i <= n; i++)       // 检查每一棵树
-        if (a[i] > k)                    // 如果树高于锯片高度
-          sum += (long long)(a[i] - k);  // 累加树木长度
-      return sum >= m;                   // 如果满足最少长度代表可行
-    }
-    
-    int find() {
-      int l = 1, r = 1e9 + 1;   // 因为是左闭右开的，所以 10^9 要加 1
-      while (l + 1 < r) {       // 如果两点不相邻
-        int mid = (l + r) / 2;  // 取中间值
-        if (check(mid))         // 如果可行
-          l = mid;              // 升高锯片高度
-        else
-          r = mid;  // 否则降低锯片高度
-      }
-      return l;  // 返回左边值
-    }
-    
-    int main() {
-      cin >> n >> m;
-      for (int i = 1; i <= n; i++) cin >> a[i];
-      cout << find();
-      return 0;
-    }
-    ```
-    
-    看完了上面的代码，你肯定会有两个疑问：
-    
-    1.  为何搜索区间是左闭右开的？
-    
-        因为搜到最后，会这样（以合法的最大值为例）：
-    
-        ![](./images/binary-final-1.png)
-    
-        然后会
-    
-        ![](./images/binary-final-2.png)
-    
-        合法的最小值恰恰相反。
-    2.  为何返回左边值？
-    
-        同上。
->>>>>>> upstream/master
 
 ## 三分法
 
@@ -576,12 +519,10 @@ for循环的100次，比while的循环次数要多。如果时间要求不是太
     
     其次，某些题中需要求极值点的单峰函数并非一个单独的函数，而是多个函数进行特殊运算得到的函数（如求多个单调性不完全相同的一次函数的最小值的最大值）。此时函数的导函数可能是分段函数，且在函数某些点上可能不可导。
 
-<<<<<<< HEAD
-### 另一种解释
-=======
 ???+ warning "注意"
     只要函数是单峰函数，三分法既可以求出其最大值，也可以求出其最小值。为行文方便，除特殊说明外，下文中均以求单峰函数的最小值为例。
->>>>>>> upstream/master
+
+### 另一种解释
 
 三分法与二分法的基本思想类似，但每次操作需在当前区间 $[l,r]$（下图中除去虚线范围内的部分）内任取两点 $lmid,rmid(lmid < rmid)$（下图中的两蓝点）。如下图，如果 $f(lmid)<f(rmid)$，则在 $[rmid,r]$（下图中的红色部分）中函数必然单调递增，最小值所在点（下图中的绿点）必然不在这一区间内，可舍去这一区间。反之亦然。
 
@@ -690,14 +631,18 @@ while (r - l > eps) {
                 return 0;
             }
             ```
-        === "OIWiki版本"
+        === "OI-Wiki C++"
             ```cpp
             --8<-- "docs/basic/code/binary/binary_1.cpp"
+            ```
+        === "OI-Wiki Python"
+        
+            ```python
+            --8<-- "docs/basic/code/binary/binary_1.py"
             ```
 
 ### 习题
 
-<<<<<<< HEAD
 ??? note "[Uva 1476 - Error Curves](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=447&page=show_problem&problem=4222)"
     给你n条开口向上的二次曲线$S_i (a \ge 0)$，定义$F(x) = max(S_i(x))$，求$F(x)$的最小值。
 
@@ -2052,12 +1997,6 @@ while (r - l > eps) {
             return 0;
         }
         ```
-=======
--   [Uva 1476 - Error Curves](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=447&page=show_problem&problem=4222)
--   [Uva 10385 - Duathlon](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=15&page=show_problem&problem=1326)
--   [UOJ 162 -【清华集训 2015】灯泡测试](https://uoj.ac/problem/162)
--   [洛谷 P7579 -「RdOI R2」称重（weigh）](https://www.luogu.com.cn/problem/P7579)
->>>>>>> upstream/master
 
 ## 分数规划
 
