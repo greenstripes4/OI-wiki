@@ -258,6 +258,18 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
                     if i + j + k == n:
                         print("%d = %d + %d + %d" % (n, i, j, k))
         ```
+    
+    === "Java"
+    
+        ```Java
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = i; j < n + 1; j++) {
+                for (int k = j; k < n + 1; k++) {
+                    if (i + j + k == n) System.out.printf("%d = %d + %d + %d%n", n, i, j, k);
+                }
+            }
+        }
+        ```
 
 那如果是分解成四个整数呢？再加一重循环？
 
@@ -317,6 +329,33 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
         # 主函数
         n, m = map(int, input().split())
         dfs(n, 1, 1)
+        ```
+    
+    === "Java"
+    
+        ```Java
+        static int m;
+
+        // arr 用于记录方案
+        static int[] arr = new int[103];
+        
+        public static void dfs(int n, int i, int a) {
+            if (n == 0) {
+                for (int j = 1; j <= i - 1; j++) System.out.printf("%d ", arr[j]);
+                System.out.println();
+            }
+            if (i <= m) {
+                for (int j = a; j <= n; ++j) {
+                    arr[i] = j;
+                    dfs(n - j, i + 1, j); // 请仔细思考该行含义。
+                }
+            }
+        }
+        
+        // 主函数
+        final int N = new Scanner(System.in).nextInt();
+        m = new Scanner(System.in).nextInt();
+        dfs(N, 1, 1);
         ```
 
 ???+note "[Luogu P1706 全排列问题](https://www.luogu.com.cn/problem/P1706)"
