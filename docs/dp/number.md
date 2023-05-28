@@ -57,7 +57,7 @@
     ll ans1[N], ans2[N];
     int a[N];
     
-    inline void solve(ll n, ll *ans) {
+    void solve(ll n, ll *ans) {
       ll tmp = n;
       int len = 0;
       while (n) a[++len] = n % 10, n /= 10;
@@ -168,7 +168,7 @@
     using namespace std;
     int x, y, dp[15][3], p[50];
     
-    inline int pre() {
+    int pre() {
       memset(dp, 0, sizeof(dp));
       dp[0][0] = 1;
       for (int i = 1; i <= 10; i++) {
@@ -178,7 +178,7 @@
       }
     }
     
-    inline int cal(int x) {
+    int cal(int x) {
       int cnt = 0, ans = 0, tmp = x;
       while (x) {
         p[++cnt] = x % 10;
@@ -360,7 +360,7 @@
     char s[N], c[N];
     int ch[N][10], fail[N], ed[N], tot, len;
     
-    inline void insert() {
+    void insert() {
       int now = 0;
       int L = strlen(s);
       for (int i = 0; i < L; ++i) {
@@ -372,7 +372,7 @@
     
     queue<int> q;
     
-    inline void build() {
+    void build() {
       for (int i = 0; i < 10; ++i)
         if (ch[0][i]) q.push(ch[0][i]);
       while (!q.empty()) {
@@ -391,7 +391,7 @@
     
     ll f[N][N][2], ans;
     
-    inline void add(ll &x, ll y) { x = (x + y) % mod; }
+    void add(ll &x, ll y) { x = (x + y) % mod; }
     
     int main() {
       scanf("%s", c);

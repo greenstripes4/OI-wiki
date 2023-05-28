@@ -229,7 +229,7 @@ author: H-J-Granger, accelsao, Ir1d, Early0v0, Henry-ZHR, HeliumOI, AntiLeaf
     
     -   [矩阵](../../math/linear-algebra/matrix.md)
     -   [行列式](../../math/linear-algebra/determinant.md)
-    -   [高斯消元](../../math/linear-algebra/gauss.md)
+    -   [高斯消元](../../math/numerical/gauss.md)
 
 这一部分将介绍一种基于高斯消元的一般图匹配算法。与传统的带花树算法相比，它的优势在于更易于理解与编写，同时便于解决「最大匹配中的必须点」等问题；缺点在于常数比较大，因为高斯消元的 $O(n^3)$ 基本是跑满的，而带花树一般跑不满。
 
@@ -238,7 +238,11 @@ author: H-J-Granger, accelsao, Ir1d, Early0v0, Henry-ZHR, HeliumOI, AntiLeaf
 **定义**：对于一张 $n$ 个点的无向图 $G = (V, E)$，其 Tutte 矩阵 $\tilde{A}(G)$ 为一个 $n \times n$ 的矩阵，其中：
 
 $$
-\tilde{A}(G)_{i,j} = \left\{ \begin{aligned} x_{i,j} & \quad & i<j,\; (v_i, v_j)\in E \\ -x_{i,j} & \quad & i > j,\; (v_i, v_j) \in E \\ 0 & \quad & \text{otherwise}\end{aligned} \right.
+\tilde{A}(G)_{i,j} = \begin{cases}
+x_{i,j}, & i<j,\; (v_i, v_j)\in E \\
+-x_{i,j}, & i > j,\; (v_i, v_j) \in E \\
+0, & \text{otherwise}
+\end{cases}
 $$
 
 其中 $x_{i, j}$ 是一个变量，因此 $\tilde{A}(G)$ 中共有 $|E|$ 个变量。

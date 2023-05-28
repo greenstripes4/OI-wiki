@@ -97,6 +97,10 @@
 /math/poly/ln-exp /math/poly/elementary-func
 /math/poly/tri-func /math/poly/elementary-func
 /math/poly/inv-tri-func /math/poly/elementary-func
+/math/poly/lagrange /math/numerical/lagrange
+/math/linear-algebra/gauss /math/numerical/gauss
+/math/integral /math/numerical/integral
+/math/newton /math/numerical/newton
 /geometry/polar-coordinate/ /math/coordinate
 /graph/tree-misc /graph/tree-centroid
 /graph/bridge /graph/cut
@@ -112,3 +116,4 @@
 /topic/graph-matching/general-weight-match /graph/graph-matching/general-weight-match
 /ds/persistent-in-bit /ds/seg-in-bit
 /ds/odt /misc/odt
+/graph/min-circle /graph/min-cycle
