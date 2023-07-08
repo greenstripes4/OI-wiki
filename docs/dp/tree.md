@@ -1580,6 +1580,66 @@ int main(){
         }
         ```
         
+??? note "[「Codeforces Round 875 Div. 1」Problem D. Mex Tree](https://codeforces.com/contest/1830/problem/D)"
+
+    ??? tip
+        "[洛谷传送门](https://www.luogu.com.cn/problem/solution/CF1830D)"
+
+    ??? note "参考代码"
+
+        ```cpp
+        #include <iostream>
+        #include <cstring>
+        #include <algorithm>
+        #include <vector>
+        using namespace std;
+        #define pb push_back
+        #define B 785ll
+        #define INF 100000000000
+        #define int long long
+
+        int t,n,u,v,sz[200005],g[2][805];
+        vector <int> e[200005],dp[200005][2];
+
+        void dfs(int x,int fat)
+        {
+            sz[x]=1; dp[x][0].pb(INF); dp[x][1].pb(INF); dp[x][0].pb(1); dp[x][1].pb(2);
+            for(auto i:e[x])
+            {
+                if(i==fat) continue; dfs(i,x);
+                int min0=INF,min1=INF;
+                for(int j=1;j<=min(B,sz[i]);j++) min0=min(min0,dp[i][0][j]),min1=min(min1,dp[i][1][j]);
+                for(int j=1;j<=min(B,sz[x]);j++) g[0][j]=dp[x][0][j],g[1][j]=dp[x][1][j],dp[x][0][j]=dp[x][1][j]=INF;
+                for(int j=min(B,sz[x])+1;j<=min(B,sz[x]+sz[i]);j++) dp[x][0].pb(INF),dp[x][1].pb(INF);
+                for(int j=1;j<=min(B,sz[x]+sz[i]);j++)
+                {
+                    for(int k=max(1ll,j-min(B,sz[x]));k<=min(j-1,min(B,sz[i]));k++)
+                    {
+                        dp[x][0][j]=min(dp[x][0][j],dp[i][0][k]+g[0][j-k]+j*k-k*k);
+                        dp[x][1][j]=min(dp[x][1][j],dp[i][1][k]+g[1][j-k]+2*j*k-2*k*k);
+                    }
+                }
+                for(int j=1;j<=min(B,sz[x]);j++)
+                {
+                    dp[x][0][j]=min(dp[x][0][j],g[0][j]+min1); dp[x][1][j]=min(dp[x][1][j],g[1][j]+min0);
+                }
+                sz[x]+=sz[i]; dp[i][0].clear(); dp[i][0].shrink_to_fit(); dp[i][1].clear(); dp[i][1].shrink_to_fit();//
+            }
+        }
+
+        signed main()
+        {
+            cin>>t;
+            while(t--)
+            {
+                cin>>n; for(int i=1;i<=n;i++) e[i].clear(),dp[i][0].clear(),dp[i][1].clear();
+                for(int i=1;i<=n-1;i++) {cin>>u>>v; e[u].pb(v); e[v].pb(u);} dfs(1,1);
+                int nans=INF; for(int i=1;i<=min(B,sz[1]);i++) nans=min(nans,min(dp[1][0][i],dp[1][1][i]));
+                cout<<n*(n+1)-nans<<endl;//
+            }
+        }
+        ```
+
 ## 换根 DP
 
 树形 DP 中的换根 DP 问题又被称为二次扫描，通常不会指定根结点，并且根结点的变化会对一些值，例如子结点深度和、点权和等产生影响。
@@ -1617,6 +1677,11 @@ $f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为�
 
     ??? tip
         节点的累积度$a(x)$是节点x 可以流向其他终端节点的最大流量，相当于以x 为源点流向树中其他终端节点的最大流量。本题需要计算所有节点的累积度，然后以最大值作为树的累积度。若以每个节点为根都计算一次，则时间复杂度太高。本题属于“不定根”树形动态规划问题，对此类问题可以采用二次扫描与换根法解决。
+-   [Atcoder Educational DP Contest, Problem V, Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+
+-   [Educational Codeforces Round 67, Problem E, Tree Painting](https://codeforces.com/contest/1187/problem/E)
+
+-   [POJ 3585 Accumulation Degree](http://poj.org/problem?id=3585)
 
         二次扫描与换根： 在一棵无根树上需要以多个节点为根求解答案，可以运用二次扫描与换根法。具体操作是通过实现一次自底向上的深度优先搜索和一次自顶向下的深度优先搜索来计算“换根”后的解。
 
