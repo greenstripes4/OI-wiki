@@ -1278,3 +1278,6 @@ int main(){
         return 0;
         }
         ```
+-   [「NOI2001」炮兵阵地](https://loj.ac/problem/10173)
+-   [「USACO06NOV」玉米田 Corn Fields](https://www.luogu.com.cn/problem/P1879)
+-   [「九省联考 2018」一双木棋](https://loj.ac/problem/2471)
