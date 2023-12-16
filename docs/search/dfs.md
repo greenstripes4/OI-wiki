@@ -241,7 +241,6 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
 
 ???+ note "实现"
     === "C++"
-    
         ```cpp
         for (int i = 1; i <= n; ++i)
           for (int j = i; j <= n; ++j)
@@ -250,7 +249,6 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
         ```
     
     === "Python"
-    
         ```python
         for i in range(1, n + 1):
             for j in range(i, n + 1):
@@ -260,7 +258,6 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
         ```
     
     === "Java"
-    
         ```Java
         for (int i = 1; i < n + 1; i++) {
             for (int j = i; j < n + 1; j++) {
@@ -291,10 +288,9 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
 
 ???+ note "实现"
     === "C++"
-    
         ```cpp
         int m, arr[103];  // arr 用于记录方案
-    
+        
         void dfs(int n, int i, int a) {
           if (n == 0) {
             for (int j = 1; j <= i - 1; ++j) printf("%d ", arr[j]);
@@ -307,17 +303,16 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
             }
           }
         }
-    
+        
         // 主函数
         scanf("%d%d", &n, &m);
         dfs(n, 1, 1);
         ```
     
     === "Python"
-    
         ```python
         arr = [0] * 103  # arr 用于记录方案
-    
+        
         def dfs(n, i, a):
             if n == 0:
                 print(arr[1:i])
@@ -325,17 +320,16 @@ deep[E]=1; deep[B]=2; deep[A]=3; deep[D]=3; deep[C]=4; deep[G]=2; deep[F]=3; dee
                 for j in range(a, n + 1):
                     arr[i] = j
                     dfs(n - j, i + 1, j)  # 请仔细思考该行含义。
-    
+        
         # 主函数
         n, m = map(int, input().split())
         dfs(n, 1, 1)
         ```
     
     === "Java"
-    
         ```Java
         static int m;
-
+        
         // arr 用于记录方案
         static int[] arr = new int[103];
         

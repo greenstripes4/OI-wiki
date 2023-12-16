@@ -1080,7 +1080,6 @@ int main(){
 此处给出代码实现，可参考注释理解：
 
 === "C++"
-
     ```cpp
     void build(int s, int t, int p) {
       // 对 [s,t] 区间建立线段树,当前根的编号为 p
@@ -1098,7 +1097,6 @@ int main(){
     ```
 
 === "Python"
-
     ```python
     def build(s, t, p):
         # 对 [s,t] 区间建立线段树,当前根的编号为 p
@@ -1136,7 +1134,6 @@ int main(){
 此处给出代码实现，可参考注释理解：
 
 === "C++"
-
     ```cpp
     int getsum(int l, int r, int s, int t, int p) {
       // [l, r] 为查询区间, [s, t] 为当前节点包含的区间, p 为当前节点的编号
@@ -1152,7 +1149,6 @@ int main(){
     ```
 
 === "Python"
-
     ```python
     def getsum(l, r, s, t, p):
         # [l, r] 为查询区间, [s, t] 为当前节点包含的区间, p 为当前节点的编号
@@ -1205,7 +1201,6 @@ int main(){
 区间修改（区间加上某个值）：
 
 === "C++"
-
     ```cpp
     void update(int l, int r, int c, int s, int t, int p) {
       // [l, r] 为修改区间, c 为被修改的元素的变化量, [s, t] 为当前节点包含的区间, p
@@ -1228,7 +1223,6 @@ int main(){
     ```
 
 === "Python"
-
     ```python
     def update(l, r, c, s, t, p):
         # [l, r] 为修改区间, c 为被修改的元素的变化量, [s, t] 为当前节点包含的区间, p
@@ -1258,7 +1252,6 @@ int main(){
 区间查询（区间求和）：
 
 === "C++"
-
     ```cpp
     int getsum(int l, int r, int s, int t, int p) {
       // [l, r] 为查询区间, [s, t] 为当前节点包含的区间, p 为当前节点的编号
@@ -1279,7 +1272,6 @@ int main(){
     ```
 
 === "Python"
-
     ```python
     def getsum(l, r, s, t, p):
         # [l, r] 为查询区间, [s, t] 为当前节点包含的区间, p为当前节点的编号
@@ -1307,7 +1299,6 @@ int main(){
 如果你是要实现区间修改为某一个值而不是加上某一个值的话，代码如下：
 
 === "C++"
-
     ```cpp
     void update(int l, int r, int c, int s, int t, int p) {
       if (l <= s && t <= r) {
@@ -1326,7 +1317,7 @@ int main(){
       if (r > m) update(l, r, c, m + 1, t, p * 2 + 1);
       d[p] = d[p * 2] + d[p * 2 + 1];
     }
-
+    
     int getsum(int l, int r, int s, int t, int p) {
       if (l <= s && t <= r) return d[p];
       int m = s + ((t - s) >> 1);
@@ -1344,7 +1335,6 @@ int main(){
     ```
 
 === "Python"
-
     ```python
     def update(l, r, c, s, t, p):
         if l <= s and t <= r:
@@ -1363,7 +1353,7 @@ int main(){
         if r > m:
             update(l, r, c, m + 1, t, p * 2 + 1)
         d[p] = d[p * 2] + d[p * 2 + 1]
-
+    
     def getsum(l, r, s, t, p):
         if l <= s and t <= r:
             return d[p]
@@ -1585,10 +1575,42 @@ void split(int &p, int &q, int s, int t, int l, int r) {
         -   $p$ 树中插入 $x$ 个 $q$：单点修改。
         -   查询 $[x,y]$ 中数的个数：区间求和。
         -   查询第 $k$ 小。
-
+    
     ??? "参考代码"
         ```cpp
         --8<-- "docs/ds/code/seg/seg_7.cpp"
+        ```
+
+## 线段树优化建图
+
+在建图连边的过程中，我们有时会碰到这种题目，一个点向一段连续的区间中的点连边或者一个连续的区间向一个点连边，如果我们真的一条一条连过去，那一旦点的数量多了复杂度就爆炸了，这里就需要用线段树的区间性质来优化我们的建图了。
+
+下面是一个线段树。
+
+![](./images/segt5.svg)
+
+每个节点都代表了一个区间，假设我们要向区间 $[2, 4]$ 连边。
+
+![](./images/segt6.svg)
+
+在一些题目中，还会出现一个区间连向一个点的情况，则我们将上面第一张图的有向边全部反过来即可，上面的树叫做入树，下面这个叫做出树。
+
+![](./images/segt7.svg)
+
+???+ note "[Legacy](https://codeforces.com/problemset/problem/786/B)"
+    题目大意：有 $n$ 个点、$q$ 次操作。每一种操作为以下三种类型中的一种：
+    
+    -   操作一：连一条 $u \rightarrow v$ 的有向边，权值为 $w$。
+    -   操作二：对于所有 $i \in [l,r]$ 连一条 $u \rightarrow i$ 的有向边，权值为 $w$。
+    -   操作三：对于所有 $i \in [l,r]$ 连一条 $i \rightarrow u$ 的有向边，权值为 $w$。
+    
+    求从点 $s$ 到其他点的最短路。
+    
+    $1 \le n,q \le 10^5, 1 \le w \le 10^9$。
+    
+    ??? "参考代码"
+        ```cpp
+        --8<-- "docs/ds/code/seg/seg_8.cpp"
         ```
 
 ## 拓展 - 猫树

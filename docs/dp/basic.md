@@ -182,10 +182,9 @@ int dp() {
 容易发现该算法的时间复杂度为 $O(n^2)$。
 
 === "C++"
-
     ```cpp
     int a[MAXN], d[MAXN];
-
+    
     int dp() {
       d[1] = 1;
       int ans = 1;
@@ -202,7 +201,6 @@ int dp() {
     ```
 
 === "Python"
-
     ```python
     a = [0] * MAXN
     d = [0] * MAXN
@@ -235,7 +233,6 @@ int dp() {
 参考代码如下：
 
 === "C++"
-
     ```cpp
     for (int i = 0; i < n; ++i) scanf("%d", a + i);
     memset(dp, 0x1f, sizeof dp);
@@ -248,7 +245,6 @@ int dp() {
     ```
 
 === "Python"
-
     ```python
     dp = [0x1f1f1f1f] * MAXN
     mx = dp[0]
