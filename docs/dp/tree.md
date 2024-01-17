@@ -1677,11 +1677,6 @@ $f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为�
 
     ??? tip
         节点的累积度$a(x)$是节点x 可以流向其他终端节点的最大流量，相当于以x 为源点流向树中其他终端节点的最大流量。本题需要计算所有节点的累积度，然后以最大值作为树的累积度。若以每个节点为根都计算一次，则时间复杂度太高。本题属于“不定根”树形动态规划问题，对此类问题可以采用二次扫描与换根法解决。
--   [Atcoder Educational DP Contest, Problem V, Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
-
--   [Educational Codeforces Round 67, Problem E, Tree Painting](https://codeforces.com/contest/1187/problem/E)
-
--   [POJ 3585 Accumulation Degree](http://poj.org/problem?id=3585)
 
         二次扫描与换根： 在一棵无根树上需要以多个节点为根求解答案，可以运用二次扫描与换根法。具体操作是通过实现一次自底向上的深度优先搜索和一次自顶向下的深度优先搜索来计算“换根”后的解。
 
@@ -2707,6 +2702,11 @@ $f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为�
                 return 0;
             }
             ```
+
+-   [Atcoder Educational DP Contest, Problem V, Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+
+-   [Educational Codeforces Round 67, Problem E, Tree Painting](https://codeforces.com/contest/1187/problem/E)
+
 ## 参考资料与注释
 
 [^note1]: [子树合并背包类型的 dp 的复杂度证明 - LYD729 的 CSDN 博客](https://blog.csdn.net/lyd_7_29/article/details/79854245)
