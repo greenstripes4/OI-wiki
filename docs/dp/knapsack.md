@@ -562,39 +562,72 @@ g[0] = 1;  // 什么都不装是一种方案
 具体来讲：$\mathit{dp_{i,j,k}}$ 记录了前 $i$ 个物品中，选择的物品总体积为 $j$ 时，能够得到的第 $k$ 大的价值和。这个状态可以理解为将普通 0-1 背包只用记录一个数据的 $\mathit{dp_{i,j}}$ 扩展为记录一个有序的优解序列。转移时，普通背包最优解的求法是 $\mathit{dp_{i,j}}=\max(\mathit{dp_{i-1,j}},\mathit{dp_{i-1,j-v_{i}}}+w_{i})$，现在我们则是要合并 $\mathit{dp_{i-1,j}}$，$\mathit{dp_{i-1,j-v_{i}}}+w_{i}$ 这两个大小为 $k$ 的递减序列，并保留合并后前 $k$ 大的价值记在 $\mathit{dp_{i,j}}$ 里，这一步利用双指针法，复杂度是 $O(k)$ 的，整体时间复杂度为 $O(nmk)$。空间上，此方法与普通背包一样可以压缩掉第一维，复杂度是 $O(mk)$ 的。
 
 ??? note "[例题 hdu 2639 Bone Collector II](https://vjudge.net/problem/HDU-2639)"
-    求 0-1 背包的严格第 $k$ 优解。$n \leq 100,v \leq 1000,k \leq 30$
+    求 0-1 背包的严格第 $k$ 优解。$n \leq 100,m \leq 1000,k \leq 30$
 
 ??? note "实现"
+
     ```cpp
-    memset(dp, 0, sizeof(dp));
-    int i, j, p, x, y, z;
-    scanf("%d%d%d", &n, &m, &K);
-    for (i = 0; i < n; i++) scanf("%d", &w[i]);
-    for (i = 0; i < n; i++) scanf("%d", &c[i]);
-    for (i = 0; i < n; i++) {
-      for (j = m; j >= c[i]; j--) {
-        for (p = 1; p <= K; p++) {
-          a[p] = dp[j - c[i]][p] + w[i];
-          b[p] = dp[j][p];
+    #include<iostream>
+    #include<cstring>
+
+    using namespace std;
+    const int N = 1010, M = 35;
+
+    int f[N][M];   
+    int v[N],w[N];  // 骨头的体积，价值
+    int n,m,k;      // 骨头的数量；包的体积；最优解k
+    int a[N],b[N];  // 存储放和不放两种状态，a[]为放，b[]为不放
+
+    int main()
+    {
+        int t;
+        cin>>t;
+        while(t--)
+        {
+            memset(f,0,sizeof f);
+
+            cin>>n>>m>>k;
+            for(int i=1;i<=n;i++) cin>>w[i];
+            for(int i=1;i<=n;i++) cin>>v[i];
+
+            for(int i=1;i<=n;i++)
+            {
+                for(int j=m;j>=v[i];j--)
+                {
+                    int x,y,z,s;
+                    for(s=1;s<=k;s++)               // 分别将放入第i个石头与不放第i个石头的结果存入a,b,数组之中
+                    {
+                        a[s]=f[j-v[i]][s]+w[i];     // 放
+                        b[s]=f[j][s];               // 不放
+                    }
+                    x=y=z=1;
+                    a[s]=b[s]=-1;
+                    while(z<=k && (x<=k || y<=k))   // 循环找出前K个的最优解
+                    {
+                        if(a[x]>b[y])
+                        {
+                            f[j][z]=a[x];
+                            x++;
+                        }
+                        else
+                        {
+                            f[j][z]=b[y];
+                            y++;
+                        }
+                        if(f[j][z]!=f[j][z-1]) z++;
+                    }
+                }
+            }
+            cout<<f[m][k]<<endl;;
         }
-        a[p] = b[p] = -1;
-        x = y = z = 1;
-        while (z <= K && (a[x] != -1 || b[y] != -1)) {
-          if (a[x] > b[y])
-            dp[j][z] = a[x++];
-          else
-            dp[j][z] = b[y++];
-          if (dp[j][z] != dp[j][z - 1]) z++;
-        }
-      }
+        return 0;
     }
-    printf("%d\n", dp[m][K]);
     ```
 
 ## 习题
 
 ??? note "[Coins](http://poj.org/problem?id=1742)"
-    有n种不同面值的硬币 A1,A2,...,An， 分别有C1,C2,...,Cn 枚。求这些硬币所能组成的小于等于m的不同的面值种类数。
+    有n种不同面值的硬币 $A_1,A_2,...,A_n$， 分别有$C_1,C_2,...,C_n$ 枚。求这些硬币所能组成的小于等于$m$的不同的面值种类数。
 
     ??? tip
         ![](./images/dp-36.png)
@@ -631,7 +664,7 @@ g[0] = 1;  // 什么都不装是一种方案
         ```
 
 ??? note "[Ant Counting](http://poj.org/problem?id=3046)"
-    蚂蚁有T个家族，每个家族里的蚂蚁没有区别，总共有A只蚂蚁，现在问：给出每个家族的蚂蚁数量，最多能组合成多少个不同的集合个数为S~B的集合？就是给你T个集合，每个集合$num[i]$个数，这些数排列组合能有多少个，个数为S~B的集合。
+    蚂蚁有T个家族，每个家族里的蚂蚁没有区别，总共有A只蚂蚁，现在问：给出每个家族的蚂蚁数量，最多能组合成多少个不同的集合个数为$[S, B]$的集合？就是给你T个集合，每个集合$num[i]$个数，这些数排列组合能有多少个，个数为$[S, B]$的集合。
 
     ??? tip
         ![](./images/dp-35.png)
