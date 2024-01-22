@@ -113,7 +113,7 @@ author: du33169
     
     时间复杂度为 $O(n^3)$。
 
-[最小环](./min-cycle.md) 中也提供了暴力解法和Dijkstra解法。
+[最小环](../graph/min-cycle.md) 中也提供了暴力解法和Dijkstra解法。
 
 ???+note "参考代码"
 
