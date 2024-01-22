@@ -240,7 +240,7 @@ NOI 大纲中入门级只要求学习选择、冒泡、插入排序，共三个�
 - [最短路基础](../graph/shortest-path.md)
 - [K短路](../graph/kth-path.md)
 - [差分约束](../graph/diff-constraints.md)
-- [最小环](../graph/min-circle.md)
+- [最小环](../graph/min-cycle.md)
 
 ### 6.2 最小生成树
 

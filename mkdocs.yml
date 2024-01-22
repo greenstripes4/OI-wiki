@@ -275,7 +275,7 @@ nav:
       - 最短路基础: graph/shortest-path.md
       - k 短路: graph/kth-path.md
       - 差分约束: graph/diff-constraints.md
-      - 最小环: graph/min-circle.md
+      - 最小环: graph/min-cycle.md
       - 同余最短路: graph/mod-shortest-path.md
     - 树上问题:
       - 树基础: graph/tree-basic.md
